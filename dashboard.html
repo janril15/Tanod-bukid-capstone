@@ -1,0 +1,849 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard - Tanod Bukid</title>
+  <link rel="icon" href="bukid.jpg">
+  <link rel="stylesheet" href="css/responsive-tokens.css">
+  <link rel="stylesheet" href="src/styles.css">
+  <link rel="stylesheet" href="css/chat-widget.css">
+</head>
+
+<body class="scanner-page">
+  <main class="dashboard-page app-shell">
+    <section class="monitor-shell" aria-label="Plant and crop scanner">
+      <header class="monitor-header">
+        <div class="monitor-brand"><span class="brand-mark">+</span><span><strong>Plant / Crop Scan</strong><small>Live
+              analysis and monitoring powered by AI</small></span></div><button class="history-button" type="button"
+          id="scan-history-button" aria-haspopup="dialog" aria-controls="scan-history-dialog">History</button>
+      </header>
+      <div class="monitor-tabs" role="tablist" aria-label="Scan views"><button class="active" id="live-camera-tab"
+          type="button" role="tab" aria-selected="true">◉ &nbsp;Live Camera</button><button id="ai-analysis-tab"
+          type="button" role="tab" aria-selected="false">✦ &nbsp;AI Analysis</button></div>
+
+      <div id="live-scan-view">
+        <section class="camera-card"><video id="camera-live" autoplay playsinline muted
+            aria-label="Live plant camera"></video>
+          <div class="camera-shade"></div>
+          <div class="live-pill"><span></span><span id="live-state">Starting...</span></div>
+          <div class="scan-frame" aria-hidden="true"><i></i><i></i><i></i><i></i><span></span></div>
+          <div class="detection-pill">Plant detected <strong><span id="confidence">92</span>% confidence</strong></div>
+          <p id="camera-error" class="camera-error" hidden></p>
+        </section>
+        <div class="camera-capture-controls">
+          <div class="scan-capture-actions">
+            <button id="capture-live-photo" class="live-capture-button" type="button" aria-label="Capture Photo">
+              <span aria-hidden="true">◉</span>Capture Photo
+            </button>
+            <button id="upload-scan-photo" class="camera-upload-button" type="button" aria-label="Upload Photo">
+              <span aria-hidden="true">▧</span>Upload Photo
+            </button>
+          </div>
+          <input id="scan-photo-input" type="file" accept="image/*" hidden>
+          <p id="capture-photo-status" class="capture-photo-status" role="status" aria-live="polite" hidden></p>
+          <div id="captured-photo-preview" class="captured-photo-preview" hidden>
+            <img id="captured-live-photo" alt="Captured plant preview">
+            <div class="captured-photo-actions">
+              <button id="retake-live-photo" class="retake-photo-button" type="button">Retake</button>
+              <button id="use-live-photo" class="use-photo-button" type="button">Use Photo</button>
+            </div>
+          </div>
+        </div>
+        <section class="analysis-card">
+          <div class="section-heading">
+            <h2><span class="leaf-icon">✦</span> AI Health Analysis</h2><span id="monitoring-tag"
+              class="monitoring-tag">Starting...</span>
+          </div>
+          <div class="metric-list">
+            <div><span class="metric-icon">✦</span><span>Plant Health</span><strong
+                class="healthy-text">Healthy</strong><b>›</b></div>
+            <div><span class="metric-icon">◈</span><span>Leaf Condition</span><strong>Normal</strong><b>›</b></div>
+            <div><span class="metric-icon">▰</span><span>Growth Stage</span><strong>Vegetative</strong><b>›</b></div>
+            <div><span class="metric-icon">◒</span><span>Disease Risk</span><strong>Low</strong><b>›</b></div>
+            <div><span class="metric-icon">◌</span><span>Discoloration</span><strong>None detected</strong><b>›</b>
+            </div>
+          </div><button id="monitor-toggle" class="pause-button" type="button"><span>Ⅱ</span>Pause Monitoring</button>
+        </section>
+        <section class="dashboard-section">
+          <div class="section-heading">
+            <h2>⟳ &nbsp;Recent Changes</h2><button type="button">View all</button>
+          </div>
+          <article class="change-row"><span class="row-icon leaf-bg">◒</span><span><strong>Leaf discoloration
+                increased</strong><small>Compared to last scan (2 days ago)</small></span><em>+8%</em></article>
+        </section>
+        <section class="dashboard-section farm-log">
+          <div class="section-heading">
+            <h2>▣ &nbsp;Farm Log</h2><button type="button">View all</button>
+          </div>
+          <p><strong>Jul 17, 2025 · 10:24 AM</strong><br>Plant health: Healthy · Growth: +4.2%<br><span>Notes:
+              Insufficient sunlight.</span></p>
+        </section>
+        <section class="dashboard-section alert-section">
+          <div class="section-heading">
+            <h2>△ &nbsp;Alerts</h2><button type="button">View all</button>
+          </div>
+          <article class="alert-row"><span class="row-icon alert-bg">△</span><span><strong>Possible Rice
+                Blast</strong><small>Detected: Jul 16, 2025 · 2:14 PM<br>Recommended action: Inspect affected
+                leaves</small></span><em>Moderate Risk</em></article>
+        </section>
+        <section class="recommendation"><span>♧</span>
+          <div><strong>AI Recommendation</strong>
+            <p>Keep monitoring for further changes.<br>Ensure proper irrigation and field drainage.</p>
+          </div>
+        </section>
+        <section class="quick-actions">
+          <h2>Quick Actions</h2>
+          <div><button type="button"><span>◉</span>Scan Again</button><button type="button"><span>♧</span>Save
+              Result</button><button id="ask-ai-button" type="button"><span>◌</span>Ask AI</button><button
+              type="button"><span>▣</span>View
+              Logs</button></div>
+        </section>
+      </div>
+
+      <div class="scan-results" id="scan-analysis-view" hidden>
+        <p class="analysis-save-status" id="analysis-save-status" role="status" aria-live="polite" hidden></p>
+        <section class="analysis-unavailable" id="analysis-unavailable" aria-live="polite" hidden>
+          <div class="analysis-unavailable-image"><img id="analysis-unavailable-photo" alt="Submitted crop scan"
+              hidden><span id="analysis-unavailable-placeholder" aria-hidden="true">🌱</span></div>
+          <div><span class="analysis-unavailable-label">AI RESULT</span>
+            <h2 id="analysis-unavailable-title">Result unavailable</h2>
+            <p id="analysis-unavailable-copy"></p>
+          </div>
+        </section>
+        <div class="result-overview">
+          <section class="scan-photo-card">
+            <img id="analysis-photo" src="Tanod Bukid Dash Board (1)/plants (1).jpg" alt="Scanned crop leaf">
+            <span class="analysis-complete"><span>✓</span> Analysis Complete</span>
+          </section>
+          <section class="result-health-card">
+            <div class="result-crop-heading"><span class="crop-leaf">❧</span>
+              <div>
+                <h2>Rice</h2><em>Oryza sativa</em>
+              </div><span class="confidence-pill"><span id="result-confidence">98</span>% confidence</span>
+            </div>
+            <div class="result-metrics">
+              <div class="result-health-summary"><span class="result-metric-icon">♥</span><span>Plant
+                  Health</span><strong>Healthy</strong></div>
+              <div><span class="result-metric-icon">❧</span><span>Leaf Condition</span><strong>Normal</strong></div>
+              <div><span class="result-metric-icon">♣</span><span>Growth Stage</span><strong>Vegetative</strong></div>
+              <div><span class="result-metric-icon">✿</span><span>Disease Risk</span><strong>Low</strong></div>
+              <div><span class="result-metric-icon">◈</span><span>Discoloration</span><strong>None detected</strong>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <section class="result-section change-detection">
+          <div class="result-section-heading"><span class="result-section-icon">⟳</span>
+            <div>
+              <h2>Change Detection</h2>
+              <p>Compared to your previous scan (2 days ago)</p>
+            </div>
+          </div>
+          <div class="result-change-row"><span class="result-leaf-badge">❧</span>
+            <div><strong>Slight increase in leaf spot areas</strong>
+              <p>Leaf discoloration increased by 8% since last scan.</p>
+              <p class="change-detail-copy" id="change-detail-copy" hidden>Continue checking affected leaves and compare
+                again after your next scan.</p>
+            </div><button id="change-details-button" type="button" aria-expanded="false">View Details
+              <span>›</span></button>
+          </div>
+        </section>
+
+        <section class="result-section result-farm-log">
+          <div class="result-section-heading"><span class="result-section-icon">▤</span>
+            <h2>Farm Log</h2><button type="button">View All</button>
+          </div>
+          <div class="farm-log-entry"><img id="analysis-thumbnail" src="Tanod Bukid Dash Board (1)/plants (1).jpg"
+              alt="Rice scan thumbnail">
+            <div class="farm-log-content">
+              <p class="farm-log-time">Jul 17, 2025 <span>·</span> 10:24 AM</p>
+              <div class="farm-log-tags"><span>Health: Healthy</span><span>Growth: Vegetative</span><span>Risk:
+                  Low</span></div>
+              <p class="farm-log-note">▤ &nbsp;No issues detected.</p>
+            </div><span class="farm-log-arrow">›</span>
+          </div>
+        </section>
+
+        <section class="result-recommendation"><span class="recommendation-bulb">♧</span>
+          <div>
+            <h2>Recommendation</h2><strong>Continue current care routine.</strong>
+            <p>Monitor the affected areas closely. If discoloration increases or spreads, check for possible fungal
+              infection and improve field drainage.</p>
+          </div><span class="recommendation-arrow">›</span>
+        </section>
+      </div>
+    </section>
+  </main>
+  <nav class="new-bottom-nav" aria-label="Main navigation">
+    <button type="button" data-dashboard-route="home"><span class="nav-icon">⌂</span><span>Home</span></button>
+    <button class="active" type="button" aria-current="page" data-dashboard-route="scan"><span
+        class="nav-icon">⌾</span><span>Scan</span></button>
+    <button class="add-nav-item" type="button" data-dashboard-route="add"><span class="add">+</span><span
+        class="add-label">Add</span></button>
+    <button type="button" data-dashboard-route="climate"><span class="nav-icon">⌁</span><span>Climate</span></button>
+    <button type="button" data-dashboard-route="profile"><span class="nav-icon">♙</span><span>Profile</span></button>
+  </nav>
+  <script type="module">
+    import { getScanImage, listScanRecords, saveScanRecord } from './js/scan-history.js'
+
+    (() => {
+      const video = document.querySelector('#camera-live')
+      const error = document.querySelector('#camera-error')
+      const capturePhotoButton = document.querySelector('#capture-live-photo')
+      const uploadScanPhotoButton = document.querySelector('#upload-scan-photo')
+      const scanPhotoInput = document.querySelector('#scan-photo-input')
+      const capturePhotoStatus = document.querySelector('#capture-photo-status')
+      const capturedPhotoPreview = document.querySelector('#captured-photo-preview')
+      const capturedLivePhoto = document.querySelector('#captured-live-photo')
+      const retakeLivePhotoButton = document.querySelector('#retake-live-photo')
+      const useLivePhotoButton = document.querySelector('#use-live-photo')
+      const confidence = document.querySelector('#confidence')
+      const toggle = document.querySelector('#monitor-toggle')
+      const tag = document.querySelector('#monitoring-tag')
+      const state = document.querySelector('#live-state')
+      const dashboardNav = document.querySelector('.new-bottom-nav')
+      const dashboardPage = document.querySelector('.dashboard-page')
+      const scanShell = document.querySelector('.monitor-shell')
+      const liveScanView = document.querySelector('#live-scan-view')
+      const scanAnalysisView = document.querySelector('#scan-analysis-view')
+      const analysisSaveStatus = document.querySelector('#analysis-save-status')
+      const analysisUnavailable = document.querySelector('#analysis-unavailable')
+      const analysisUnavailablePhoto = document.querySelector('#analysis-unavailable-photo')
+      const analysisUnavailablePlaceholder = document.querySelector('#analysis-unavailable-placeholder')
+      const analysisUnavailableTitle = document.querySelector('#analysis-unavailable-title')
+      const analysisUnavailableCopy = document.querySelector('#analysis-unavailable-copy')
+      const liveCameraTab = document.querySelector('#live-camera-tab')
+      const aiAnalysisTab = document.querySelector('#ai-analysis-tab')
+      const analysisPhoto = document.querySelector('#analysis-photo')
+      const analysisThumbnail = document.querySelector('#analysis-thumbnail')
+      const historyButton = document.querySelector('#scan-history-button')
+      const initialAnalysisPhoto = analysisPhoto.src
+      let stream = null
+      let cameraStartPromise = null
+      let pageLeaving = false
+      let monitoring = true
+      let capturedPhotoBlob = null
+      let selectedScanPhoto = null
+      let capturedPhotoUrl = ''
+      let selectedScanId = null
+      let selectedScanSaved = false
+      let scanSavePromise = null
+
+      const escapeScanHistoryHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character])
+      const scanHistoryDate = (value) => {
+        const date = new Date(value)
+        return Number.isNaN(date.getTime()) ? 'Date unavailable' : new Intl.DateTimeFormat(undefined, { dateStyle: 'medium', timeStyle: 'short' }).format(date)
+      }
+      const makeScanId = () => globalThis.crypto?.randomUUID?.() || `scan-${Date.now()}-${Math.random().toString(36).slice(2)}`
+      const setScanHistoryStatus = (message) => {
+        setCaptureStatus(message)
+        analysisSaveStatus.textContent = message
+        analysisSaveStatus.hidden = !message
+      }
+
+      async function persistSelectedScan() {
+        if (!selectedScanPhoto || selectedScanSaved) return
+        if (scanSavePromise) return scanSavePromise
+        selectedScanId ||= makeScanId()
+        setScanHistoryStatus('Saving scan to history...')
+        scanSavePromise = saveScanRecord({
+          id: selectedScanId,
+          userId: null,
+          scannedAt: new Date().toISOString(),
+          cropName: null,
+          fieldName: null,
+          analysisStatus: 'unavailable',
+          analysisResult: null,
+          resultUnavailableReason: 'AI analysis is not connected to this scanner yet.'
+        }, selectedScanPhoto).then(() => {
+          selectedScanSaved = true
+          setScanHistoryStatus('Scan saved to history. Result unavailable because AI analysis is not connected.')
+        }).catch((storageError) => {
+          console.error('[scanner history] Unable to save scan', storageError)
+          setScanHistoryStatus('Unable to save scan history. Please try again.')
+        }).finally(() => {
+          scanSavePromise = null
+        })
+        return scanSavePromise
+      }
+
+      function scanAnalysisValue(record) {
+        return record.analysisResult && typeof record.analysisResult === 'object' ? record.analysisResult : {}
+      }
+
+      function scanIssueText(record) {
+        const analysis = scanAnalysisValue(record)
+        const issue = analysis.detectedIssue ?? analysis.detectedDisease ?? analysis.disease ?? analysis.deficiency ?? analysis.issue ?? ''
+        const text = Array.isArray(issue) ? issue.join(', ') : typeof issue === 'object' ? issue.name || issue.label || '' : String(issue || '')
+        return /^(none|none detected|no issues?|n\/a|unknown)$/i.test(text.trim()) ? '' : text.trim()
+      }
+
+      function scanResultText(record) {
+        const analysis = scanAnalysisValue(record)
+        if (record.analysisStatus === 'unavailable') return 'Result unavailable'
+        if (record.analysisStatus === 'pending') return 'Analysis pending'
+        const result = analysis.summary || analysis.resultSummary || (typeof analysis.result === 'string' ? analysis.result : '') || analysis.healthStatus || analysis.health || ''
+        return String(result || 'Result unavailable')
+      }
+
+      function scanStatus(record) {
+        const analysis = scanAnalysisValue(record)
+        const words = [analysis.healthStatus, analysis.health, analysis.status, analysis.result, analysis.summary, scanIssueText(record)].filter((value) => typeof value === 'string').join(' ').toLowerCase()
+        if (/critical|severe/.test(words)) return { label: 'Critical issue', className: 'is-critical', filter: 'attention' }
+        if (scanIssueText(record) || /needs attention|unhealthy|disease|warning|deficien|stress|poor/.test(words)) return { label: scanIssueText(record) || String(analysis.healthStatus || analysis.status || 'Needs attention'), className: 'is-attention', filter: 'attention' }
+        if (/healthy|normal|no issues? detected/.test(words)) return { label: String(analysis.healthStatus || analysis.health || 'Healthy'), className: 'is-healthy', filter: 'healthy' }
+        return { label: scanResultText(record), className: '', filter: 'unknown' }
+      }
+
+      function openScanHistory() {
+        if (document.querySelector('.scan-history-backdrop')) return
+        const previousOverflow = document.body.style.overflow
+        const imageUrls = new Map()
+        let records = []
+        let selectedFilter = 'all'
+        let query = ''
+        let dateFilter = ''
+        let visibleLimit = 8
+        let closed = false
+        let renderVersion = 0
+
+        const backdrop = document.createElement('div')
+        backdrop.className = 'scan-history-backdrop'
+        backdrop.innerHTML = `<section class="scan-history-panel" id="scan-history-dialog" role="dialog" aria-modal="true" aria-labelledby="scan-history-title" aria-describedby="scan-history-subtitle"><header class="scan-history-header"><span class="scan-history-icon" aria-hidden="true">⌾</span><div class="scan-history-heading"><h2 id="scan-history-title">Scan History</h2><p id="scan-history-subtitle">Review your previous plant scans</p></div><button class="scan-history-close" type="button" aria-label="Close scan history">×</button></header><div class="scan-history-view"><div class="scan-history-tools"><input class="scan-history-search" type="search" placeholder="Search crop or result..." aria-label="Search crop or result"><div class="scan-history-filters" role="group" aria-label="Filter scan history"><button class="scan-history-filter" type="button" data-scan-filter="all" aria-pressed="true">All Scans</button><button class="scan-history-filter" type="button" data-scan-filter="healthy" aria-pressed="false">Healthy</button><button class="scan-history-filter" type="button" data-scan-filter="attention" aria-pressed="false">Needs Attention</button><label class="scan-history-date-wrap">Date <input class="scan-history-date" type="date" aria-label="Filter by scan date"></label></div></div><div class="scan-history-list" aria-live="polite" aria-busy="true"></div><footer class="scan-history-footer"><span class="scan-history-count">Loading scans...</span><button class="scan-history-load-more" type="button" hidden>Load more</button></footer></div><div class="scan-history-detail" hidden></div></section>`
+        document.body.appendChild(backdrop)
+        document.body.style.overflow = 'hidden'
+        const panel = backdrop.querySelector('.scan-history-panel')
+        const searchInput = backdrop.querySelector('.scan-history-search')
+        const dateInput = backdrop.querySelector('.scan-history-date')
+        const list = backdrop.querySelector('.scan-history-list')
+        const footerCount = backdrop.querySelector('.scan-history-count')
+        const loadMoreButton = backdrop.querySelector('.scan-history-load-more')
+        const listView = backdrop.querySelector('.scan-history-view')
+        const detailView = backdrop.querySelector('.scan-history-detail')
+
+        const releaseImageUrls = () => {
+          imageUrls.forEach((url) => URL.revokeObjectURL(url))
+          imageUrls.clear()
+        }
+        const close = () => {
+          if (closed) return
+          closed = true
+          backdrop.classList.add('is-closing')
+          document.removeEventListener('keydown', onKeyDown)
+          window.removeEventListener('tanodbukid:scan-history-changed', refreshRecords)
+          window.removeEventListener('resize', updateViewport)
+          window.visualViewport?.removeEventListener('resize', updateViewport)
+          window.visualViewport?.removeEventListener('scroll', updateViewport)
+          window.setTimeout(() => {
+            backdrop.remove()
+            releaseImageUrls()
+            document.body.style.overflow = previousOverflow
+            historyButton.focus()
+          }, 180)
+        }
+
+        async function loadImage(scanId) {
+          if (imageUrls.has(scanId)) return imageUrls.get(scanId)
+          const blob = await getScanImage(scanId)
+          if (!blob) return ''
+          const url = URL.createObjectURL(blob)
+          if (closed) {
+            URL.revokeObjectURL(url)
+            return ''
+          }
+          imageUrls.set(scanId, url)
+          return url
+        }
+
+        function matchesFilters(record) {
+          const status = scanStatus(record)
+          const analysis = scanAnalysisValue(record)
+          const searchable = [record.cropName, record.plantName, record.fieldName, record.fieldId, scanResultText(record), scanIssueText(record), analysis.recommendations]
+            .flatMap((value) => Array.isArray(value) ? value : [value])
+            .filter(Boolean).join(' ').toLowerCase()
+          if (selectedFilter !== 'all' && status.filter !== selectedFilter) return false
+          if (query && !searchable.includes(query.toLowerCase())) return false
+          if (dateFilter && String(record.scannedAt || '').slice(0, 10) !== dateFilter) return false
+          return true
+        }
+
+        async function renderImages(version) {
+          for (const host of list.querySelectorAll('[data-scan-image]')) {
+            const record = records.find((item) => item.id === host.dataset.scanImage)
+            if (!record) continue
+            try {
+              const url = await loadImage(record.id)
+              if (url && !closed && version === renderVersion && host.isConnected) host.innerHTML = `<img src="${url}" alt="Saved scan of ${escapeScanHistoryHtml(record.cropName || record.plantName || 'unidentified crop')}">`
+            } catch (imageError) {
+              console.warn('[scanner history] Unable to load saved thumbnail', imageError)
+            }
+          }
+        }
+
+        function showDetails(record) {
+          if (!record) return
+          const analysis = scanAnalysisValue(record)
+          const status = scanStatus(record)
+          const crop = record.cropName || record.plantName || 'Crop not identified'
+          const field = record.fieldName || record.fieldId || 'Field not recorded'
+          const issue = scanIssueText(record) || 'No issue recorded'
+          const recommendations = analysis.recommendations
+          const recommendationText = Array.isArray(recommendations) ? recommendations.join('\n') : recommendations || 'No recommendation recorded'
+          const confidenceValue = analysis.confidence ?? analysis.confidenceScore
+          const confidence = confidenceValue !== null && confidenceValue !== undefined && confidenceValue !== '' ? `${confidenceValue}${analysis.confidenceUnit || ''}` : 'Not provided'
+          const savedResult = scanResultText(record)
+          detailView.innerHTML = `<div class="scan-history-detail-top"><button class="scan-history-back" type="button" aria-label="Back to scan history">‹</button><strong>Scan details</strong></div><div class="scan-history-detail-image-wrap"><div class="scan-history-detail-placeholder" data-detail-image aria-label="No saved scan image">🌱</div></div><div class="scan-history-detail-fields"><div class="scan-history-detail-field"><small>Crop</small><strong>${escapeScanHistoryHtml(crop)}</strong></div><div class="scan-history-detail-field"><small>Field</small><strong>${escapeScanHistoryHtml(field)}</strong></div><div class="scan-history-detail-field"><small>Scanned</small><strong>${escapeScanHistoryHtml(scanHistoryDate(record.scannedAt))}</strong></div><div class="scan-history-detail-field"><small>Analysis result</small><strong class="scan-history-status ${status.className}">${escapeScanHistoryHtml(savedResult)}</strong></div><div class="scan-history-detail-field"><small>Confidence</small><strong>${escapeScanHistoryHtml(confidence)}</strong></div><div class="scan-history-detail-field"><small>Detected issue</small><strong>${escapeScanHistoryHtml(issue)}</strong></div></div><section class="scan-history-detail-section"><h3>Result status</h3><p>${escapeScanHistoryHtml(record.resultUnavailableReason || status.label)}</p></section><section class="scan-history-detail-section"><h3>Recommendations</h3><p>${escapeScanHistoryHtml(recommendationText)}</p></section>`
+          listView.hidden = true
+          detailView.hidden = false
+          detailView.querySelector('.scan-history-back').addEventListener('click', () => {
+            detailView.hidden = true
+            listView.hidden = false
+            list.querySelectorAll('[data-scan-record]').forEach((button) => {
+              if (button.dataset.scanRecord === record.id) button.focus()
+            })
+          })
+          void loadImage(record.id).then((url) => {
+            const target = detailView.querySelector('[data-detail-image]')
+            if (url && target?.isConnected) target.outerHTML = `<img class="scan-history-detail-image" src="${url}" alt="Saved scan of ${escapeScanHistoryHtml(crop)}">`
+          }).catch((imageError) => console.warn('[scanner history] Unable to load saved scan image', imageError))
+          detailView.querySelector('.scan-history-back').focus()
+        }
+
+        function renderList() {
+          const version = ++renderVersion
+          const filtered = records.filter(matchesFilters)
+          const visibleRecords = filtered.slice(0, visibleLimit)
+          list.setAttribute('aria-busy', 'false')
+          if (!filtered.length) {
+            list.innerHTML = `<div class="scan-history-state"><strong>${records.length ? 'No scans match these filters' : 'No saved scans yet'}</strong><span>${records.length ? 'Try another search, status, or date.' : 'Submitted scans will appear here when available.'}</span></div>`
+          } else {
+            list.innerHTML = visibleRecords.map((record) => {
+              const status = scanStatus(record)
+              const crop = record.cropName || record.plantName || 'Crop not identified'
+              const field = record.fieldName || record.fieldId || ''
+              const issue = scanIssueText(record)
+              const summary = issue || scanResultText(record)
+              const timestamp = scanHistoryDate(record.scannedAt)
+              return `<button class="scan-history-record" type="button" data-scan-record="${escapeScanHistoryHtml(record.id)}"><span class="scan-history-thumb" data-scan-image="${escapeScanHistoryHtml(record.id)}" aria-hidden="true">🌱</span><span class="scan-history-record-copy"><strong>${escapeScanHistoryHtml(crop)}</strong><small>${escapeScanHistoryHtml(field || timestamp)}${field ? ` · ${escapeScanHistoryHtml(timestamp)}` : ''}</small><span>${escapeScanHistoryHtml(summary)}</span></span><span class="scan-history-status ${status.className}">${escapeScanHistoryHtml(status.label)}</span><span class="scan-history-chevron" aria-hidden="true">›</span></button>`
+            }).join('')
+            list.querySelectorAll('[data-scan-record]').forEach((button) => button.addEventListener('click', () => showDetails(records.find((record) => record.id === button.dataset.scanRecord))))
+            void renderImages(version)
+          }
+          footerCount.textContent = `${records.length} ${records.length === 1 ? 'scan' : 'scans'} recorded · ${filtered.length} shown`
+          loadMoreButton.hidden = visibleRecords.length >= filtered.length
+        }
+
+        async function refreshRecords() {
+          list.setAttribute('aria-busy', 'true')
+          if (!records.length) list.innerHTML = '<div class="scan-history-state"><span>Loading saved scans...</span></div>'
+          try {
+            records = await listScanRecords()
+            if (!closed) renderList()
+          } catch (storageError) {
+            console.error('[scanner history] Unable to read saved scans', storageError)
+            list.setAttribute('aria-busy', 'false')
+            list.innerHTML = `<div class="scan-history-state"><strong>Scan history could not be loaded</strong><span>${escapeScanHistoryHtml(storageError.message || 'Storage is unavailable.')}</span><button class="scan-history-retry" type="button">Try again</button></div>`
+            footerCount.textContent = 'Storage error'
+            loadMoreButton.hidden = true
+            list.querySelector('.scan-history-retry').addEventListener('click', refreshRecords)
+          }
+        }
+
+        function onKeyDown(event) {
+          if (event.key === 'Escape') {
+            close()
+            return
+          }
+          if (event.key !== 'Tab') return
+          const focusable = [...panel.querySelectorAll('button:not([disabled]), input:not([disabled])')].filter((item) => !item.closest('[hidden]'))
+          const first = focusable[0]
+          const last = focusable[focusable.length - 1]
+          if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault()
+            last.focus()
+          } else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault()
+            first.focus()
+          }
+        }
+
+        function updateViewport() {
+          const viewport = window.visualViewport
+          if (!viewport) return
+          backdrop.style.setProperty('--scan-history-viewport-height', `${viewport.height}px`)
+          backdrop.style.setProperty('--scan-history-viewport-top', `${viewport.offsetTop}px`)
+        }
+
+        searchInput.addEventListener('input', () => { query = searchInput.value.trim(); visibleLimit = 8; renderList() })
+        dateInput.addEventListener('change', () => { dateFilter = dateInput.value; visibleLimit = 8; renderList() })
+        backdrop.querySelectorAll('[data-scan-filter]').forEach((button) => button.addEventListener('click', () => {
+          selectedFilter = button.dataset.scanFilter
+          visibleLimit = 8
+          backdrop.querySelectorAll('[data-scan-filter]').forEach((item) => item.setAttribute('aria-pressed', String(item === button)))
+          renderList()
+        }))
+        loadMoreButton.addEventListener('click', () => { visibleLimit += 8; renderList() })
+        backdrop.querySelector('.scan-history-close').addEventListener('click', close)
+        backdrop.addEventListener('click', (event) => { if (event.target === backdrop) close() })
+        document.addEventListener('keydown', onKeyDown)
+        window.addEventListener('tanodbukid:scan-history-changed', refreshRecords)
+        window.addEventListener('resize', updateViewport)
+        window.visualViewport?.addEventListener('resize', updateViewport)
+        window.visualViewport?.addEventListener('scroll', updateViewport)
+        updateViewport()
+        requestAnimationFrame(() => {
+          backdrop.classList.add('is-open')
+          backdrop.querySelector('.scan-history-close').focus()
+        })
+        void refreshRecords()
+      }
+
+      historyButton.addEventListener('click', openScanHistory)
+
+      const homePath = 'Tanod%20Bukid%20Dash%20Board%20(1)/index%20(1).html'
+      dashboardNav.querySelectorAll('[data-dashboard-route]').forEach((button) => button.addEventListener('click', () => {
+        const route = button.dataset.dashboardRoute
+        if (route === 'scan') return
+        window.location.href = route === 'home' ? homePath : `${homePath}#${route}`
+      }))
+
+      function setScanTab(showAnalysis) {
+        liveScanView.hidden = showAnalysis
+        scanAnalysisView.hidden = !showAnalysis
+        scanAnalysisView.classList.toggle('has-unavailable-analysis', showAnalysis)
+        dashboardPage.classList.toggle('showing-analysis', showAnalysis)
+        scanShell.classList.toggle('showing-analysis', showAnalysis)
+        liveCameraTab.classList.toggle('active', !showAnalysis)
+        liveCameraTab.setAttribute('aria-selected', String(!showAnalysis))
+        aiAnalysisTab.classList.toggle('active', showAnalysis)
+        aiAnalysisTab.setAttribute('aria-selected', String(showAnalysis))
+
+        if (showAnalysis) {
+          const hasSubmittedPhoto = Boolean(selectedScanPhoto)
+          if (selectedScanPhoto && capturedPhotoUrl) {
+            analysisPhoto.src = capturedPhotoUrl
+            analysisThumbnail.src = capturedPhotoUrl
+          }
+          analysisUnavailable.hidden = false
+          analysisUnavailableTitle.textContent = hasSubmittedPhoto ? 'Result unavailable' : 'No scan result yet'
+          analysisUnavailableCopy.textContent = hasSubmittedPhoto
+            ? 'The scan image was saved, but this app did not return an AI analysis result.'
+            : 'Capture and submit a plant photo to save it. AI analysis is not connected to this scanner.'
+          const hasPreview = Boolean(hasSubmittedPhoto && capturedPhotoUrl)
+          analysisUnavailablePhoto.hidden = !hasPreview
+          analysisUnavailablePlaceholder.hidden = hasPreview
+          if (hasPreview) analysisUnavailablePhoto.src = capturedPhotoUrl
+          if (hasSubmittedPhoto) void persistSelectedScan()
+          state.textContent = 'Paused'
+          tag.textContent = 'Paused'
+          tag.className = 'paused-tag'
+          stopCameraStream(stream || video.srcObject)
+        } else if (monitoring && !hasActiveCameraTrack(stream || video.srcObject)) {
+          void initializeCamera()
+        }
+      }
+
+      liveCameraTab.addEventListener('click', () => setScanTab(false))
+      aiAnalysisTab.addEventListener('click', () => setScanTab(true))
+      document.querySelector('#change-details-button').addEventListener('click', (event) => {
+        const details = document.querySelector('#change-detail-copy')
+        details.hidden = !details.hidden
+        event.currentTarget.setAttribute('aria-expanded', String(!details.hidden))
+        event.currentTarget.firstChild.textContent = details.hidden ? 'View Details ' : 'Hide Details '
+      })
+
+      function hasActiveCameraTrack(cameraStream) {
+        return Boolean(cameraStream?.getVideoTracks?.().some((track) => track.readyState === 'live'))
+      }
+
+      function cameraDiagnostics() {
+        const tracks = stream?.getTracks() || []
+        return {
+          mediaDevicesAvailable: Boolean(navigator.mediaDevices),
+          getUserMediaAvailable: typeof navigator.mediaDevices?.getUserMedia === 'function',
+          videoFound: Boolean(video),
+          readyState: video?.readyState,
+          videoWidth: video?.videoWidth,
+          videoHeight: video?.videoHeight,
+          srcObjectAvailable: Boolean(video?.srcObject),
+          activeTrackCount: tracks.filter((track) => track.readyState === 'live').length,
+          tracks: tracks.map((track) => ({
+            readyState: track.readyState,
+            kind: track.kind,
+            settings: track.getSettings?.()
+          }))
+        }
+      }
+
+      function setCameraStarting() {
+        error.hidden = true
+        state.textContent = 'Starting...'
+        tag.textContent = 'Starting...'
+        tag.className = 'monitoring-tag'
+      }
+
+      function showCameraError(cameraError, stage) {
+        const name = cameraError?.name || 'Error'
+        const messages = {
+          NotAllowedError: ['Permission denied', 'Camera permission is blocked. Please allow camera access in browser settings.'],
+          NotFoundError: ['Camera unavailable', 'No camera was found on this device.'],
+          NotReadableError: ['Camera unavailable', 'The camera is currently being used by another application.'],
+          OverconstrainedError: ['Camera unavailable', 'Camera settings are not supported.'],
+          SecurityError: ['Camera unavailable', 'Camera access is unavailable in this browser context.'],
+          AbortError: ['Camera unavailable', 'Camera startup was interrupted. Please try again.'],
+          NotSupportedError: ['Camera unavailable', 'Camera access is not supported in this browser.']
+        }
+        const [status, message] = messages[name] || ['Camera unavailable', cameraError?.message || 'Unable to start the camera. Please try again.']
+        error.hidden = false
+        error.textContent = stage === 'playback' && name === 'NotAllowedError'
+          ? 'The camera started, but browser playback was blocked. Check browser playback settings and try again.'
+          : message
+        state.textContent = status
+        tag.textContent = 'Paused'
+        tag.className = 'paused-tag'
+        monitoring = false
+        toggle.innerHTML = '<span>▶</span>Resume Monitoring'
+        console.error('[scanner camera] Initialization failed', {
+          stage,
+          name,
+          message: cameraError?.message || String(cameraError),
+          ...cameraDiagnostics()
+        })
+      }
+
+      function waitForVideoReady() {
+        if (video.readyState >= 2 && video.videoWidth > 0 && video.videoHeight > 0) return Promise.resolve()
+        return new Promise((resolve, reject) => {
+          const events = ['loadedmetadata', 'loadeddata', 'canplay', 'playing']
+          const cleanup = () => {
+            events.forEach((eventName) => video.removeEventListener(eventName, checkReady))
+            window.clearTimeout(timeout)
+          }
+          const checkReady = () => {
+            if (video.readyState < 2 || !video.videoWidth || !video.videoHeight) return
+            cleanup()
+            resolve()
+          }
+          const timeout = window.setTimeout(() => {
+            cleanup()
+            reject(new Error('The camera stream did not produce video frames in time.'))
+          }, 10000)
+          events.forEach((eventName) => video.addEventListener(eventName, checkReady))
+          checkReady()
+        })
+      }
+
+      async function playCameraVideo() {
+        let timeout
+        try {
+          const playPromise = video.play()
+          if (playPromise && typeof playPromise.then === 'function') {
+            await Promise.race([
+              playPromise,
+              new Promise((resolve, reject) => {
+                timeout = window.setTimeout(() => reject(new Error('Camera playback did not start in time.')), 10000)
+              })
+            ])
+          }
+        } finally {
+          window.clearTimeout(timeout)
+        }
+      }
+
+      function stopCameraStream(cameraStream) {
+        cameraStream?.getTracks?.().forEach((track) => track.stop())
+        if (video.srcObject === cameraStream) video.srcObject = null
+        if (stream === cameraStream) stream = null
+      }
+
+      async function requestCameraStream() {
+        try {
+          return await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' } }, audio: false })
+        } catch (cameraError) {
+          if (!['OverconstrainedError', 'NotFoundError'].includes(cameraError?.name)) throw cameraError
+          error.hidden = false
+          error.textContent = 'Camera settings are not supported. Retrying with compatible settings...'
+          console.warn('[scanner camera] Retrying with default video constraints', {
+            name: cameraError.name,
+            message: cameraError.message
+          })
+          return navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+        }
+      }
+
+      function handleCameraTrackEnded(cameraStream) {
+        if (stream !== cameraStream || pageLeaving) return
+        stopCameraStream(cameraStream)
+        const cameraError = new Error('The camera stream ended unexpectedly. Please try again.')
+        cameraError.name = 'AbortError'
+        showCameraError(cameraError, 'stream')
+      }
+
+      async function initializeCamera() {
+        if (cameraStartPromise) return cameraStartPromise
+        if (!navigator.mediaDevices || typeof navigator.mediaDevices.getUserMedia !== 'function') {
+          const cameraError = new Error(isSecureContext
+            ? 'Camera access is not supported in this browser.'
+            : 'Camera access is unavailable in this browser context.')
+          cameraError.name = isSecureContext ? 'NotSupportedError' : 'SecurityError'
+          showCameraError(cameraError, 'support')
+          return null
+        }
+
+        cameraStartPromise = (async () => {
+          setCameraStarting()
+          console.debug('[scanner camera] Starting', cameraDiagnostics())
+          let stage = 'acquisition'
+          const existingStream = stream || video.srcObject
+          try {
+            if (hasActiveCameraTrack(existingStream)) {
+              stream = existingStream
+            } else {
+              if (existingStream) stopCameraStream(existingStream)
+              stream = await requestCameraStream()
+              if (pageLeaving) {
+                stopCameraStream(stream)
+                return null
+              }
+              const cameraStream = stream
+              cameraStream.getVideoTracks().forEach((track) => {
+                track.addEventListener('ended', () => handleCameraTrackEnded(cameraStream), { once: true })
+              })
+            }
+
+            video.srcObject = stream
+            stage = 'playback'
+            await playCameraVideo()
+            await waitForVideoReady()
+            state.textContent = 'Live'
+            tag.textContent = monitoring ? 'Monitoring...' : 'Paused'
+            tag.className = monitoring ? 'monitoring-tag' : 'paused-tag'
+            error.hidden = true
+            setCaptureStatus('')
+            console.debug('[scanner camera] Live', cameraDiagnostics())
+            return stream
+          } catch (cameraError) {
+            if (stream && !hasActiveCameraTrack(stream)) stopCameraStream(stream)
+            showCameraError(cameraError, stage)
+            return null
+          }
+        })().finally(() => { cameraStartPromise = null })
+        return cameraStartPromise
+      }
+
+      void initializeCamera()
+
+      document.addEventListener('visibilitychange', () => {
+        if (scanAnalysisView.hidden && document.visibilityState === 'visible' && (!hasActiveCameraTrack(stream || video.srcObject) || video.paused)) {
+          void initializeCamera()
+        }
+      })
+
+      window.addEventListener('pageshow', (event) => {
+        if (!event.persisted) return
+        pageLeaving = false
+        if (scanAnalysisView.hidden && (!hasActiveCameraTrack(stream || video.srcObject) || video.paused)) void initializeCamera()
+      })
+
+      function setCaptureStatus(message) {
+        capturePhotoStatus.textContent = message
+        capturePhotoStatus.hidden = !message
+      }
+
+      capturePhotoButton.addEventListener('click', async () => {
+        if (!hasActiveCameraTrack(stream || video.srcObject) || video.readyState < 2 || !video.videoWidth || !video.videoHeight) {
+          setCaptureStatus('Camera is not ready yet. Please wait a moment and try again.')
+          return
+        }
+
+        capturePhotoButton.disabled = true
+        try {
+          const canvas = document.createElement('canvas')
+          canvas.width = video.videoWidth
+          canvas.height = video.videoHeight
+          const context = canvas.getContext('2d')
+          if (!context) throw new Error('Canvas is unavailable')
+          context.translate(canvas.width, 0)
+          context.scale(-1, 1)
+          context.drawImage(video, 0, 0, canvas.width, canvas.height)
+          const photo = await new Promise((resolve, reject) => {
+            canvas.toBlob((blob) => blob ? resolve(blob) : reject(new Error('Photo capture failed')), 'image/jpeg', 0.92)
+          })
+          if (capturedPhotoUrl) URL.revokeObjectURL(capturedPhotoUrl)
+          capturedPhotoBlob = photo
+          selectedScanPhoto = null
+          selectedScanId = makeScanId()
+          selectedScanSaved = false
+          capturedPhotoUrl = URL.createObjectURL(photo)
+          capturedLivePhoto.src = capturedPhotoUrl
+          capturedPhotoPreview.hidden = false
+          setCaptureStatus('')
+        } catch {
+          setCaptureStatus('Unable to capture photo. Please try again.')
+        } finally {
+          capturePhotoButton.disabled = false
+        }
+      })
+
+      uploadScanPhotoButton.addEventListener('click', () => scanPhotoInput.click())
+      scanPhotoInput.addEventListener('change', (event) => {
+        const photo = event.target.files?.[0]
+        event.target.value = ''
+        if (!photo) return
+        if (!photo.type.startsWith('image/')) {
+          setCaptureStatus('Choose an image file to continue.')
+          return
+        }
+        if (capturedPhotoUrl) URL.revokeObjectURL(capturedPhotoUrl)
+        capturedPhotoBlob = photo
+        selectedScanPhoto = null
+        selectedScanId = makeScanId()
+        selectedScanSaved = false
+        capturedPhotoUrl = URL.createObjectURL(photo)
+        capturedLivePhoto.src = capturedPhotoUrl
+        capturedPhotoPreview.hidden = false
+        setCaptureStatus('Image ready. Choose Use Photo to submit it to AI Analysis.')
+      })
+
+      retakeLivePhotoButton.addEventListener('click', () => {
+        capturedPhotoBlob = null
+        selectedScanPhoto = null
+        selectedScanId = null
+        selectedScanSaved = false
+        capturedLivePhoto.removeAttribute('src')
+        capturedPhotoPreview.hidden = true
+        if (capturedPhotoUrl) URL.revokeObjectURL(capturedPhotoUrl)
+        capturedPhotoUrl = ''
+        analysisPhoto.src = initialAnalysisPhoto
+        analysisThumbnail.src = initialAnalysisPhoto
+        setCaptureStatus('')
+      })
+
+      useLivePhotoButton.addEventListener('click', () => {
+        if (!capturedPhotoBlob) return
+        selectedScanPhoto = capturedPhotoBlob
+        selectedScanId ||= makeScanId()
+        void persistSelectedScan()
+      })
+
+      const interval = window.setInterval(() => { if (monitoring) confidence.textContent = Number(confidence.textContent) >= 97 ? 91 : Number(confidence.textContent) + 1 }, 2200)
+      toggle.addEventListener('click', () => { monitoring = !monitoring; tag.textContent = monitoring ? 'Monitoring...' : 'Paused'; tag.className = monitoring ? 'monitoring-tag' : 'paused-tag'; state.textContent = hasActiveCameraTrack(stream || video.srcObject) ? 'Live' : monitoring ? 'Starting...' : 'Paused'; toggle.innerHTML = monitoring ? '<span>Ⅱ</span>Pause Monitoring' : '<span>▶</span>Resume Monitoring'; if (monitoring && !hasActiveCameraTrack(stream || video.srcObject)) void initializeCamera() })
+      window.addEventListener('pagehide', () => {
+        pageLeaving = true
+        window.clearInterval(interval)
+        stopCameraStream(stream)
+        if (capturedPhotoUrl) URL.revokeObjectURL(capturedPhotoUrl)
+      }, { once: true })
+
+      try {
+        JSON.parse(localStorage.getItem('tanodbukid_profile_setup') || 'null')
+      } catch (error) { console.warn('Unable to read saved profile:', error) }
+    })()
+  </script>
+  <script type="module" src="js/chat-widget.js"></script>
+</body>
+
+</html>

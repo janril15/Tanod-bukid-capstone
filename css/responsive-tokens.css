@@ -1,0 +1,24 @@
+:root {
+    --tb-shell-width: 430px;
+    --tb-page-padding: clamp(16px, 4vw, 20px);
+    --tb-space-1: 4px;
+    --tb-space-2: 8px;
+    --tb-space-3: 12px;
+    --tb-space-4: 16px;
+    --tb-space-6: 24px;
+    --tb-space-8: 32px;
+    --tb-text-page: 22px;
+    --tb-text-section: 17px;
+    --tb-text-body: 14px;
+    --tb-text-support: 12px;
+    --tb-control-height: 44px;
+    --tb-card-radius: 14px;
+    --tb-card-padding: 16px;
+    --tb-modal-width: 420px;
+    --tb-modal-height: 88dvh;
+    --tb-color-primary: #397454;
+    --tb-color-deep: #20563c;
+    --tb-color-light: #e3f1df;
+    --tb-color-soft: #f1f8ef;
+    --tb-color-border: #dfe8df;
+}

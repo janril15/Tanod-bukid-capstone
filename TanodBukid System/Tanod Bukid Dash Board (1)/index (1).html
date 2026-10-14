@@ -1,0 +1,4261 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Tanod Bukid | Farm overview</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@700;800&display=swap');
+
+    :root {
+      --ink: #17231c;
+      --muted: #778178;
+      --line: #e8ece7;
+      --paper: #fbfcfa;
+      --primary-green: #397454;
+      --dark-green: #20563c;
+      --light-green: #e3f1df;
+      --soft-green: #f1f8ef;
+      --green: var(--primary-green);
+      --lime: #b7d982;
+      --deep: var(--dark-green);
+      --soft: var(--soft-green);
+      --page-pad: clamp(16px, 5vw, 20px);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      background: var(--paper);
+      overflow-x: hidden;
+      scrollbar-width: none;
+    }
+
+    body {
+      margin: 0;
+      min-width: 0;
+      min-height: 100vh;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      overflow-x: hidden;
+      scrollbar-width: none;
+    }
+
+    button {
+      font: inherit;
+      color: inherit;
+      border: 0;
+      cursor: pointer;
+    }
+
+    .phone-frame {
+      width: 100%;
+      min-height: 100dvh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .app-shell {
+      width: 100%;
+      max-width: 430px;
+      height: 100dvh;
+      min-height: 100dvh;
+      margin: auto;
+      background: var(--paper);
+      position: relative;
+      overflow-x: hidden;
+      overflow-y: auto;
+      box-shadow: 0 0 36px #47604622;
+      padding: 0 0 calc(88px + env(safe-area-inset-bottom));
+    }
+
+    html::-webkit-scrollbar,
+    body::-webkit-scrollbar,
+    .app-shell::-webkit-scrollbar {
+      display: none;
+      width: 0;
+      height: 0;
+    }
+
+    .status {
+      height: 31px;
+      padding: 13px 22px 0;
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .1px;
+    }
+
+    .status-icons {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .signal {
+      width: 15px;
+      height: 10px;
+      background: linear-gradient(90deg, #1b251f 17%, transparent 17% 27%, #1b251f 27% 43%, transparent 43% 53%, #1b251f 53% 69%, transparent 69% 79%, #1b251f 79%);
+      clip-path: polygon(0 100%, 0 72%, 22% 72%, 22% 52%, 44% 52%, 44% 28%, 66% 28%, 66% 0, 88% 0, 88% 100%);
+    }
+
+    .wifi {
+      width: 14px;
+      height: 10px;
+      border: 2px solid #1b251f;
+      border-bottom: 0;
+      border-radius: 14px 14px 0 0;
+      transform: scaleX(1.1);
+    }
+
+    .battery {
+      width: 17px;
+      height: 9px;
+      border: 1.5px solid #1b251f;
+      border-radius: 2px;
+      position: relative;
+    }
+
+    .battery:after {
+      content: '';
+      position: absolute;
+      right: -3px;
+      top: 2px;
+      width: 2px;
+      height: 4px;
+      background: #1b251f;
+    }
+
+    .battery i {
+      display: block;
+      width: 11px;
+      height: 5px;
+      margin: 1px;
+      background: #1b251f;
+      border-radius: 1px;
+    }
+
+    header {
+      padding: 17px var(--page-pad) 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .menu {
+      background: none;
+      font-size: 22px;
+      line-height: 1;
+      width: 28px;
+      padding: 0;
+    }
+
+    .menu span,
+    .menu:before {
+      content: '';
+      display: block;
+      width: 14px;
+      height: 1.5px;
+      margin: 4px 0;
+      background: var(--ink);
+    }
+
+    .bell {
+      width: 30px;
+      height: 30px;
+      padding: 4px;
+      background: none;
+      position: relative;
+      color: var(--ink);
+      display: inline-grid;
+      place-items: center;
+      border-radius: 50%;
+      transition: background .18s ease, transform .18s ease;
+    }
+
+    .bell:hover,
+    .bell:focus-visible {
+      background: var(--soft);
+      outline: none;
+    }
+
+    .bell:active {
+      transform: scale(.94);
+    }
+
+    .bell svg {
+      width: 19px;
+      height: 19px;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .bell:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 2px;
+      top: 1px;
+      width: 7px;
+      height: 7px;
+      border: 2px solid var(--paper);
+      background: #4d9b3b;
+      border-radius: 50%;
+    }
+
+    .bell.is-read:after {
+      display: none;
+    }
+
+    .avatar {
+      width: 27px;
+      height: 27px;
+      margin-left: 14px;
+      border-radius: 50%;
+      display: inline-grid;
+      place-items: center;
+      color: #fff;
+      background: #558e35;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .welcome {
+      padding: 1px var(--page-pad) 12px;
+    }
+
+    .eyebrow {
+      margin: 0 0 2px;
+      font-size: 9px;
+    }
+
+    .welcome h1 {
+      font: 800 clamp(16px, 4.35vw, 17px) 'Manrope', sans-serif;
+      margin: 0 0 2px;
+      letter-spacing: -.4px;
+    }
+
+    .wave {
+      font-size: 16px;
+    }
+
+    .sub {
+      margin: 0;
+      color: #657068;
+      font-size: 9px;
+    }
+
+    .home-featured {
+      position: relative;
+      margin: 0 var(--page-pad) 14px;
+      overflow: hidden;
+      border-radius: 18px;
+      background: transparent;
+      box-shadow: 0 7px 18px rgba(39, 95, 53, .16);
+      touch-action: none;
+      user-select: none;
+      cursor: grab;
+    }
+
+    .home-featured:active {
+      cursor: grabbing;
+    }
+
+    .home-featured-track {
+      display: flex;
+      transform: translateX(0);
+      transition: transform .45s cubic-bezier(.22, .61, .36, 1);
+      will-change: transform;
+    }
+
+    .home-slide {
+      position: relative;
+      flex: 0 0 100%;
+      min-height: 166px;
+      overflow: hidden;
+      isolation: isolate;
+      background: transparent;
+      color: #fff;
+    }
+
+    .home-slide::after {
+      content: '';
+      position: absolute;
+      z-index: 1;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(12, 47, 29, .58) 0%, rgba(20, 75, 43, .3) 52%, rgba(12, 52, 30, .08) 100%);
+      pointer-events: none;
+    }
+
+    .home-slide.weather {
+      background: linear-gradient(135deg, #2b6870 0%, #3f8c86 52%, #74b19b 100%);
+    }
+
+    .home-slide.weather::after {
+      background: linear-gradient(90deg, rgba(15, 68, 66, .42), rgba(24, 94, 82, .08));
+    }
+
+    .home-slide.scanner {
+      background: linear-gradient(135deg, #174f3b 0%, #287453 55%, #69a75b 100%);
+    }
+
+    .home-slide.scanner::after {
+      background: linear-gradient(90deg, rgba(10, 57, 40, .5), rgba(20, 94, 58, .08));
+    }
+
+    .home-slide-content {
+      position: relative;
+      z-index: 2;
+      width: 70%;
+      padding: 18px 15px 29px;
+    }
+
+    .home-slide-kicker {
+      display: inline-block;
+      margin: 0 0 8px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      color: #356944;
+      background: #edf7e7;
+      font-size: 8px;
+      font-weight: 800;
+    }
+
+    .home-slide h2 {
+      max-width: 210px;
+      margin: 0;
+      font: 800 19px/22px 'Manrope', sans-serif;
+      letter-spacing: -.2px;
+    }
+
+    .home-slide p {
+      max-width: 205px;
+      margin: 6px 0 12px;
+      color: #d9edda;
+      font-size: 9px;
+      line-height: 13px;
+    }
+
+    .home-slide-action {
+      display: inline-flex;
+      align-items: center;
+      min-height: 29px;
+      padding: 0 11px;
+      border-radius: 999px;
+      color: #255d3e;
+      background: #fff;
+      font-size: 9px;
+      font-weight: 800;
+      box-shadow: 0 3px 8px rgba(8, 46, 26, .14);
+    }
+
+    .home-slide-art {
+      position: absolute;
+      z-index: 0;
+      inset: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      opacity: 1;
+      pointer-events: none;
+    }
+
+    .home-weather-visual,
+    .home-scanner-visual {
+      position: absolute;
+      z-index: 0;
+      right: 6%;
+      top: 17px;
+      width: 32%;
+      height: calc(100% - 34px);
+      pointer-events: none;
+    }
+
+    .home-weather-visual {
+      border-radius: 18px;
+      background: rgba(235, 250, 246, .16);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .2);
+    }
+
+    .home-weather-cloud {
+      position: absolute;
+      top: 19px;
+      left: 20%;
+      width: 55px;
+      height: 23px;
+      border-radius: 20px;
+      background: #effbf6;
+      box-shadow: 17px 4px 0 -4px #d5f0e9, -15px 5px 0 -6px #d5f0e9;
+    }
+
+    .home-weather-cloud::after {
+      content: '';
+      position: absolute;
+      right: 8px;
+      bottom: -27px;
+      width: 3px;
+      height: 22px;
+      border-radius: 4px;
+      background: #c8edf0;
+      box-shadow: -13px 6px 0 #c8edf0, 13px 4px 0 #c8edf0;
+      transform: rotate(18deg);
+    }
+
+    .home-weather-temp {
+      position: absolute;
+      right: 12px;
+      bottom: 12px;
+      color: #fff;
+      font: 800 25px/1 'Manrope', sans-serif;
+    }
+
+    .home-weather-temp small {
+      display: block;
+      margin-top: 4px;
+      color: #d7f2e7;
+      font: 600 7px 'DM Sans', sans-serif;
+      text-align: right;
+    }
+
+    .home-scanner-visual {
+      display: grid;
+      place-items: center;
+    }
+
+    .home-scanner-frame {
+      position: relative;
+      width: 88px;
+      height: 94px;
+      border: 1px solid rgba(220, 249, 205, .5);
+      border-radius: 14px;
+      background: rgba(11, 65, 44, .25);
+      box-shadow: inset 0 0 20px rgba(194, 242, 143, .12), 0 0 20px rgba(174, 236, 128, .12);
+    }
+
+    .home-scanner-frame::before,
+    .home-scanner-frame::after {
+      content: '';
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      border-color: #d9f6a4;
+      border-style: solid;
+    }
+
+    .home-scanner-frame::before {
+      top: 8px;
+      left: 8px;
+      border-width: 2px 0 0 2px;
+    }
+
+    .home-scanner-frame::after {
+      right: 8px;
+      bottom: 8px;
+      border-width: 0 2px 2px 0;
+    }
+
+    .home-scanner-icon {
+      display: grid;
+      height: 100%;
+      place-items: center;
+      color: #e5f8b5;
+      font-size: 34px;
+    }
+
+    .home-scanner-line {
+      position: absolute;
+      top: 50%;
+      right: 9px;
+      left: 9px;
+      height: 2px;
+      background: #baf27e;
+      box-shadow: 0 0 8px #baf27e;
+      opacity: .85;
+    }
+
+    .home-carousel-dots {
+      position: absolute;
+      right: 14px;
+      bottom: 12px;
+      z-index: 3;
+      display: flex;
+      gap: 5px;
+    }
+
+    .home-carousel-dot {
+      width: 6px;
+      height: 6px;
+      padding: 0;
+      border: 1px solid rgba(255, 255, 255, .8);
+      border-radius: 50%;
+      background: transparent;
+      opacity: .8;
+    }
+
+    .home-carousel-dot.active {
+      width: 17px;
+      border-radius: 99px;
+      background: #fff;
+      opacity: 1;
+    }
+
+    .home-articles {
+      padding: 2px var(--page-pad) 15px;
+    }
+
+    .home-articles-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .home-articles-head h2 {
+      margin: 0;
+      color: #204d35;
+      font: 800 14px 'Manrope', sans-serif;
+    }
+
+    .home-articles-head button {
+      padding: 3px 0;
+      color: #4c8a50;
+      background: transparent;
+      font-size: 9px;
+      font-weight: 800;
+    }
+
+    .home-article-list {
+      display: grid;
+      gap: 7px;
+    }
+
+    .home-article {
+      display: grid;
+      grid-template-columns: 68px minmax(0, 1fr) 14px;
+      align-items: center;
+      gap: 9px;
+      min-width: 0;
+      padding: 7px;
+      border: 1px solid #e8eee5;
+      border-radius: 13px;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(35, 63, 36, .06);
+      text-align: left;
+    }
+
+    .home-article img {
+      width: 68px;
+      height: 52px;
+      border-radius: 9px;
+      object-fit: cover;
+    }
+
+    .home-article-copy {
+      min-width: 0;
+    }
+
+    .home-article-tag {
+      color: #5a9657;
+      font-size: 7px;
+      font-weight: 800;
+    }
+
+    .home-article h3 {
+      margin: 2px 0 2px;
+      color: #254a34;
+      font-size: 10px;
+      line-height: 12px;
+    }
+
+    .home-article p {
+      margin: 0;
+      color: #7e897f;
+      font-size: 8px;
+      line-height: 11px;
+    }
+
+    .home-article-meta {
+      display: block;
+      margin-top: 3px;
+      color: #a0aaa1;
+      font-size: 7px;
+    }
+
+    .home-article-chevron {
+      color: #aab5ac;
+      font-size: 17px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: clamp(5px, 1.8vw, 7px);
+      padding: 0 var(--page-pad);
+    }
+
+    .stat {
+      min-width: 0;
+      padding: 10px 3px 8px;
+      text-align: center;
+      border: 1px solid #eef0ed;
+      border-radius: 13px;
+      background: #fff;
+      box-shadow: 0 2px 6px #233f2410;
+    }
+
+    .stat-icon {
+      width: clamp(26px, 7.7vw, 30px);
+      height: clamp(26px, 7.7vw, 30px);
+      display: grid;
+      place-items: center;
+      margin: auto;
+      border-radius: 50%;
+      background: #edf5e9;
+      font-size: clamp(15px, 4.6vw, 18px);
+    }
+
+    .stat:nth-child(2) .stat-icon {
+      background: #eaf2f6;
+    }
+
+    .stat:nth-child(3) .stat-icon {
+      background: #fcf2da;
+    }
+
+    .stat:nth-child(4) .stat-icon {
+      background: #e9f1e4;
+    }
+
+    .stat strong {
+      display: block;
+      margin-top: 5px;
+      font: 800 clamp(14px, 4.1vw, 16px) 'Manrope';
+    }
+
+    .stat strong small {
+      font: 500 8px 'DM Sans';
+    }
+
+    .stat p {
+      height: 20px;
+      margin: 1px 0 0;
+      color: #6e786f;
+      font-size: clamp(6px, 1.8vw, 7px);
+      line-height: 10px;
+    }
+
+    .quick {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: clamp(10px, 3vw, 16px);
+      padding: 12px var(--page-pad) 13px;
+    }
+
+    .quick button {
+      min-width: 0;
+      min-height: 67px;
+      padding: 9px 10px 6px;
+      background: #fff;
+      border: 1px solid #eef0ed;
+      border-radius: 12px;
+      text-align: left;
+      box-shadow: 0 2px 7px #233f240b;
+      position: relative;
+    }
+
+    .quick button:after {
+      content: '›';
+      position: absolute;
+      top: 25px;
+      right: 10px;
+      color: #a5aca5;
+      font-size: 17px;
+    }
+
+    .quick-icon {
+      width: 27px;
+      height: 27px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: #eff7ec;
+      font-size: 15px;
+      margin-bottom: 5px;
+    }
+
+    .quick button:nth-child(2) .quick-icon {
+      background: #edf5f8;
+    }
+
+    .quick button:nth-child(3) .quick-icon {
+      background: #f7f1e5;
+    }
+
+    .quick button:nth-child(4) .quick-icon {
+      background: #e8f2e7;
+    }
+
+    .quick b {
+      display: block;
+      font-size: 8px;
+    }
+
+    .quick small {
+      display: block;
+      color: #7a827c;
+      font-size: 7px;
+      margin-top: 2px;
+    }
+
+    .activity {
+      padding: 0 var(--page-pad);
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 0 0 8px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: 8px;
+      letter-spacing: .3px;
+      text-transform: uppercase;
+    }
+
+    .section-head a {
+      color: #568e43;
+      font-size: 8px;
+      text-decoration: underline;
+    }
+
+    .activity-list {
+      border: 1px solid #eef0ed;
+      border-radius: 13px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .activity-row {
+      min-width: 0;
+      min-height: 47px;
+      padding: 6px 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid #f0f2ef;
+    }
+
+    .activity-row:last-child {
+      border-bottom: 0;
+    }
+
+    .activity-icon {
+      flex: 0 0 27px;
+      width: 27px;
+      height: 27px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: #edf6e9;
+      font-size: 14px;
+    }
+
+    .activity-row:nth-child(2) .activity-icon {
+      background: #f7f0dd;
+    }
+
+    .activity-row:nth-child(3) .activity-icon {
+      background: #eaf3f7;
+    }
+
+    .activity-row:nth-child(4) .activity-icon {
+      background: #faf0d8;
+    }
+
+    .activity-row:nth-child(5) .activity-icon {
+      background: #e8f2e7;
+    }
+
+    .activity-copy {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .activity-copy b {
+      display: block;
+      font-size: 8px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .activity-copy small {
+      display: block;
+      color: #788078;
+      font-size: 7px;
+      margin-top: 2px;
+    }
+
+    .when {
+      flex: 0 0 auto;
+      align-self: flex-start;
+      padding-top: 2px;
+      color: #8a928b;
+      font-size: 7px;
+      white-space: nowrap;
+    }
+
+    .chevron {
+      flex: 0 0 auto;
+      color: #afb5ae;
+      font-size: 16px;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      z-index: 10;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      height: calc(72px + env(safe-area-inset-bottom));
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      align-items: end;
+      padding: 8px 15px calc(11px + env(safe-area-inset-bottom));
+      background: #fff;
+      border-top: 1px solid #edf0ec;
+    }
+
+    .nav-item {
+      display: grid;
+      justify-items: center;
+      gap: 3px;
+      color: #8b938b;
+      font-size: 8px;
+      background: none;
+    }
+
+    .nav-icon {
+      height: 22px;
+      display: grid;
+      place-items: center;
+      font-size: 17px;
+    }
+
+    .nav-item.active {
+      color: #4d8b3a;
+      font-weight: 700;
+    }
+
+    .add {
+      width: 38px;
+      height: 38px;
+      margin: auto;
+      align-self: start;
+      margin-top: -20px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: #57a03c;
+      box-shadow: 0 3px 8px #326b263f;
+      font-size: 26px;
+      font-weight: 300;
+    }
+
+    .add-label {
+      margin-top: 1px;
+      color: #4d8b3a;
+      font-size: 8px;
+    }
+
+    .home-indicator {
+      display: none;
+    }
+
+    .new-screen {
+      display: none;
+    }
+
+    .new-screen.active {
+      display: block;
+    }
+
+    .app-shell.new-route>header,
+    .app-shell.new-route>.welcome,
+    .app-shell.new-route>.stats,
+    .app-shell.new-route>.quick,
+    .app-shell.new-route>.activity,
+    .app-shell.new-route>.home-featured,
+    .app-shell.new-route>.home-articles {
+      display: none;
+    }
+
+    .new-screen .topbar {
+      padding: 8px 20px 12px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .new-screen .location {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #fff;
+      color: #286144;
+      font-size: 17px;
+      box-shadow: 0 2px 8px #294c2610;
+    }
+
+    .new-screen .topbar h1 {
+      margin: 0;
+      font: 800 17px 'Manrope';
+      letter-spacing: -.3px;
+    }
+
+    .new-screen .topbar p {
+      margin: 1px 0 0;
+      color: #7c867e;
+      font-size: 9px;
+    }
+
+    .new-screen .dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      margin-right: 2px;
+      border-radius: 50%;
+      background: #5b9d65;
+    }
+
+    .climate-hero {
+      margin: 0 20px 19px;
+      padding: 15px 14px 14px;
+      min-height: 86px;
+      box-sizing: border-box;
+      border-radius: 18px;
+      color: #fff;
+      background: linear-gradient(120deg, #1f6b49, #3b9360 70%, #73b579);
+      box-shadow: 0 8px 18px #1f6b4930;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .climate-hero:after {
+      content: '';
+      position: absolute;
+      width: 132px;
+      height: 132px;
+      right: -35px;
+      top: -48px;
+      border-radius: 50%;
+      border: 1px solid #ffffff2b;
+      background: #ffffff12;
+    }
+
+    .warning {
+      position: relative;
+      z-index: 1;
+      float: left;
+      width: 32px;
+      height: 32px;
+      margin-right: 10px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: #d8f0d766;
+      font-size: 16px;
+    }
+
+    .climate-hero b,
+    .climate-hero span {
+      position: relative;
+      z-index: 1;
+      display: block;
+    }
+
+    .climate-hero b {
+      font-size: 14px;
+    }
+
+    .climate-hero span {
+      font-size: 9px;
+    }
+
+    .climate-hero .farm-risk-note {
+      margin-top: 4px;
+      color: #dff2e2;
+      font-size: 8px;
+      letter-spacing: .1px;
+    }
+
+    .riskbar {
+      position: absolute;
+      z-index: 1;
+      left: 14px;
+      right: 14px;
+      bottom: 10px;
+      display: flex;
+      gap: 4px;
+    }
+
+    .riskbar i {
+      height: 4px;
+      flex: 1;
+      border-radius: 5px;
+      background: #d8f0d7;
+    }
+
+    .riskbar i:last-child {
+      opacity: .35;
+    }
+
+    .screen-section {
+      padding: 0 20px;
+    }
+
+    .screen-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 0 0 9px;
+      color: #52705b;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .screen-title a {
+      color: #2f8052;
+      font-size: 9px;
+      letter-spacing: 0;
+    }
+
+    .forecast {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 1px 2px 14px;
+      scrollbar-width: none;
+    }
+
+    .forecast-card {
+      flex: 0 0 57px;
+      height: 94px;
+      padding: 10px 5px 7px;
+      text-align: center;
+      border: 1px solid #e5eee7;
+      border-radius: 15px;
+      background: #fff;
+      box-shadow: 0 4px 12px #315c3d12;
+      cursor: pointer;
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+
+    .forecast-card:hover,
+    .forecast-card.selected {
+      transform: translateY(-2px);
+      box-shadow: 0 7px 14px #315c3d20;
+    }
+
+    .forecast-card.today {
+      color: #fff;
+      border-color: #2f8052;
+      background: linear-gradient(155deg, #2b8050, #18563c);
+      box-shadow: 0 5px 10px #20563c42;
+    }
+
+    .forecast-card b {
+      display: block;
+      font-size: 10px;
+    }
+
+    .forecast-card .weather {
+      height: 32px;
+      padding-top: 7px;
+      font-size: 18px;
+      color: #4e9a76;
+    }
+
+    .forecast-card.today .weather {
+      color: #d9f2d8;
+    }
+
+    .forecast-card strong {
+      font-size: 11px;
+    }
+
+    .forecast-card small {
+      color: #a1aaa0;
+      font-size: 9px;
+    }
+
+    .forecast-card.today small {
+      color: #b5c9bc;
+    }
+
+    .progress {
+      height: 3px;
+      margin: 6px 8px 0;
+      border-radius: 4px;
+      background: #e1eee5;
+    }
+
+    .progress i {
+      display: block;
+      width: 70%;
+      height: 100%;
+      border-radius: 4px;
+      background: linear-gradient(90deg, #4f9e70, #69b7c4);
+    }
+
+    .alerts {
+      display: grid;
+      gap: 9px;
+    }
+
+    .alert {
+      min-height: 88px;
+      padding: 11px 10px 8px 51px;
+      border-radius: 15px;
+      background: #fff;
+      border: 1px solid #edf1ed;
+      box-shadow: 0 4px 12px #35443514;
+      position: relative;
+    }
+
+    .alert:before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: #d36c50;
+      border-radius: 15px 0 0 15px;
+    }
+
+    .alert.watch:before {
+      background: #e8ae3f;
+    }
+
+    .alert.advisory:before {
+      background: #5a9dcc;
+    }
+
+    .alert-icon {
+      position: absolute;
+      left: 11px;
+      top: 12px;
+      width: 31px;
+      height: 31px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: #d56b60;
+      color: #fff;
+    }
+
+    .watch .alert-icon {
+      background: #f1bc57;
+    }
+
+    .advisory .alert-icon {
+      background: #74abd3;
+    }
+
+    .alert h3 {
+      margin: 0 38px 3px 0;
+      font-size: 11px;
+      line-height: 13px;
+    }
+
+    .alert p {
+      margin: 0 0 3px;
+      color: #7e857e;
+      font-size: 9px;
+      line-height: 12px;
+    }
+
+    .source {
+      color: #68836e;
+      font-size: 8px;
+      cursor: pointer;
+    }
+
+    .badge {
+      position: absolute;
+      top: 12px;
+      right: 11px;
+      padding: 3px 6px;
+      border-radius: 6px;
+      background: #f8e1db;
+      color: #b36555;
+      font-size: 7px;
+      font-weight: 800;
+    }
+
+    .watch .badge {
+      background: #fcf0d7;
+      color: #bd8131;
+    }
+
+    .advisory .badge {
+      background: #e2edf6;
+      color: #5c8cad;
+    }
+
+    .farm-advisory {
+      margin: 18px 20px 24px;
+      padding: 13px 14px 14px 49px;
+      min-height: 66px;
+      box-sizing: border-box;
+      border: 1px solid #d7ebdc;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #eff9ef, #e2f2e8);
+      box-shadow: 0 4px 12px #315c3d12;
+      position: relative;
+    }
+
+    .farm-advisory:before {
+      content: '🌱';
+      position: absolute;
+      left: 14px;
+      top: 14px;
+      width: 25px;
+      height: 25px;
+      display: grid;
+      place-items: center;
+      border-radius: 9px;
+      background: #cce8d3;
+      color: #267048;
+      font-size: 14px;
+    }
+
+    .farm-advisory h2 {
+      margin: 0 0 3px;
+      color: #20583b;
+      font-size: 12px;
+    }
+
+    .farm-advisory p {
+      margin: 0;
+      color: #557260;
+      font-size: 9px;
+      line-height: 13px;
+    }
+
+    /* Presentation-readable type scale for the existing dashboard and Climate view. */
+    .app-shell:not(.new-route) .eyebrow {
+      font-size: 12px;
+    }
+
+    .app-shell:not(.new-route) .welcome h1 {
+      font-size: clamp(21px, 5.5vw, 23px);
+    }
+
+    .app-shell:not(.new-route) .sub {
+      font-size: 13px;
+    }
+
+    .app-shell:not(.new-route) .stat strong {
+      font-size: clamp(19px, 5.3vw, 21px);
+    }
+
+    .app-shell:not(.new-route) .stat strong small {
+      font-size: 11px;
+    }
+
+    .app-shell:not(.new-route) .stat p {
+      font-size: 10px;
+      line-height: 12px;
+    }
+
+    .app-shell:not(.new-route) .quick b {
+      font-size: 12px;
+    }
+
+    .app-shell:not(.new-route) .quick small {
+      font-size: 10px;
+    }
+
+    .app-shell:not(.new-route) .section-head h2 {
+      font-size: 12px;
+    }
+
+    .app-shell:not(.new-route) .section-head a {
+      font-size: 11px;
+    }
+
+    .app-shell:not(.new-route) .activity-copy b {
+      font-size: 11px;
+    }
+
+    .app-shell:not(.new-route) .activity-copy small {
+      font-size: 10px;
+    }
+
+    .app-shell:not(.new-route) .when {
+      font-size: 10px;
+    }
+
+    .app-shell:not(.new-route) .nav-item,
+    .app-shell:not(.new-route) .add-label {
+      font-size: 11px;
+    }
+
+    #climate-screen .topbar h1 {
+      font-size: 21px;
+    }
+
+    #climate-screen .topbar p {
+      font-size: 12px;
+    }
+
+    #climate-screen .climate-hero b {
+      font-size: 18px;
+    }
+
+    #climate-screen .climate-hero span {
+      font-size: 12px;
+    }
+
+    #climate-screen .climate-hero .farm-risk-note {
+      font-size: 11px;
+    }
+
+    #climate-screen .screen-title {
+      font-size: 12px;
+    }
+
+    #climate-screen .screen-title a {
+      font-size: 11px;
+    }
+
+    #climate-screen .forecast-card b {
+      font-size: 12px;
+    }
+
+    #climate-screen .forecast-card strong {
+      font-size: 14px;
+    }
+
+    #climate-screen .forecast-card small {
+      font-size: 11px;
+    }
+
+    #climate-screen .alert h3 {
+      font-size: 14px;
+      line-height: 16px;
+    }
+
+    #climate-screen .alert p {
+      font-size: 12px;
+      line-height: 15px;
+    }
+
+    #climate-screen .source {
+      font-size: 11px;
+    }
+
+    #climate-screen .badge {
+      font-size: 10px;
+    }
+
+    #climate-screen .farm-advisory h2 {
+      font-size: 15px;
+    }
+
+    #climate-screen .farm-advisory p {
+      font-size: 11px;
+      line-height: 15px;
+    }
+
+    #climate-screen~.new-bottom-nav button {
+      font-size: 9px;
+    }
+
+    /* Presentation-readable type scale for the existing Scan and Profile views. */
+    #scan-screen .scan-title h1 {
+      font-size: 19px;
+      line-height: 21px;
+    }
+
+    #scan-screen .scan-title p {
+      font-size: 11px;
+    }
+
+    #scan-screen .segment button {
+      font-size: 12px;
+    }
+
+    #scan-screen .scan-status {
+      font-size: 9px;
+    }
+
+    #scan-screen .detection-label {
+      font-size: 10px;
+    }
+
+    #scan-screen .upload h2 {
+      font-size: 14px;
+    }
+
+    #scan-screen .upload p {
+      font-size: 10px;
+    }
+
+    #scan-screen .choose,
+    #scan-screen .analyze,
+    #scan-screen .secondary-action {
+      font-size: 12px;
+    }
+
+    #scan-screen .screen-title {
+      font-size: 12px;
+    }
+
+    #scan-screen .screen-title a {
+      font-size: 11px;
+    }
+
+    #scan-screen .result h2 {
+      font-size: 15px;
+    }
+
+    #scan-screen .result h2 small {
+      font-size: 10px;
+    }
+
+    #scan-screen .result p {
+      font-size: 11px;
+      line-height: 15px;
+    }
+
+    #scan-screen .action {
+      font-size: 11px;
+    }
+
+    #scan-screen .history-copy {
+      font-size: 11px;
+    }
+
+    #scan-screen .history-copy small {
+      font-size: 10px;
+    }
+
+    #scan-screen .history-badge {
+      font-size: 9px;
+    }
+
+    #profile-screen .profile-head h1 {
+      font-size: 18px;
+    }
+
+    #profile-screen .profile-head p {
+      font-size: 10px;
+    }
+
+    #profile-screen .stats-pills span {
+      font-size: 10px;
+    }
+
+    #profile-screen .profile-section .screen-title {
+      font-size: 11px;
+    }
+
+    #profile-screen .profile-section .screen-title a {
+      font-size: 11px;
+    }
+
+    #profile-screen .row-label {
+      font-size: 12px;
+    }
+
+    #profile-screen .row-value {
+      font-size: 10px;
+    }
+
+    #scan-screen.active~.new-bottom-nav button,
+    #profile-screen.active~.new-bottom-nav button {
+      font-size: 9px;
+    }
+
+    .activity-screen {
+      min-height: calc(100dvh - 63px);
+      padding-bottom: 22px;
+      background: #fbfcfa;
+    }
+
+    .farm-logs-screen {
+      min-height: calc(100dvh - 63px);
+      padding: 12px var(--page-pad) 88px;
+      background: #f7faf6;
+    }
+
+    .farm-logs-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+
+    .farm-logs-back {
+      width: 30px;
+      height: 30px;
+      padding: 0;
+      border-radius: 50%;
+      color: #20563c;
+      background: #fff;
+      font-size: 20px;
+      line-height: 1;
+      box-shadow: 0 2px 7px #3345320c;
+    }
+
+    .farm-logs-header h1 {
+      margin: 0;
+      color: #1f4e37;
+      font: 800 17px 'Manrope';
+    }
+
+    .farm-log-summary {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 7px;
+      margin-bottom: 15px;
+    }
+
+    .farm-log-summary-card {
+      min-width: 0;
+      padding: 9px 7px 8px;
+      border: 1px solid #e8efe6;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 2px 7px #3345320c;
+      text-align: center;
+    }
+
+    .farm-log-summary-icon {
+      display: grid;
+      width: 22px;
+      height: 22px;
+      margin: 0 auto 4px;
+      place-items: center;
+      border-radius: 7px;
+      background: #e5f1e4;
+      color: #478447;
+      font-size: 12px;
+    }
+
+    .farm-log-summary-card:nth-child(2) .farm-log-summary-icon {
+      background: #eef4df;
+      color: #758d3c;
+    }
+
+    .farm-log-summary-card:nth-child(3) .farm-log-summary-icon {
+      background: #e3f0e8;
+      color: #397454;
+    }
+
+    .farm-log-summary-card strong {
+      display: block;
+      color: #274d36;
+      font-size: 14px;
+    }
+
+    .farm-log-summary-card span:last-child {
+      display: block;
+      margin-top: 2px;
+      color: #8a948b;
+      font-size: 8px;
+    }
+
+    .farm-log-filters {
+      display: flex;
+      gap: 6px;
+      margin: 0 -2px 13px;
+      padding: 2px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .farm-log-filters::-webkit-scrollbar {
+      display: none;
+    }
+
+    .farm-log-filter {
+      flex: 0 0 auto;
+      min-height: 27px;
+      padding: 0 11px;
+      border: 1px solid #e0e8de;
+      border-radius: 999px;
+      color: #435548;
+      background: #fff;
+      font-size: 9px;
+      font-weight: 700;
+    }
+
+    .farm-log-filter.selected {
+      border-color: #205a40;
+      color: #fff;
+      background: #205a40;
+    }
+
+    .farm-log-list {
+      display: grid;
+      gap: 7px;
+      max-height: calc(100dvh - 245px);
+      overflow-y: auto;
+      padding: 1px 2px 3px;
+      scrollbar-width: thin;
+      scrollbar-color: #c8dbc7 transparent;
+    }
+
+    .farm-log-card {
+      display: grid;
+      grid-template-columns: 35px minmax(0, 1fr) 14px;
+      align-items: center;
+      gap: 9px;
+      min-width: 0;
+      padding: 10px 9px;
+      border: 1px solid #e8eee6;
+      border-radius: 13px;
+      background: #fff;
+      box-shadow: 0 2px 7px #3345320c;
+    }
+
+    .farm-log-date {
+      position: relative;
+      display: grid;
+      width: 35px;
+      height: 35px;
+      place-items: center;
+      align-content: center;
+      border-radius: 9px;
+      color: #397454;
+      background: #e6f2e5;
+      font-size: 10px;
+      font-weight: 800;
+      line-height: 12px;
+    }
+
+    .farm-log-date.due-soon {
+      color: #c77822;
+      background: #fff0dc;
+    }
+
+    .farm-log-date.overdue {
+      color: #bd5b5b;
+      background: #fbe5e4;
+    }
+
+    .farm-log-date.due-soon::after,
+    .farm-log-date.overdue::after {
+      position: absolute;
+      right: 0;
+      bottom: 2px;
+      left: 0;
+      font-size: 6px;
+      font-weight: 800;
+      line-height: 7px;
+      text-align: center;
+    }
+
+    .farm-log-date.due-soon::after {
+      content: 'Due soon';
+    }
+
+    .farm-log-date.overdue::after {
+      content: 'Overdue';
+    }
+
+    .farm-log-copy {
+      min-width: 0;
+    }
+
+    .farm-log-copy strong {
+      display: block;
+      color: #263d2c;
+      font-size: 10px;
+      line-height: 13px;
+      overflow-wrap: anywhere;
+    }
+
+    .farm-log-copy p {
+      margin: 3px 0 5px;
+      color: #7d887f;
+      font-size: 8px;
+      line-height: 11px;
+      overflow-wrap: anywhere;
+    }
+
+    .farm-log-category {
+      display: inline-block;
+      padding: 3px 7px;
+      border-radius: 999px;
+      color: #4d8b52;
+      background: #e3f1df;
+      font-size: 7px;
+      font-weight: 800;
+    }
+
+    .farm-log-category.livestock {
+      color: #896d2d;
+      background: #f7edcf;
+    }
+
+    .farm-log-category.post-harvest {
+      color: #77619a;
+      background: #eee6f7;
+    }
+
+    .farm-log-chevron {
+      color: #acb7ad;
+      font-size: 17px;
+    }
+
+    .farm-log-empty {
+      padding: 24px 12px;
+      color: #7d887f;
+      font-size: 10px;
+      text-align: center;
+    }
+
+    .farm-log-feedback {
+      min-height: 0;
+      margin: 0 0 8px;
+      color: #397454;
+      font-size: 9px;
+      font-weight: 700;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(-3px);
+      transition: opacity .2s ease, transform .2s ease;
+    }
+
+    .farm-log-feedback.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .farm-log-add {
+      display: block;
+      width: 100%;
+      min-height: 39px;
+      margin-top: 12px;
+      border-radius: 999px;
+      color: #fff;
+      background: #205a40;
+      box-shadow: 0 4px 9px #205a4030;
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    .community-screen {
+      min-height: 100dvh;
+      padding: 14px var(--page-pad) 82px;
+      background: #f7faf6;
+    }
+
+    .community-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 17px;
+    }
+
+    .community-back {
+      width: 30px;
+      height: 30px;
+      padding: 0;
+      border-radius: 50%;
+      color: #275b3f;
+      background: #fff;
+      font-size: 20px;
+      box-shadow: 0 2px 7px #3345320c;
+    }
+
+    .community-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .community-bell {
+      position: relative;
+      width: 26px;
+      height: 28px;
+      padding: 3px;
+      color: #315b42;
+      background: transparent;
+    }
+
+    .community-bell::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      right: 1px;
+      width: 6px;
+      height: 6px;
+      border: 2px solid #f7faf6;
+      border-radius: 50%;
+      background: #4d9b3b;
+    }
+
+    .community-bell svg {
+      width: 19px;
+      height: 19px;
+      fill: none;
+      stroke: currentColor;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 1.8;
+    }
+
+    .community-avatar {
+      display: grid;
+      width: 29px;
+      height: 29px;
+      place-items: center;
+      border-radius: 50%;
+      color: #fff;
+      background: #6aa34d;
+      font-size: 9px;
+      font-weight: 800;
+    }
+
+    .community-heading {
+      margin-bottom: 13px;
+    }
+
+    .community-heading h1 {
+      margin: 0;
+      color: #214d35;
+      font: 800 21px/24px 'Manrope';
+    }
+
+    .community-heading p {
+      margin: 3px 0 0;
+      color: #7b887e;
+      font-size: 10px;
+    }
+
+    .community-report {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-height: 61px;
+      margin-bottom: 13px;
+      padding: 9px 10px;
+      overflow: hidden;
+      border: 1px solid #dfeede;
+      border-radius: 14px;
+      background: #eaf6e6;
+    }
+
+    .community-report::after {
+      content: '❧';
+      position: absolute;
+      right: 35px;
+      bottom: -16px;
+      color: #cde9c7;
+      font-size: 66px;
+      transform: rotate(-22deg);
+    }
+
+    .community-report-icon {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      width: 34px;
+      height: 34px;
+      flex: 0 0 34px;
+      place-items: center;
+      border-radius: 50%;
+      color: #fff;
+      background: #61a34e;
+      font-size: 21px;
+      font-weight: 500;
+    }
+
+    .community-report-copy {
+      position: relative;
+      z-index: 1;
+      min-width: 0;
+      flex: 1;
+    }
+
+    .community-report-copy strong {
+      display: block;
+      color: #25583a;
+      font-size: 10px;
+    }
+
+    .community-report-copy span {
+      display: block;
+      margin-top: 2px;
+      color: #6e8b70;
+      font-size: 8px;
+      line-height: 11px;
+    }
+
+    .community-report-button {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      width: 26px;
+      height: 26px;
+      flex: 0 0 26px;
+      place-items: center;
+      border-radius: 50%;
+      color: #fff;
+      background: #4f9142;
+      font-size: 18px;
+    }
+
+    .community-upload {
+      display: grid;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .community-upload-label {
+      display: grid;
+      min-height: 92px;
+      place-items: center;
+      padding: 12px;
+      border: 1px dashed #a9cbaa;
+      border-radius: 11px;
+      color: #4d8752;
+      background: #f2faf0;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .community-upload-label strong {
+      display: block;
+      margin-top: 4px;
+      font-size: 11px;
+    }
+
+    .community-upload-label span {
+      display: block;
+      margin-top: 3px;
+      color: #829586;
+      font-size: 9px;
+    }
+
+    .community-upload-icon {
+      font-size: 22px;
+    }
+
+    .community-upload input {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .community-upload-preview {
+      display: none;
+      width: 100%;
+      max-height: 130px;
+      border-radius: 9px;
+      object-fit: cover;
+    }
+
+    .community-upload.has-preview .community-upload-label {
+      display: none;
+    }
+
+    .community-upload.has-preview .community-upload-preview {
+      display: block;
+    }
+
+    .community-upload-actions {
+      display: none;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .community-upload.has-preview .community-upload-actions {
+      display: flex;
+    }
+
+    .community-upload-actions button {
+      padding: 5px 0;
+      color: #4d8752;
+      background: transparent;
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    .community-report-error {
+      min-height: 13px;
+      margin: 7px 0 0;
+      color: #b75d4d;
+      font-size: 10px;
+    }
+
+    .community-filters {
+      display: flex;
+      gap: 5px;
+      margin: 0 -2px 12px;
+      overflow-x: auto;
+      padding: 2px;
+      scrollbar-width: none;
+    }
+
+    .community-filters::-webkit-scrollbar {
+      display: none;
+    }
+
+    .community-filter {
+      flex: 0 0 auto;
+      min-height: 27px;
+      padding: 0 10px;
+      border: 1px solid #e1e9df;
+      border-radius: 999px;
+      color: #536257;
+      background: #fff;
+      font-size: 8px;
+      font-weight: 700;
+    }
+
+    .community-filter.selected {
+      border-color: #246044;
+      color: #fff;
+      background: #246044;
+    }
+
+    .community-list {
+      display: grid;
+      gap: 7px;
+    }
+
+    .community-card {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 62px 10px;
+      gap: 8px;
+      align-items: start;
+      min-width: 0;
+      padding: 10px;
+      border: 1px solid #e7eee5;
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: 0 2px 8px #3345320c;
+      text-align: left;
+    }
+
+    .community-card-copy {
+      min-width: 0;
+    }
+
+    .community-meta {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      min-width: 0;
+      color: #89948b;
+      font-size: 7px;
+    }
+
+    .community-user-avatar {
+      display: grid;
+      width: 21px;
+      height: 21px;
+      flex: 0 0 21px;
+      place-items: center;
+      border-radius: 50%;
+      color: #397454;
+      background: #e3f1df;
+      font-size: 7px;
+      font-weight: 800;
+    }
+
+    .community-user {
+      color: #345744;
+      font-size: 8px;
+      font-weight: 800;
+    }
+
+    .community-location {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .community-time {
+      margin-left: auto;
+      white-space: nowrap;
+    }
+
+    .community-badge {
+      display: inline-block;
+      margin: 7px 0 4px;
+      padding: 3px 6px;
+      border-radius: 7px;
+      color: #8a6c2c;
+      background: #fff1d2;
+      font-size: 6px;
+      font-weight: 800;
+    }
+
+    .community-badge.flood {
+      color: #3978a0;
+      background: #e1f0f8;
+    }
+
+    .community-badge.weather {
+      color: #5b8d47;
+      background: #e5f3df;
+    }
+
+    .community-badge.tips {
+      color: #826a9a;
+      background: #eee6f7;
+    }
+
+    .community-card h2 {
+      margin: 0;
+      color: #254a34;
+      font-size: 9px;
+      line-height: 12px;
+      overflow-wrap: anywhere;
+    }
+
+    .community-card p {
+      margin: 4px 0 6px;
+      color: #7c897e;
+      font-size: 7px;
+      line-height: 10px;
+    }
+
+    .community-engagement {
+      display: flex;
+      gap: 10px;
+      color: #9aa69c;
+      font-size: 7px;
+    }
+
+    .community-thumb {
+      position: relative;
+      width: 62px;
+      height: 68px;
+      align-self: center;
+      overflow: hidden;
+      border-radius: 9px;
+    }
+
+    .community-thumb::before,
+    .community-thumb::after {
+      content: '';
+      position: absolute;
+      pointer-events: none;
+    }
+
+    .community-thumb.pest {
+      background: linear-gradient(145deg, #789b42, #d1bf58 58%, #426638);
+    }
+
+    .community-thumb.pest::before {
+      top: -10px;
+      left: 17px;
+      width: 17px;
+      height: 92px;
+      border-radius: 100% 0 100% 0;
+      background: #d5df73;
+      box-shadow: 15px 8px 0 -3px #98b84f, -16px 22px 0 -4px #b8cb61;
+      transform: rotate(20deg);
+    }
+
+    .community-thumb.pest::after {
+      top: 34px;
+      left: 24px;
+      width: 24px;
+      height: 7px;
+      border-radius: 8px;
+      background: #8c542b;
+      box-shadow: 5px -4px 0 -1px #b86c31, 10px 4px 0 -1px #693e26;
+      transform: rotate(-18deg);
+    }
+
+    .community-thumb.flood {
+      background: linear-gradient(160deg, #9dbb9a 0 35%, #6f9c91 36% 49%, #477b91 50% 100%);
+    }
+
+    .community-thumb.flood::before {
+      bottom: 12px;
+      left: -8px;
+      width: 82px;
+      height: 24px;
+      border-radius: 50%;
+      background: #8cb9c2;
+      box-shadow: 0 10px 0 #5790a0, 0 19px 0 #3d7187;
+      transform: rotate(-8deg);
+    }
+
+    .community-thumb.flood::after {
+      top: 9px;
+      right: 8px;
+      width: 20px;
+      height: 24px;
+      border-radius: 50% 50% 45% 45%;
+      background: #385f4d;
+      box-shadow: -28px 6px 0 -5px #4d7656;
+    }
+
+    .community-thumb.tips {
+      background: radial-gradient(circle at 72% 22%, #d8efaf 0 5px, transparent 6px), linear-gradient(135deg, #d2e8b1, #4e9854);
+    }
+
+    .community-thumb.tips::before {
+      top: 3px;
+      left: 20px;
+      width: 20px;
+      height: 62px;
+      border-radius: 100% 0 100% 0;
+      background: #3c884d;
+      box-shadow: -18px 23px 0 -3px #72ad53, 18px 34px 0 -3px #9ecb68;
+      transform: rotate(29deg);
+    }
+
+    .community-thumb.tips::after {
+      top: 10px;
+      left: 29px;
+      width: 2px;
+      height: 61px;
+      background: #d1e79f;
+      transform: rotate(29deg);
+    }
+
+    .community-thumb.weather {
+      background: linear-gradient(160deg, #40566c, #718e9b 48%, #4c806d);
+    }
+
+    .community-thumb.weather::before {
+      top: 16px;
+      left: 11px;
+      width: 38px;
+      height: 17px;
+      border-radius: 18px;
+      background: #d7e0df;
+      box-shadow: 11px 5px 0 -4px #bccbce, -10px 5px 0 -5px #bac9cc;
+    }
+
+    .community-thumb.weather::after {
+      top: 38px;
+      left: 14px;
+      width: 3px;
+      height: 20px;
+      border-radius: 4px;
+      background: #b9e1e7;
+      box-shadow: 12px 5px 0 #b9e1e7, 24px -2px 0 #b9e1e7, 34px 5px 0 #b9e1e7;
+      transform: rotate(17deg);
+    }
+
+    .community-thumb.uploaded {
+      object-fit: cover;
+      background: #e7f2e4;
+    }
+
+    .community-chevron {
+      align-self: center;
+      color: #acb7ad;
+      font-size: 17px;
+    }
+
+    .community-bottom-nav {
+      position: fixed;
+      z-index: 12;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      width: 100%;
+      max-width: 430px;
+      height: 63px;
+      margin: auto;
+      align-items: end;
+      padding: 7px 13px 9px;
+      border-top: 1px solid #edf0ec;
+      background: #fff;
+    }
+
+    .community-bottom-nav button {
+      display: grid;
+      justify-items: center;
+      gap: 3px;
+      color: #9ba19b;
+      background: none;
+      font-size: 8px;
+    }
+
+    .community-bottom-nav button.active {
+      color: #397454;
+      font-weight: 700;
+    }
+
+    .community-bottom-nav .nav-icon {
+      height: 20px;
+      font-size: 16px;
+    }
+
+    .community-bottom-nav button.active .nav-icon {
+      width: 25px;
+      border-radius: 12px;
+      background: #e3f1e7;
+    }
+
+    .app-shell.community-route>.new-bottom-nav {
+      display: none;
+    }
+
+    .activity-head {
+      display: block;
+      padding: 24px 20px 22px;
+      color: #fff;
+      background: linear-gradient(150deg, #387b59, #174a35);
+      border-radius: 0 0 22px 22px;
+    }
+
+    .activity-head h1 {
+      margin: 0;
+      font: 800 23px/27px 'Manrope';
+    }
+
+    .activity-head p {
+      margin: 5px 0 0;
+      color: #c5d8c8;
+      font-size: 12px;
+    }
+
+    .activity-form {
+      width: 100%;
+      max-width: 430px;
+      margin: 0 auto;
+      padding: 20px var(--page-pad) 24px;
+      box-sizing: border-box;
+    }
+
+    .activity-type-label {
+      display: block;
+      margin: 0 0 9px;
+      color: #4d4a43;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .activity-types {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 9px;
+      margin-bottom: 18px;
+    }
+
+    .activity-type {
+      min-width: 0;
+      min-height: 43px;
+      padding: 8px 10px;
+      border: 1px solid #e1e0da;
+      border-radius: 11px;
+      color: #5f625c;
+      background: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      text-align: left;
+    }
+
+    .activity-type.selected {
+      border-color: #75b68b;
+      color: #286449;
+      background: #e7f3e9;
+      box-shadow: inset 0 0 0 1px #b9ddc1;
+    }
+
+    .activity-field {
+      display: block;
+      margin-bottom: 14px;
+    }
+
+    .activity-field span {
+      display: block;
+      margin-bottom: 6px;
+      color: #55554e;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .activity-field input,
+    .activity-field textarea {
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+      border: 1px solid #deded9;
+      border-radius: 10px;
+      outline: 0;
+      color: #393a35;
+      background: #fff;
+      box-shadow: 0 2px 7px #3345320c;
+      font: inherit;
+      font-size: 12px;
+    }
+
+    .activity-field input {
+      height: 43px;
+      padding: 0 12px;
+    }
+
+    .activity-field textarea {
+      min-height: 86px;
+      padding: 11px 12px;
+      resize: vertical;
+    }
+
+    .activity-field input:focus,
+    .activity-field textarea:focus {
+      border-color: #8bb99a;
+      box-shadow: 0 0 0 3px #dcefe0;
+    }
+
+    .activity-field input::placeholder,
+    .activity-field textarea::placeholder {
+      color: #a0a19b;
+    }
+
+    .activity-actions {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
+      gap: 9px;
+      margin-top: 22px;
+    }
+
+    .activity-actions button {
+      min-height: 44px;
+      min-width: 0;
+      border-radius: 11px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .activity-cancel {
+      border: 1px solid #d8e2da;
+      color: #6b6c66;
+      background: #fff;
+    }
+
+    .activity-save {
+      color: #fff;
+      background: #276348;
+      box-shadow: 0 4px 9px #2763482e;
+    }
+
+    @media (min-width: 700px) {
+      .activity-screen {
+        max-width: 430px;
+        margin: 0 auto;
+      }
+    }
+
+    .dark-head {
+      padding: 9px 11px 13px;
+      color: #fff;
+      background: linear-gradient(150deg, #367957, #174a35);
+      border-radius: 0 0 21px 21px;
+    }
+
+    .scan-symbol {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: #ffffff20;
+    }
+
+    .scan-title h1 {
+      margin: 9px 0 1px;
+      font: 800 16px/18px 'Manrope';
+    }
+
+    .scan-title p {
+      margin: 0;
+      color: #c6d8ca;
+      font-size: 9px;
+    }
+
+    .segment {
+      display: flex;
+      height: 29px;
+      margin-top: 11px;
+      padding: 2px;
+      border-radius: 15px;
+      background: #fff;
+      color: #37423b;
+    }
+
+    .segment button {
+      flex: 1;
+      border-radius: 12px;
+      background: transparent;
+      font-size: 10px;
+    }
+
+    .segment button.active {
+      color: #fff;
+      background: #205a40;
+    }
+
+    .upload {
+      min-height: 150px;
+      margin: 10px 11px 14px;
+      padding: 12px 10px 14px;
+      display: grid;
+      justify-items: center;
+      align-content: center;
+      border: 1px dashed #cad6c9;
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: 0 4px 9px #33453210;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .upload.has-image {
+      border-style: solid;
+      border-color: #dfece2;
+      padding: 8px;
+    }
+
+    .upload-preview {
+      width: 100%;
+      max-height: 220px;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+      margin-bottom: 10px;
+      background: #edf4ee;
+    }
+
+    .upload-body {
+      display: grid;
+      justify-items: center;
+      align-content: center;
+      width: 100%;
+    }
+
+    .camera-panel {
+      display: none;
+      width: 100%;
+      overflow: hidden;
+      border-radius: 12px;
+      position: relative;
+      background: #0e1f17;
+      margin-bottom: 12px;
+    }
+
+    .camera-panel.active {
+      display: block;
+    }
+
+    #camera-live {
+      width: 100%;
+      height: 180px;
+      display: block;
+      object-fit: cover;
+      background: #101c16;
+      transform: scaleX(1.05);
+    }
+
+    .camera-switch {
+      position: absolute;
+      z-index: 2;
+      top: 10px;
+      right: 10px;
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.55);
+      border-radius: 50%;
+      background: rgba(16, 29, 22, 0.78);
+      color: #fff;
+      font-size: 18px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .camera-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(180deg, rgba(10, 20, 15, 0.2), rgba(10, 20, 15, 0.38));
+    }
+
+    .camera-overlay::before {
+      content: '';
+      position: absolute;
+      inset: 18px 14px;
+      border: 2px solid rgba(255, 255, 255, 0.7);
+      border-radius: 14px;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    }
+
+    .scan-status {
+      position: absolute;
+      left: 12px;
+      top: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(16, 29, 22, 0.75);
+      color: #f6fff8;
+      font-size: 7px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .scan-status .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #74d98c;
+      box-shadow: 0 0 0 2px rgba(116, 217, 140, 0.3);
+    }
+
+    .detection-label {
+      position: absolute;
+      left: 50%;
+      bottom: 12px;
+      transform: translateX(-50%);
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(4px);
+      color: #fff;
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+
+    .camera-actions {
+      display: flex;
+      gap: 8px;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .upload-icon {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 7px;
+      border-radius: 11px;
+      background: #e4f1e6;
+      color: #4e8766;
+      font-size: 20px;
+    }
+
+    .upload h2 {
+      margin: 0 0 2px;
+      font-size: 12px;
+    }
+
+    .upload p {
+      margin: 0 0 10px;
+      color: #8c928c;
+      font-size: 8px;
+    }
+
+    .upload-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .choose,
+    .analyze,
+    .secondary-action {
+      padding: 7px 16px;
+      border-radius: 14px;
+      color: #fff;
+      background: #276348;
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .secondary-action {
+      background: #dfeee5;
+      color: #235a40;
+    }
+
+    .analyze {
+      margin-top: 8px;
+      width: 100%;
+      max-width: 180px;
+      background: #205a40;
+    }
+
+    .analyze.loading {
+      opacity: 0.75;
+    }
+
+    .result {
+      margin: 0 11px 16px;
+      padding: 11px;
+      border: 1px solid #eeddb9;
+      border-radius: 14px;
+      background: #fff8e8;
+    }
+
+    .result-head {
+      display: flex;
+      gap: 9px;
+      align-items: center;
+    }
+
+    .result-icon {
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      border-radius: 9px;
+      background: #e8b64f;
+      color: #fff;
+    }
+
+    .result h2 {
+      margin: 0;
+      color: #684e23;
+      font-size: 13px;
+    }
+
+    .result h2 small {
+      display: block;
+      margin-top: 2px;
+      color: #d0922b;
+      font-size: 8px;
+    }
+
+    .result p {
+      margin: 8px 0;
+      color: #866f49;
+      font-size: 9px;
+      line-height: 12px;
+    }
+
+    .actions {
+      display: grid;
+      gap: 6px;
+    }
+
+    .action {
+      height: 34px;
+      padding: 0 9px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      border-radius: 9px;
+      background: #fff;
+      color: #554a3a;
+      font-size: 9px;
+      font-weight: 700;
+    }
+
+    .action span:last-child {
+      margin-left: auto;
+      color: #d0a85c;
+      font-size: 17px;
+    }
+
+    .history-card {
+      min-height: 43px;
+      padding: 7px 10px;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      border-radius: 11px;
+      background: #fff;
+      box-shadow: 0 2px 7px #3345320c;
+    }
+
+    .history-icon {
+      width: 26px;
+      height: 26px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: #e6f1e8;
+      color: #579073;
+    }
+
+    .history-copy {
+      flex: 1;
+      font-size: 9px;
+      font-weight: 700;
+    }
+
+    .history-copy small {
+      display: block;
+      color: #8b918b;
+      font-size: 8px;
+      font-weight: 500;
+    }
+
+    .history-badge {
+      padding: 4px 7px;
+      border-radius: 8px;
+      color: #bc8c32;
+      background: #fcf0d3;
+      font-size: 7px;
+      font-weight: 800;
+    }
+
+    .healthy {
+      color: #579073;
+      background: #e7f1e8;
+    }
+
+    .profile-head {
+      height: 152px;
+      padding: 10px 11px;
+      display: grid;
+      justify-items: center;
+      align-content: center;
+      color: #fff;
+      background: linear-gradient(150deg, #387b59, #174a35);
+      border-radius: 0 0 21px 21px;
+    }
+
+    .profile-avatar {
+      width: 57px;
+      height: 57px;
+      margin-bottom: 7px;
+      display: grid;
+      place-items: center;
+      border: 1px solid #adc8b4;
+      border-radius: 50%;
+      background: #ffffff15;
+      font-size: 27px;
+    }
+
+    .profile-head h1 {
+      margin: 0;
+      font: 800 15px 'Manrope';
+    }
+
+    .profile-head p {
+      margin: 1px 0 8px;
+      color: #c5d8c8;
+      font-size: 8px;
+    }
+
+    .stats-pills {
+      display: flex;
+      gap: 6px;
+    }
+
+    .stats-pills span {
+      padding: 4px 9px;
+      border-radius: 10px;
+      color: #e3efe4;
+      background: #ffffff1b;
+      font-size: 8px;
+    }
+
+    .profile-section {
+      padding: 0 11px;
+      margin-top: 14px;
+    }
+
+    .profile-section .screen-title {
+      margin-left: 3px;
+      font-size: 9px;
+    }
+
+    .profile-card {
+      overflow: hidden;
+      border-radius: 15px;
+      background: #fff;
+      box-shadow: 0 2px 7px #3345320c;
+    }
+
+    .profile-row {
+      min-height: 41px;
+      padding: 7px 10px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      border-bottom: 1px solid #f0f1ee;
+    }
+
+    .profile-row:last-child {
+      border: 0;
+    }
+
+    .row-icon {
+      width: 26px;
+      height: 26px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      color: #579073;
+      background: #e5f1e7;
+    }
+
+    .profile-row:nth-child(2) .row-icon {
+      color: #d79a38;
+      background: #fcf1dc;
+    }
+
+    .profile-row:nth-child(3) .row-icon {
+      color: #62a1ca;
+      background: #e6f1f8;
+    }
+
+    .row-label {
+      flex: 1;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .row-value {
+      color: #969d96;
+      font-size: 8px;
+      font-weight: 700;
+    }
+
+    .toggle {
+      width: 30px;
+      height: 17px;
+      padding: 2px;
+      border-radius: 10px;
+      background: #d7d9d4;
+    }
+
+    .toggle i {
+      display: block;
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: #fff;
+    }
+
+    .toggle.on {
+      background: #2f714d;
+    }
+
+    .toggle.on i {
+      margin-left: 13px;
+    }
+
+    .signout {
+      color: #c76351;
+    }
+
+    .new-bottom-nav {
+      position: fixed;
+      z-index: 11;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      max-width: 430px;
+      margin: auto;
+      height: 63px;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      align-items: end;
+      padding: 7px 13px 9px;
+      background: #fff;
+      border-top: 1px solid #edf0ec;
+    }
+
+    .new-bottom-nav button {
+      display: grid;
+      justify-items: center;
+      gap: 3px;
+      color: #9ba19b;
+      font-size: 8px;
+      background: none;
+    }
+
+    .new-bottom-nav button.active {
+      color: #397454;
+      font-weight: 700;
+    }
+
+    .new-bottom-nav .nav-icon {
+      height: 20px;
+      font-size: 16px;
+    }
+
+    .new-bottom-nav button.active .nav-icon {
+      width: 25px;
+      border-radius: 12px;
+      background: #e3f1e7;
+    }
+
+    .new-screen button,
+    .new-screen a {
+      cursor: pointer;
+    }
+
+    .forecast-card.selected {
+      outline: 2px solid #4b9dcd;
+      outline-offset: 2px;
+    }
+
+    .upload.has-image {
+      padding: 10px;
+    }
+
+    .upload-preview {
+      width: 100%;
+      height: 86px;
+      object-fit: cover;
+      border-radius: 11px;
+    }
+
+    .analyze {
+      margin-top: 8px;
+      padding: 7px 16px;
+      border-radius: 14px;
+      color: #fff;
+      background: #276348;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .analyze.loading {
+      opacity: .65;
+    }
+
+    .prices-copy {
+      padding: 28px 20px;
+      text-align: center;
+    }
+
+    .prices-copy h1 {
+      margin: 0 0 5px;
+      color: #20563c;
+      font: 800 20px 'Manrope';
+    }
+
+    .prices-copy p {
+      margin: 0 0 16px;
+      color: #7d857d;
+      font-size: 11px;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      z-index: 20;
+      inset: 0;
+      display: grid;
+      place-items: end center;
+      padding: 16px;
+      background: #1d2b2255;
+    }
+
+    .modal {
+      width: min(100%, 390px);
+      max-height: 82vh;
+      overflow: auto;
+      padding: 18px;
+      border-radius: 18px 18px 12px 12px;
+      background: #fff;
+      box-shadow: 0 8px 30px #1d2b2240;
+    }
+
+    .modal h2 {
+      margin: 0 0 8px;
+      color: #20563c;
+      font: 800 16px 'Manrope';
+    }
+
+    .modal p {
+      color: #69736a;
+      font-size: 11px;
+      line-height: 16px;
+    }
+
+    .modal label {
+      display: block;
+      margin: 9px 0 4px;
+      color: #69736a;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .modal input,
+    .modal select,
+    .modal textarea {
+      width: 100%;
+      padding: 9px;
+      border: 1px solid #dfe7df;
+      border-radius: 9px;
+      font: inherit;
+      font-size: 11px;
+      resize: vertical;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .modal-actions button {
+      padding: 8px 13px;
+      border-radius: 12px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .modal-actions .primary {
+      color: #fff;
+      background: #276348;
+    }
+
+    .modal-actions .secondary {
+      background: #edf2ed;
+    }
+
+    .modal-message {
+      margin: 8px 0 0;
+      color: #b75d4d;
+      font-size: 10px;
+    }
+
+    .notifications-backdrop {
+      position: fixed;
+      z-index: 20;
+      inset: 0;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: max(18px, env(safe-area-inset-top)) 16px 18px;
+      background: rgba(24, 39, 26, .28);
+      opacity: 0;
+      transition: opacity .2s ease;
+    }
+
+    .notifications-backdrop.is-open {
+      opacity: 1;
+    }
+
+    .notifications-dialog {
+      width: min(100%, 390px);
+      max-height: min(720px, calc(100dvh - 36px));
+      padding: 18px 12px 12px;
+      overflow: hidden;
+      border: 1px solid #e3ebe1;
+      border-radius: 18px;
+      background: #f7faf6;
+      box-shadow: 0 18px 50px rgba(31, 61, 35, .22);
+      transform: translateY(-10px) scale(.98);
+      transition: transform .2s ease;
+    }
+
+    .notifications-backdrop.is-open .notifications-dialog {
+      transform: translateY(0) scale(1);
+    }
+
+    .notifications-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 0 4px 14px;
+    }
+
+    .notifications-title {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin: 0;
+      color: var(--ink);
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .notifications-back,
+    .notifications-read-all {
+      border: 0;
+      background: transparent;
+      color: #4d8b52;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .notifications-back {
+      padding: 4px 0;
+      color: var(--ink);
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .notifications-read-all {
+      padding: 6px 0;
+      white-space: nowrap;
+    }
+
+    .notifications-read-all:disabled {
+      color: #9ca99d;
+      cursor: default;
+    }
+
+    .notifications-list {
+      display: grid;
+      gap: 6px;
+      max-height: calc(100dvh - 112px);
+      padding: 0 0 2px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #c8dbc7 transparent;
+    }
+
+    .notification-card {
+      position: relative;
+      display: grid;
+      grid-template-columns: 32px minmax(0, 1fr) 14px;
+      align-items: start;
+      gap: 10px;
+      width: 100%;
+      padding: 12px 10px;
+      border: 1px solid #edf1ec;
+      border-radius: 14px;
+      background: #fff;
+      color: var(--ink);
+      text-align: left;
+      cursor: pointer;
+      transition: background .18s ease, border-color .18s ease, transform .18s ease;
+    }
+
+    .notification-card:hover {
+      transform: translateY(-1px);
+      border-color: #cfe2cc;
+    }
+
+    .notification-card.unread {
+      border-color: #dcebd9;
+      background: #f1f8ef;
+    }
+
+    .notification-icon {
+      display: grid;
+      width: 32px;
+      height: 32px;
+      place-items: center;
+      border-radius: 50%;
+      background: #e4f2df;
+      color: #4c9148;
+      font-size: 15px;
+    }
+
+    .notification-copy {
+      min-width: 0;
+      padding-right: 2px;
+    }
+
+    .notification-copy strong {
+      display: block;
+      margin-bottom: 3px;
+      font-size: 11px;
+      line-height: 1.25;
+    }
+
+    .notification-copy p {
+      margin: 0;
+      color: #78827a;
+      font-size: 10px;
+      line-height: 1.35;
+    }
+
+    .notification-copy time {
+      display: block;
+      margin-top: 5px;
+      color: #a1aaa2;
+      font-size: 9px;
+    }
+
+    .notification-chevron {
+      align-self: center;
+      color: #a7b1a8;
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .notification-unread {
+      position: absolute;
+      top: 11px;
+      right: 28px;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #4d9b3b;
+    }
+
+    @media (max-width: 430px) {
+      .notifications-backdrop {
+        padding: max(10px, env(safe-area-inset-top)) 10px 10px;
+      }
+
+      .notifications-dialog {
+        max-height: calc(100dvh - 20px);
+        border-radius: 16px;
+      }
+
+      .notifications-list {
+        max-height: calc(100dvh - 94px);
+      }
+    }
+
+    @media (min-width:768px) {
+      body {
+        padding: 0;
+      }
+
+      .phone-frame {
+        width: 100%;
+        min-height: 100dvh;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        background: var(--paper);
+        box-shadow: none;
+        position: relative;
+      }
+
+      .phone-frame:before {
+        display: none;
+      }
+
+      .app-shell {
+        width: 390px;
+        max-width: 390px;
+        height: 844px;
+        min-height: 844px;
+        border-radius: 40px;
+        box-shadow: none;
+        padding-bottom: 88px;
+      }
+
+      .bottom-nav {
+        position: absolute;
+      }
+
+      .home-indicator {
+        display: none;
+      }
+    }
+
+    /* Shared TanodBukid brand palette: keep category-specific colors separate. */
+    .health,
+    .activity-head,
+    .dark-head,
+    .profile-head {
+      background: linear-gradient(150deg, var(--primary-green), var(--dark-green));
+    }
+
+    .home-slide.guide,
+    .home-slide.scanner,
+    .home-slide.weather {
+      background: linear-gradient(135deg, var(--dark-green), var(--primary-green) 68%, #73a96d);
+    }
+
+    .home-slide::after {
+      background: linear-gradient(90deg, rgba(32, 86, 60, .62), rgba(57, 116, 84, .12));
+    }
+
+    .home-slide.weather::after,
+    .home-slide.scanner::after {
+      background: linear-gradient(90deg, rgba(32, 86, 60, .58), rgba(57, 116, 84, .1));
+    }
+
+    .home-slide-kicker,
+    .quick-icon,
+    .stat-icon,
+    .community-report,
+    .community-filter.selected,
+    .farm-log-filter.selected {
+      border-color: var(--light-green);
+      background-color: var(--light-green);
+    }
+
+    .home-slide-kicker,
+    .home-slide-action,
+    .home-articles-head button,
+    .section-head a,
+    .community-back,
+    .community-bell,
+    .farm-logs-back,
+    .farm-log-date,
+    .farm-log-summary-card:nth-child(3) .farm-log-summary-icon {
+      color: var(--primary-green);
+    }
+
+    .home-slide-action,
+    .farm-log-add,
+    .activity-save,
+    .modal-actions .primary,
+    .community-report-button,
+    .community-report-icon,
+    .add,
+    .community-filter.selected,
+    .farm-log-filter.selected {
+      background: var(--primary-green);
+    }
+
+    .home-slide-action {
+      color: var(--primary-green);
+      background: #fff;
+    }
+
+    .quick button:nth-child(3) .quick-icon,
+    .quick button:nth-child(4) .quick-icon,
+    .community-report {
+      background: var(--soft-green);
+    }
+
+    .quick b,
+    .section-head h2,
+    .home-articles-head h2,
+    .community-heading h1,
+    .farm-logs-header h1,
+    .modal h2 {
+      color: var(--dark-green);
+    }
+
+    .profile-head h1 {
+      color: #fff;
+    }
+
+    .profile-head p {
+      color: #e7f4e8;
+    }
+
+    .profile-head .stats-pills span {
+      color: #f1f8ef;
+    }
+
+    .activity-head h1 {
+      color: #fff;
+    }
+
+    .activity-head p {
+      color: #e7f4e8;
+    }
+
+    .new-bottom-nav button.active,
+    .new-bottom-nav .add-label,
+    .community-bottom-nav button.active,
+    .farm-log-category,
+    .community-user-avatar {
+      color: var(--primary-green);
+    }
+
+    .new-bottom-nav button.active .nav-icon,
+    .community-bottom-nav button.active .nav-icon {
+      background: var(--light-green);
+    }
+
+    .toggle.on,
+    .toggle.enabled {
+      background: var(--primary-green);
+    }
+
+    .profile-continue-button,
+    .selection-pill.selected {
+      border-color: var(--primary-green);
+      background: var(--primary-green);
+    }
+
+    .back-button,
+    .add-other-button {
+      color: var(--primary-green);
+    }
+
+    .home-article-tag {
+      color: var(--primary-green);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="phone-frame">
+    <main class="app-shell">
+      <header><button class="menu" aria-label="Open menu"><span></span><span></span></button>
+        <div><button class="bell" id="notifications-button" type="button" aria-label="Notifications"
+            aria-haspopup="dialog" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
+              <path d="M10 21h4"></path>
+            </svg></button><span class="avatar">MJ</span></div>
+      </header>
+      <section class="welcome">
+        <p class="eyebrow">Good morning,</p>
+        <h1>Mang Juan <span class="wave">👋</span></h1>
+        <p class="sub">Here’s your farm overview</p>
+      </section>
+      <section class="home-featured" aria-label="Featured farm guides">
+        <div class="home-featured-track" id="home-carousel-track">
+          <article class="home-slide guide">
+            <div class="home-slide-content"><span class="home-slide-kicker">Featured Guide</span>
+              <h2>Healthy Plants, Bigger Harvests</h2>
+              <p>Learn the basics of plant health, soil care, and proper nutrition.</p><button class="home-slide-action"
+                type="button" data-home-action="guide">Explore More →</button>
+            </div><img class="home-slide-art" src="plants (1).jpg" alt="Healthy green farm plant">
+          </article>
+          <article class="home-slide weather">
+            <div class="home-slide-content"><span class="home-slide-kicker">Weather Update</span>
+              <h2>Rain expected today</h2>
+              <p>Light rain may affect your farm activities. Plan watering and field work accordingly.</p><button
+                class="home-slide-action" type="button" data-home-action="climate">Explore More →</button>
+            </div>
+            <div class="home-weather-visual" aria-hidden="true"><span class="home-weather-cloud"></span><span
+                class="home-weather-temp">29°C<small>Light Rain<br>Sta. Maria, Bulacan</small></span></div>
+          </article>
+          <article class="home-slide scanner">
+            <div class="home-slide-content"><span class="home-slide-kicker">Farm Scanner</span>
+              <h2>Check Your Crops &amp; Livestock</h2>
+              <p>AI-powered diagnostics to help identify possible crop and livestock health problems.</p><button
+                class="home-slide-action" type="button" data-home-action="scan">Explore More →</button>
+            </div>
+            <div class="home-scanner-visual" aria-hidden="true">
+              <div class="home-scanner-frame"><span class="home-scanner-icon">⌾</span><span
+                  class="home-scanner-line"></span></div>
+            </div>
+          </article>
+        </div>
+        <div class="home-carousel-dots" role="tablist" aria-label="Featured slides"><button
+            class="home-carousel-dot active" type="button" role="tab" aria-label="Show plant guide" aria-selected="true"
+            data-carousel-slide="0"></button><button class="home-carousel-dot" type="button" role="tab"
+            aria-label="Show weather update" aria-selected="false" data-carousel-slide="1"></button><button
+            class="home-carousel-dot" type="button" role="tab" aria-label="Show crop scanner" aria-selected="false"
+            data-carousel-slide="2"></button></div>
+      </section>
+      <section class="stats" aria-label="Farm metrics">
+        <article class="stat">
+          <div class="stat-icon">🌿</div><strong>12</strong>
+          <p>Plants<br>Monitored</p>
+        </article>
+        <article class="stat">
+          <div class="stat-icon">💧</div><strong>3</strong>
+          <p>Tasks<br>Due Today</p>
+        </article>
+        <article class="stat">
+          <div class="stat-icon">🌤️</div><strong>28<small>°C</small></strong>
+          <p>Weather<br>Partly Cloudy</p>
+        </article>
+        <article class="stat">
+          <div class="stat-icon">🪴</div><strong>2</strong>
+          <p>Fertilizers<br>In Use</p>
+        </article>
+      </section>
+      <section class="quick" aria-label="Farm tools"><button id="community-alerts-card" type="button"><span
+            class="quick-icon">♧</span><b>Community Alerts</b><small>Stay informed from fellow
+            farmers</small></button><button><span class="quick-icon">💧</span><b>Watering</b><small>Manage watering
+            schedule</small></button><button><span class="quick-icon">📒</span><b>Farm Logs</b><small>View farm
+            activities</small></button><button><span class="quick-icon">📊</span><b>Reports</b><small>View
+            farm<br>reports</small></button></section>
+      <section class="home-articles" aria-labelledby="latest-articles-title">
+        <div class="home-articles-head">
+          <h2 id="latest-articles-title">Latest Articles</h2><button type="button" data-home-action="articles">View All
+            →</button>
+        </div>
+        <div class="home-article-list">
+          <button class="home-article" type="button" data-home-action="article"><img src="plants (1).jpg"
+              alt="Fresh pechay leaves"><span class="home-article-copy"><span class="home-article-tag">Crop Care</span>
+              <h3>How to Grow Healthy Pechay</h3>
+              <p>Simple steps for faster growth and better yield.</p><span class="home-article-meta">◷ 5 min read</span>
+            </span><span class="home-article-chevron" aria-hidden="true">›</span></button>
+          <button class="home-article" type="button" data-home-action="article"><img src="plants (1).jpg"
+              alt="Plant leaves showing natural variation"><span class="home-article-copy"><span
+                class="home-article-tag">Pest &amp; Disease</span>
+              <h3>Common Leaf Diseases and How to Treat Them</h3>
+              <p>Spot the signs early and protect your plants.</p><span class="home-article-meta">◷ 7 min read</span>
+            </span><span class="home-article-chevron" aria-hidden="true">›</span></button>
+        </div>
+      </section>
+      <section class="activity">
+        <div class="section-head">
+          <h2>Recent activity</h2><a href="#">View All</a>
+        </div>
+        <div class="activity-list">
+          <div class="activity-row"><span class="activity-icon">🌿</span><span class="activity-copy"><b>Munggo – Field
+                A</b><small>Health improved to 80%</small></span><span class="when">2h ago</span><span
+              class="chevron">›</span></div>
+          <div class="activity-row"><span class="activity-icon">🪴</span><span class="activity-copy"><b>Applied Organic
+                Fertilizer</b><small>Munggo – Field A</small></span><span class="when">5h ago</span><span
+              class="chevron">›</span></div>
+          <div class="activity-row"><span class="activity-icon">💧</span><span class="activity-copy"><b>Watering
+                Completed</b><small>Talong – Field B</small></span><span class="when">1d ago</span><span
+              class="chevron">›</span></div>
+          <div class="activity-row"><span class="activity-icon">⚠️</span><span class="activity-copy"><b>Tomato – Field
+                C</b><small>Low nitrogen detected</small></span><span class="when">1d ago</span><span
+              class="chevron">›</span></div>
+          <div class="activity-row"><span class="activity-icon">▤</span><span class="activity-copy"><b>Weekly Farm
+                Report</b><small>May 26 – Jun 1, 2026</small></span><span class="when">2d ago</span><span
+              class="chevron">›</span></div>
+        </div>
+      </section>
+      <section class="new-screen" id="climate-screen">
+        <div class="topbar"><span class="location">⌖</span>
+          <div>
+            <h1>Sta. Maria, Bulacan</h1>
+            <p><i class="dot"></i>Updated today, 9:30 AM · PAGASA</p>
+          </div>
+        </div>
+        <div class="climate-hero"><span class="warning">☁</span><b>Moderate Risk</b><span>Elevated typhoon &amp; flood
+            risk this week</span><span class="farm-risk-note">Farm Risk Status · Conditions may affect crops</span>
+          <div class="riskbar"><i></i><i></i><i></i><i></i></div>
+        </div>
+        <section class="screen-section">
+          <div class="screen-title"><span>7-DAY FORECAST</span></div>
+          <div class="forecast">
+            <div class="forecast-card today"><b>Today</b>
+              <div class="weather">☁</div><strong>30° <small>25°</small></strong>
+              <div class="progress"><i></i></div>
+            </div>
+            <div class="forecast-card"><b>Fri</b>
+              <div class="weather">♧</div><strong>28° <small>24°</small></strong>
+              <div class="progress"><i></i></div>
+            </div>
+            <div class="forecast-card"><b>Sat</b>
+              <div class="weather">♧</div><strong>27° <small>23°</small></strong>
+              <div class="progress"><i></i></div>
+            </div>
+            <div class="forecast-card"><b>Sun</b>
+              <div class="weather">♨</div><strong>29° <small>24°</small></strong>
+              <div class="progress"><i></i></div>
+            </div>
+            <div class="forecast-card"><b>Mon</b>
+              <div class="weather">☁</div><strong>30° <small>25°</small></strong>
+              <div class="progress"><i></i></div>
+            </div>
+          </div>
+        </section>
+        <section class="screen-section">
+          <div class="screen-title"><span>ACTIVE ALERTS</span><a href="#">See all</a></div>
+          <div class="alerts">
+            <article class="alert"><span class="alert-icon">≋</span><span class="badge">SEVERE</span>
+              <h3>Typhoon Carina — Landfall expected Thu–Fri</h3>
+              <p>Secure livestock and crop cover before landfall. Move animals to higher, sheltered ground.</p><span
+                class="source">› &nbsp; PAGASA bulletin #4</span>
+            </article>
+            <article class="alert watch"><span class="alert-icon">⌁</span><span class="badge">WATCH</span>
+              <h3>Flood warning — San Jose creek at caution level</h3>
+              <p>Riverbank farmers should move equipment and livestock to higher ground as a precaution.</p><span
+                class="source">› &nbsp; MDRRMO advisory</span>
+            </article>
+            <article class="alert advisory"><span class="alert-icon">◦</span><span class="badge">ADVISORY</span>
+              <h3>High humidity (84%) after rain</h3>
+              <p>Elevated fungal disease risk post-rain. Monitor crops closely over the next 3 days.</p><span
+                class="source">› &nbsp; Farm advisory</span>
+            </article>
+          </div>
+        </section>
+        <section class="farm-advisory" aria-label="Farm advisory">
+          <h2>Farm Advisory</h2>
+          <p>Due to current weather conditions, monitor crops for excess moisture and avoid unnecessary field activities
+            during heavy rain.</p>
+        </section>
+      </section>
+      <section class="new-screen" id="scan-screen">
+        <div class="dark-head"><span class="scan-symbol">⌾</span>
+          <div class="scan-title">
+            <h1>Crop &amp; Livestock<br>Health Scanner</h1>
+            <p>AI-powered diagnostics for your farm</p>
+          </div>
+          <div class="segment"><button class="active">♧ &nbsp; Crops</button><button>♧ &nbsp; Livestock</button></div>
+        </div>
+        <div class="upload" id="scan-upload">
+          <div class="camera-panel" id="camera-panel">
+            <video id="camera-live" autoplay playsinline muted></video>
+            <div class="camera-overlay">
+              <span class="scan-status"><i class="dot"></i>Live detection</span>
+              <span class="detection-label" id="live-detection-label">Healthy crop check</span>
+            </div>
+            <div class="camera-actions">
+              <button class="secondary-action" id="close-camera" type="button">Close</button>
+              <button class="choose" id="capture-photo" type="button">Capture photo</button>
+            </div>
+            <button class="camera-switch" id="camera-switch" type="button" aria-label="Switch camera"
+              title="Switch camera">↔</button>
+          </div>
+          <div class="upload-body">
+            <span class="upload-icon">▣</span>
+            <h2>Upload a photo</h2>
+            <p>Take or upload a clear photo for AI analysis</p>
+            <div class="upload-actions">
+              <button class="choose" id="choose-photo" type="button">↥ &nbsp; Choose photo</button>
+              <button class="secondary-action" id="camera-photo" type="button">📷 &nbsp; Use camera</button>
+            </div>
+            <input id="photo-input" type="file" accept="image/*" hidden>
+          </div>
+        </div>
+        <section class="screen-section">
+          <div class="screen-title"><span>LAST SCAN RESULT</span></div>
+          <article class="result">
+            <div class="result-head"><span class="result-icon">⌾</span>
+              <h2>Rice Blast Detected <small>87% confidence &nbsp; · &nbsp; Palay · Irrigated</small></h2>
+            </div>
+            <p>Fungal infection on leaf sheaths. Early stage — manageable with timely intervention.</p>
+            <div class="actions"><button class="action"><span>⌕</span>Apply Tricyclazole<span>›</span></button><button
+                class="action"><span>♧</span>Improve drainage<span>›</span></button><button
+                class="action"><span>×</span>Remove infected leaves<span>›</span></button></div>
+          </article>
+          <div class="screen-title"><span>SCAN HISTORY</span><a href="#">See all</a></div>
+          <div class="history-card"><span class="history-icon">✳</span><span class="history-copy">Bacterial Leaf
+              Blight<small>Apr 20 · Palay</small></span><span class="history-badge">Moderate</span></div>
+          <div class="history-card"><span class="history-icon">♧</span><span class="history-copy">No issues
+              found<small>Apr 17 · Cattle</small></span><span class="history-badge healthy">Healthy</span></div>
+        </section>
+      </section>
+      <section class="new-screen" id="profile-screen">
+        <div class="profile-head"><span class="profile-avatar">♙</span>
+          <h1>Jose Dela Cruz</h1>
+          <p>Sta. Maria, Bulacan · Farmer since 1998</p>
+          <div class="stats-pills"><span>3 crops</span><span>2 livestock</span><span>3.5 ha farm</span></div>
+        </div>
+        <section class="profile-section">
+          <div class="screen-title"><span>FARM INFO</span></div>
+          <div class="profile-card">
+            <div class="profile-row"><span class="row-icon">♧</span><span class="row-label">My Crops &amp;
+                Livestock</span><span class="row-value">Manage ›</span></div>
+            <div class="profile-row"><span class="row-icon">⌖</span><span class="row-label">Farm Location &amp;
+                Size</span><span class="row-value">Edit ›</span></div>
+            <div class="profile-row"><span class="row-icon">▣</span><span class="row-label">Farm Reports &amp;
+                History</span><span class="row-value">View ›</span></div>
+          </div>
+        </section>
+        <section class="profile-section">
+          <div class="screen-title"><span>NOTIFICATIONS</span></div>
+          <div class="profile-card">
+            <div class="profile-row"><span class="row-icon">⌂</span><span class="row-label">Climate Alerts</span><button
+                class="toggle on"><i></i></button></div>
+            <div class="profile-row"><span class="row-icon">♧</span><span class="row-label">Community
+                Alerts</span><button class="toggle on"><i></i></button></div>
+            <div class="profile-row"><span class="row-icon">♧</span><span class="row-label">Scan Reminders</span><button
+                class="toggle"><i></i></button></div>
+          </div>
+        </section>
+        <section class="profile-section">
+          <div class="screen-title"><span>ACCOUNT</span></div>
+          <div class="profile-card">
+            <div class="profile-row"><span class="row-icon">⊕</span><span class="row-label">Language</span><span
+                class="row-value">Filipino</span></div>
+            <div class="profile-row"><span class="row-icon">♧</span><span class="row-label">Change Password</span><span
+                class="row-value">›</span></div>
+            <div class="profile-row signout"><span class="row-icon">⇥</span><span class="row-label">Sign Out</span>
+            </div>
+          </div>
+        </section>
+      </section>
+      <section class="new-screen community-screen" id="community-alerts-screen"
+        aria-labelledby="community-alerts-title">
+        <div class="community-header"><button class="community-back" id="community-back" type="button"
+            aria-label="Back">←</button>
+          <div class="community-header-actions"><button class="community-bell" id="community-notifications-button"
+              type="button" aria-label="Notifications"><svg viewBox="0 0 24 24">
+                <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
+                <path d="M10 21h4"></path>
+              </svg></button><span class="community-avatar">MJ</span></div>
+        </div>
+        <div class="community-heading">
+          <h1 id="community-alerts-title">Community Alerts</h1>
+          <p>Stay informed from fellow farmers.</p>
+        </div>
+        <button class="community-report" id="report-issue-button" type="button"><span
+            class="community-report-icon">+</span><span class="community-report-copy"><strong>Report an
+              Issue</strong><span>Share an update, alert, or question with the community.</span></span><span
+            class="community-report-button">+</span></button>
+        <div class="community-filters" role="tablist" aria-label="Community alert categories"><button
+            class="community-filter selected" type="button" role="tab" aria-selected="true"
+            data-community-filter="all">All</button><button class="community-filter" type="button" role="tab"
+            aria-selected="false" data-community-filter="pest">Pest Reports</button><button class="community-filter"
+            type="button" role="tab" aria-selected="false" data-community-filter="flood">Flood Update</button><button
+            class="community-filter" type="button" role="tab" aria-selected="false"
+            data-community-filter="weather">Weather</button><button class="community-filter" type="button" role="tab"
+            aria-selected="false" data-community-filter="tips">Tips</button></div>
+        <div class="community-list" id="community-alert-list"></div>
+        <nav class="community-bottom-nav" aria-label="Community navigation"><button type="button"
+            data-community-nav="home"><span class="nav-icon">⌂</span><span>Home</span></button><button type="button"
+            data-community-nav="farm-logs"><span class="nav-icon">♧</span><span>My Farm</span></button><button
+            class="active" type="button" data-community-nav="community-alerts"><span
+              class="nav-icon">♧</span><span>Community Alerts</span></button><button type="button"
+            data-community-nav="profile"><span class="nav-icon">♙</span><span>Profile</span></button></nav>
+      </section>
+      <section class="new-screen farm-logs-screen" id="farm-logs-screen" aria-labelledby="farm-logs-title">
+        <div class="farm-logs-header"><button class="farm-logs-back" id="farm-logs-back" type="button"
+            aria-label="Back">←</button>
+          <h1 id="farm-logs-title">Farm log &amp; post-harvest</h1>
+        </div>
+        <div class="farm-log-summary" aria-label="Farm log summary">
+          <div class="farm-log-summary-card"><span class="farm-log-summary-icon"
+              aria-hidden="true">⚖</span><strong>4.2t</strong><span>Last yield</span></div>
+          <div class="farm-log-summary-card"><span class="farm-log-summary-icon"
+              aria-hidden="true">♧</span><strong>68d</strong><span>Since plant</span></div>
+          <div class="farm-log-summary-card"><span class="farm-log-summary-icon"
+              aria-hidden="true">⌛</span><strong>32d</strong><span>To harvest</span></div>
+        </div>
+        <div class="farm-log-filters" role="tablist" aria-label="Farm log filters">
+          <button class="farm-log-filter selected" type="button" role="tab" aria-selected="true"
+            data-log-filter="all">All</button>
+          <button class="farm-log-filter" type="button" role="tab" aria-selected="false"
+            data-log-filter="crop-care">Crop care</button>
+          <button class="farm-log-filter" type="button" role="tab" aria-selected="false"
+            data-log-filter="livestock">Livestock</button>
+          <button class="farm-log-filter" type="button" role="tab" aria-selected="false"
+            data-log-filter="post-harvest">Post-harvest</button>
+        </div>
+        <p class="farm-log-feedback" id="farm-log-feedback" role="status"></p>
+        <div class="farm-log-list" id="farm-log-list"></div>
+        <button class="farm-log-add" id="farm-log-add" type="button">+ Add farm activity</button>
+      </section>
+      <section class="new-screen activity-screen" id="add-screen" aria-labelledby="add-activity-title">
+        <header class="activity-head">
+          <h1 id="add-activity-title">Add Farm Activity</h1>
+          <p>Log a new activity or event</p>
+        </header>
+        <form class="activity-form" id="activity-form">
+          <span class="activity-type-label">Activity Type</span>
+          <div class="activity-types" role="group" aria-label="Activity type">
+            <button class="activity-type selected" type="button" data-activity-type="Crop Care">Crop Care</button>
+            <button class="activity-type" type="button" data-activity-type="Livestock">Livestock</button>
+            <button class="activity-type" type="button" data-activity-type="Post-Harvest">Post-Harvest</button>
+            <button class="activity-type" type="button" data-activity-type="Expense">Expense</button>
+          </div>
+          <label class="activity-field"><span>Date</span><input id="activity-date" name="date" type="date"
+              required></label>
+          <label class="activity-field"><span>Activity Title</span><input name="title" type="text"
+              placeholder="e.g. Applied herbicide" required></label>
+          <label class="activity-field"><span>Details</span><textarea name="details"
+              placeholder="Describe what was done, quantities, location..."></textarea></label>
+          <label class="activity-field"><span>Related crop/animal</span><input name="related" type="text"
+              placeholder="Palay (Irrigated) - North Field"></label>
+          <label class="activity-field"><span>Cost incurred (optional)</span><input name="cost" type="text"
+              inputmode="decimal" placeholder="₱ 0.00"></label>
+          <div class="activity-actions"><button class="activity-cancel" id="cancel-activity"
+              type="button">Cancel</button><button class="activity-save" type="submit">Save Activity</button></div>
+        </form>
+      </section>
+      <nav class="new-bottom-nav" aria-label="Main navigation"><button data-route="home"><span
+            class="nav-icon">⌂</span><span>Home</span></button><button data-route="scan"><span
+            class="nav-icon">⌾</span><span>Scan</span></button><button class="add-nav-item" type="button"><span
+            class="add">+</span><span class="add-label">Add</span></button><button data-route="climate"><span
+            class="nav-icon">⌁</span><span>Climate</span></button><button data-route="profile"><span
+            class="nav-icon">♙</span><span>Profile</span></button></nav>
+      <span class="home-indicator" aria-hidden="true"></span>
+    </main>
+  </div>
+  <script>
+    (() => {
+      const routes = ['climate', 'scan', 'profile', 'farm-logs', 'community-alerts', 'add'];
+      const shell = document.querySelector('.app-shell');
+      const addedScreens = document.querySelectorAll('.new-screen');
+      const addedNav = document.querySelector('.new-bottom-nav');
+      const activityForm = document.getElementById('activity-form');
+      const activityDate = document.getElementById('activity-date');
+      const farmLogList = document.getElementById('farm-log-list');
+      const farmLogFeedback = document.getElementById('farm-log-feedback');
+      const FARM_ACTIVITIES_KEY = 'tanodbukid_farm_activities';
+      let previousRoute = '';
+      const modal = (title, body, actions = '') => { const backdrop = document.createElement('div'); backdrop.className = 'modal-backdrop'; backdrop.innerHTML = `<div class="modal" role="dialog" aria-modal="true"><h2>${title}</h2>${body}<div class="modal-actions">${actions || '<button class="secondary" data-close>Close</button>'}</div></div>`; document.body.appendChild(backdrop); backdrop.addEventListener('click', (event) => { if (event.target === backdrop || event.target.closest('[data-close]')) backdrop.remove(); }); return backdrop; };
+      const notifications = [
+        { id: 'scan-result', icon: '✣', title: 'Scan result ready', description: 'Rice blast detected at 87% confidence. Tap for recommendations.', time: 'Just now' },
+        { id: 'typhoon', icon: '≋', title: 'Typhoon Carina — Signal No. 2', description: 'PAGASA raised the signal in Bulacan. Prepare your farm immediately.', time: '30 min ago' },
+        { id: 'price-update', icon: '↗', title: 'Price update: palay +2.2%', description: 'Irrigated palay now ₱23.50/kg in Central Luzon.', time: '2h ago' },
+        { id: 'community', icon: '♧', title: 'Community post near you', description: 'Armyworm infestation reported 2km from your farm.', time: '2h ago' },
+        { id: 'article', icon: '▤', title: 'New article: flood-proofing your farm', description: 'A seasonal advisory on typhoon season prep.', time: '5h ago' },
+        { id: 'farm-reminder', icon: '◷', title: 'Farm log reminder', description: "You haven't logged activity in 3 days.", time: 'Yesterday' }
+      ];
+      const readNotificationIds = new Set(JSON.parse(localStorage.getItem('tanodbukid_read_notifications') || '[]'));
+      const notificationButton = document.getElementById('notifications-button');
+      const notificationMarkup = (notification) => `<button type="button" class="notification-card ${readNotificationIds.has(notification.id) ? '' : 'unread'}" data-notification-id="${notification.id}"><span class="notification-icon" aria-hidden="true">${notification.icon}</span><span class="notification-copy"><strong>${notification.title}</strong><p>${notification.description}</p><time>${notification.time}</time></span><span class="notification-chevron" aria-hidden="true">›</span>${readNotificationIds.has(notification.id) ? '' : '<span class="notification-unread" aria-label="Unread"></span>'}</button>`;
+      const updateNotificationBadge = () => { notificationButton.classList.toggle('is-read', !notifications.some((notification) => !readNotificationIds.has(notification.id))); };
+      const saveReadNotifications = () => { localStorage.setItem('tanodbukid_read_notifications', JSON.stringify([...readNotificationIds])); updateNotificationBadge(); };
+      const closeNotifications = () => { const backdrop = document.querySelector('.notifications-backdrop'); if (!backdrop) return; backdrop.classList.remove('is-open'); notificationButton.setAttribute('aria-expanded', 'false'); setTimeout(() => backdrop.remove(), 200); };
+      const openNotifications = () => {
+        const backdrop = document.createElement('div');
+        backdrop.className = 'notifications-backdrop';
+        backdrop.innerHTML = `<section class="notifications-dialog" role="dialog" aria-modal="true" aria-labelledby="notifications-title"><div class="notifications-header"><h2 class="notifications-title" id="notifications-title"><button type="button" class="notifications-back" data-close-notifications aria-label="Close notifications">←</button>Notifications</h2><button type="button" class="notifications-read-all" data-mark-all>Mark all read</button></div><div class="notifications-list">${notifications.map(notificationMarkup).join('')}</div></section>`;
+        document.body.appendChild(backdrop);
+        notificationButton.setAttribute('aria-expanded', 'true');
+        requestAnimationFrame(() => backdrop.classList.add('is-open'));
+        backdrop.querySelectorAll('[data-notification-id]').forEach((card) => card.addEventListener('click', () => { readNotificationIds.add(card.dataset.notificationId); saveReadNotifications(); card.classList.remove('unread'); card.querySelector('.notification-unread')?.remove(); }));
+        backdrop.querySelector('[data-mark-all]').addEventListener('click', () => { notifications.forEach((notification) => readNotificationIds.add(notification.id)); saveReadNotifications(); backdrop.querySelectorAll('.notification-card').forEach((card) => { card.classList.remove('unread'); card.querySelector('.notification-unread')?.remove(); }); });
+        backdrop.addEventListener('click', (event) => { if (event.target === backdrop || event.target.closest('[data-close-notifications]')) closeNotifications(); });
+      };
+      notificationButton.addEventListener('click', openNotifications);
+      document.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeNotifications(); });
+      updateNotificationBadge();
+      const carousel = document.querySelector('.home-featured');
+      const carouselTrack = document.getElementById('home-carousel-track');
+      const carouselDots = [...document.querySelectorAll('[data-carousel-slide]')];
+      let carouselIndex = 0;
+      let carouselTimer = null;
+      let carouselStartX = 0;
+      let carouselDragging = false;
+      let carouselMoved = false;
+      let carouselSuppressClick = false;
+      const showCarouselSlide = (index) => {
+        carouselIndex = (index + carouselDots.length) % carouselDots.length;
+        carouselTrack.style.transition = '';
+        carouselTrack.style.transform = `translateX(-${carouselIndex * 100}%)`;
+        carouselDots.forEach((dot, dotIndex) => { const selected = dotIndex === carouselIndex; dot.classList.toggle('active', selected); dot.setAttribute('aria-selected', String(selected)); });
+      };
+      const stopCarousel = () => { if (carouselTimer) { clearInterval(carouselTimer); carouselTimer = null; } };
+      const startCarousel = () => { stopCarousel(); carouselTimer = setTimeout(() => { showCarouselSlide(carouselIndex + 1); startCarousel(); }, 4000); };
+      carouselDots.forEach((dot) => dot.addEventListener('click', () => { showCarouselSlide(Number(dot.dataset.carouselSlide)); startCarousel(); }));
+      carousel.addEventListener('pointerdown', (event) => {
+        if (event.button !== undefined && event.button !== 0) return;
+        carouselDragging = true;
+        carouselMoved = false;
+        carouselStartX = event.clientX;
+        stopCarousel();
+        try { carousel.setPointerCapture?.(event.pointerId); } catch { }
+        event.preventDefault();
+      });
+      carousel.addEventListener('pointermove', (event) => {
+        if (!carouselDragging) return;
+        const distance = event.clientX - carouselStartX;
+        if (Math.abs(distance) > 4) carouselMoved = true;
+        if (!carouselMoved) return;
+        event.preventDefault();
+        const width = carousel.clientWidth || 1;
+        carouselTrack.style.transition = 'none';
+        carouselTrack.style.transform = `translateX(calc(${-carouselIndex * 100}% + ${distance}px))`;
+      });
+      const finishCarouselDrag = (event) => {
+        if (!carouselDragging) return;
+        const distance = event.clientX - carouselStartX;
+        carouselDragging = false;
+        if (carousel.hasPointerCapture?.(event.pointerId)) carousel.releasePointerCapture(event.pointerId);
+        if (carouselMoved) {
+          carouselSuppressClick = true;
+          const threshold = Math.max(42, carousel.clientWidth * .14);
+          showCarouselSlide(Math.abs(distance) > threshold ? carouselIndex + (distance < 0 ? 1 : -1) : carouselIndex);
+        } else {
+          showCarouselSlide(carouselIndex);
+        }
+        startCarousel();
+      };
+      carousel.addEventListener('pointerup', finishCarouselDrag);
+      carousel.addEventListener('pointercancel', (event) => { if (carouselDragging) { carouselDragging = false; showCarouselSlide(carouselIndex); startCarousel(); } event.preventDefault(); });
+      window.addEventListener('pointerup', finishCarouselDrag);
+      window.addEventListener('pointercancel', () => { if (carouselDragging) { carouselDragging = false; showCarouselSlide(carouselIndex); startCarousel(); } });
+      carousel.addEventListener('click', (event) => { if (carouselSuppressClick) { event.preventDefault(); event.stopPropagation(); carouselSuppressClick = false; } }, true);
+      startCarousel();
+      document.querySelectorAll('[data-home-action]').forEach((action) => action.addEventListener('click', () => {
+        const actionName = action.dataset.homeAction;
+        if (actionName === 'climate' || actionName === 'scan') { location.hash = actionName; return; }
+        if (actionName === 'guide') modal('Plant health guide', '<p>Explore practical guidance for healthier crops, stronger soil, and better harvests.</p>');
+        if (actionName === 'articles') modal('Latest Articles', '<p>More practical farm guides and seasonal advice will appear here as they become available.</p>');
+        if (actionName === 'article') modal(action.closest('.home-article').querySelector('h3').textContent, `<p>${action.closest('.home-article').querySelector('p').textContent}</p><p><strong>${action.closest('.home-article').querySelector('.home-article-meta').textContent}</strong></p>`);
+      }));
+      const showRoute = () => { const route = location.hash.slice(1); const active = routes.includes(route) ? route : ''; const isCommunityRoute = active === 'community-alerts'; shell.classList.toggle('new-route', Boolean(active)); shell.classList.toggle('community-route', isCommunityRoute); addedScreens.forEach((screen) => screen.classList.toggle('active', screen.id === `${active}-screen`)); addedNav.style.display = isCommunityRoute ? 'none' : 'grid'; addedNav.querySelectorAll('button[data-route]').forEach((button) => button.classList.toggle('active', button.dataset.route === (active || 'home'))); };
+      const farmLogsCard = document.querySelector('.quick button:nth-child(3)');
+      farmLogsCard.addEventListener('click', () => { previousRoute = location.hash.slice(1) || ''; location.hash = 'farm-logs'; });
+      document.getElementById('community-alerts-card').addEventListener('click', () => { previousRoute = location.hash.slice(1) || ''; location.hash = 'community-alerts'; });
+      document.getElementById('community-back').addEventListener('click', () => { location.hash = previousRoute; });
+      document.getElementById('community-notifications-button').addEventListener('click', openNotifications);
+      const COMMUNITY_ALERTS_KEY = 'tanodbukid_community_alerts';
+      const communityAlertSamples = [
+        { id: 'community-pest', category: 'pest', user: 'Juan Reyes', initials: 'JR', location: 'Sitio Bagong Bayan, Sta. Maria', time: '2h ago', title: 'Armyworm infestation spotted in corn field at Sitio Bagong Bayan', description: 'Noticed armyworm feeding on young corn leaves. Already reported to our barangay tanod.', likes: 12, comments: 4, visual: 'pest' },
+        { id: 'community-flood', category: 'flood', user: 'Ana Lopez', initials: 'AL', location: 'San Rafael, Bulacan', time: '4h ago', title: 'San Jose creek rising — now at warning level', description: 'Water level is now at 2.6 meters. Please avoid low areas and keep your animals in higher ground.', likes: 18, comments: 6, visual: 'flood' },
+        { id: 'community-tips', category: 'tips', user: 'Marian Reyes', initials: 'MR', location: 'Purok 5, San Rafael', time: '5h ago', title: 'Apply neem oil before rains', description: 'Neem oil can help protect young leaves when applied before the rain begins.', likes: 24, comments: 8, visual: 'tips' },
+        { id: 'community-weather', category: 'weather', user: 'Criselda Santos', initials: 'CS', location: 'Malolos, Bulacan', time: '7h ago', title: 'Possible heavy rain this weekend', description: 'Based on PAGASA update, there may be heavy rainfall in our area from Oct 26–27.', likes: 16, comments: 3, visual: 'weather' }
+      ];
+      const communityCategoryLabels = { pest: 'Pest Report', flood: 'Flood Update', weather: 'Weather', tips: 'Tips' };
+      const communityEscape = (value) => String(value || '').replace(/[&<>'"]/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[character]);
+      const readCommunityAlerts = () => { try { const saved = JSON.parse(localStorage.getItem(COMMUNITY_ALERTS_KEY) || '[]'); return Array.isArray(saved) ? saved.concat(communityAlertSamples) : communityAlertSamples.slice(); } catch { return communityAlertSamples.slice(); } };
+      let communityAlerts = readCommunityAlerts();
+      let selectedCommunityFilter = 'all';
+      const communityVisualMarkup = (alert) => alert.image ? `<img class="community-thumb uploaded" src="${communityEscape(alert.image)}" alt="Uploaded image for ${communityEscape(alert.title)}">` : `<span class="community-thumb ${communityEscape(alert.visual || alert.category)}" role="img" aria-label="${communityEscape(communityCategoryLabels[alert.category] || 'Community alert visual')}"></span>`;
+      const renderCommunityAlerts = () => {
+        const visibleAlerts = communityAlerts.filter((alert) => selectedCommunityFilter === 'all' || alert.category === selectedCommunityFilter);
+        document.querySelectorAll('[data-community-filter]').forEach((button) => { const selected = button.dataset.communityFilter === selectedCommunityFilter; button.classList.toggle('selected', selected); button.setAttribute('aria-selected', String(selected)); });
+        document.getElementById('community-alert-list').innerHTML = visibleAlerts.length ? visibleAlerts.map((alert) => `<button class="community-card" type="button" data-community-alert-id="${communityEscape(alert.id)}" data-community-category="${communityEscape(alert.category)}"><span class="community-card-copy"><span class="community-meta"><span class="community-user-avatar">${communityEscape(alert.initials)}</span><span class="community-user">${communityEscape(alert.user)}</span><span class="community-location">${communityEscape(alert.location)}</span><span class="community-time">${communityEscape(alert.time)}</span></span><span class="community-badge ${alert.category === 'flood' || alert.category === 'weather' || alert.category === 'tips' ? alert.category : ''}">${communityEscape(communityCategoryLabels[alert.category])}</span><h2>${communityEscape(alert.title)}</h2><p>${communityEscape(alert.description)}</p><span class="community-engagement">♡ ${Number(alert.likes) || 0} &nbsp; ◌ ${Number(alert.comments) || 0}</span></span>${communityVisualMarkup(alert)}<span class="community-chevron">›</span></button>`).join('') : '<p class="farm-log-empty">No community alerts in this category yet.</p>';
+      };
+      document.querySelectorAll('[data-community-filter]').forEach((filter) => filter.addEventListener('click', () => { selectedCommunityFilter = filter.dataset.communityFilter; renderCommunityAlerts(); }));
+      document.getElementById('community-alert-list').addEventListener('click', (event) => { const card = event.target.closest('[data-community-alert-id]'); if (!card) return; const alert = communityAlerts.find((item) => item.id === card.dataset.communityAlertId); if (alert) modal(alert.title, `<p>${communityEscape(alert.description)}</p><p><strong>${communityEscape(alert.user)}</strong><br>${communityEscape(communityCategoryLabels[alert.category])}<br>${communityEscape(alert.location)}</p>`); });
+      const openCommunityReport = () => {
+        const dialog = modal('Report an Issue', '<p>Share an update, alert, or question with the community.</p><label for="community-report-title">Post title</label><input id="community-report-title" placeholder="What’s happening?"><label for="community-report-details">Description</label><textarea id="community-report-details" rows="4" placeholder="Share an update, alert, or question with the community…"></textarea><label for="community-report-category">Category</label><select id="community-report-category"><option value="pest">Pest Report</option><option value="flood">Flood Update</option><option value="weather">Weather</option><option value="tips">Tips</option></select><label for="community-report-location">Location</label><input id="community-report-location" placeholder="Enter location"><div class="community-upload" id="community-upload"><label class="community-upload-label" for="community-report-image"><span class="community-upload-icon">📷</span><strong>Import Picture</strong><span>Add a photo to your alert</span></label><input id="community-report-image" type="file" accept="image/*"><img class="community-upload-preview" id="community-upload-preview" alt="Selected alert preview"><div class="community-upload-actions"><button type="button" id="community-change-image">Change Picture</button><button type="button" id="community-remove-image">Remove</button></div></div><p class="community-report-error" id="community-report-error" role="alert"></p>', '<button class="secondary" data-close>Cancel</button><button class="primary" id="submit-community-report">Post Alert</button>');
+        const upload = dialog.querySelector('#community-upload');
+        const imageInput = dialog.querySelector('#community-report-image');
+        const preview = dialog.querySelector('#community-upload-preview');
+        let imageData = '';
+        imageInput.addEventListener('change', () => { const file = imageInput.files && imageInput.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = () => { imageData = reader.result || ''; preview.src = imageData; upload.classList.add('has-preview'); }; reader.readAsDataURL(file); });
+        dialog.querySelector('#community-change-image').addEventListener('click', () => imageInput.click());
+        dialog.querySelector('#community-remove-image').addEventListener('click', () => { imageData = ''; imageInput.value = ''; preview.removeAttribute('src'); upload.classList.remove('has-preview'); });
+        dialog.querySelector('#submit-community-report').addEventListener('click', () => {
+          const title = dialog.querySelector('#community-report-title').value.trim();
+          const description = dialog.querySelector('#community-report-details').value.trim();
+          const location = dialog.querySelector('#community-report-location').value.trim();
+          const error = dialog.querySelector('#community-report-error');
+          if (!title || !description || !location) { error.textContent = 'Please complete the title, description, and location.'; return; }
+          const category = dialog.querySelector('#community-report-category').value;
+          const newAlert = { id: `community-user-${Date.now()}`, category, user: 'Mang Juan', initials: 'MJ', location, time: 'Just now', title, description, likes: 0, comments: 0, image: imageData, visual: category };
+          communityAlerts = [newAlert, ...communityAlerts];
+          try { localStorage.setItem(COMMUNITY_ALERTS_KEY, JSON.stringify(communityAlerts.filter((alert) => !communityAlertSamples.some((sample) => sample.id === alert.id)))); } catch (storageError) { console.warn('Unable to save community alert:', storageError); }
+          selectedCommunityFilter = 'all';
+          renderCommunityAlerts();
+          dialog.remove();
+        });
+      };
+      document.getElementById('report-issue-button').addEventListener('click', openCommunityReport);
+      renderCommunityAlerts();
+      document.querySelectorAll('[data-community-nav]').forEach((button) => button.addEventListener('click', () => {
+        const destination = button.dataset.communityNav;
+        if (destination === 'home') location.hash = '';
+        else if (destination === 'community-alerts') location.hash = 'community-alerts';
+        else if (destination === 'farm-logs') location.hash = 'farm-logs';
+        else if (destination === 'profile') location.hash = 'profile';
+      }));
+      document.getElementById('farm-logs-back').addEventListener('click', () => { location.hash = previousRoute; });
+      document.getElementById('farm-log-add').addEventListener('click', () => { previousRoute = 'farm-logs'; location.hash = 'add'; });
+      const dateFromToday = (offset) => { const date = new Date(); date.setHours(0, 0, 0, 0); date.setDate(date.getDate() + offset); return date.toISOString().slice(0, 10); };
+      const sampleFarmActivities = () => [
+        { id: 'sample-fertilizer', type: 'Crop Care', date: dateFromToday(7), title: 'Applied fertilizer — Urea 46-0-0', details: 'Field A, 2.5 ha, 3 bags.', related: '', cost: '' },
+        { id: 'sample-watering', type: 'Crop Care', date: dateFromToday(2), title: 'Watering — North Field', details: 'Scheduled irrigation for Palay.', related: '', cost: '' },
+        { id: 'sample-vaccination', type: 'Livestock', date: dateFromToday(-3), title: 'FMD vaccination — 5 heads cattle', details: 'DA-facilitated vaccination.', related: '', cost: '' }
+      ];
+      const readFarmActivities = () => {
+        try {
+          const stored = JSON.parse(localStorage.getItem(FARM_ACTIVITIES_KEY) || 'null');
+          if (Array.isArray(stored) && stored.length) return stored;
+          const samples = sampleFarmActivities();
+          localStorage.setItem(FARM_ACTIVITIES_KEY, JSON.stringify(samples));
+          return samples;
+        } catch (error) { console.warn('Unable to read farm activities:', error); return sampleFarmActivities(); }
+      };
+      let farmActivities = readFarmActivities();
+      const escapeHtml = (value) => String(value || '').replace(/[&<>'"]/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[character]);
+      const categoryForType = (type) => type === 'Livestock' ? 'livestock' : type === 'Post-Harvest' ? 'post-harvest' : 'crop-care';
+      const categoryLabelForType = (type) => type === 'Post-Harvest' ? 'Post-harvest' : type || 'Crop care';
+      const formatDateParts = (dateValue) => { const date = new Date(`${dateValue}T00:00:00`); return { day: date.getDate(), month: date.toLocaleString('en-US', { month: 'short' }).toUpperCase() }; };
+      const activityDescription = (activity) => [activity.details, activity.related ? `Related: ${activity.related}` : '', activity.cost ? `Cost: ${activity.cost}` : ''].filter(Boolean).join(' · ');
+      const renderFarmLogs = (selectedFilter = 'all') => {
+        const visibleActivities = farmActivities.filter((activity) => selectedFilter === 'all' || categoryForType(activity.type) === selectedFilter);
+        farmLogList.innerHTML = visibleActivities.length ? visibleActivities.map((activity) => { const date = formatDateParts(activity.date); const category = categoryForType(activity.type); return `<article class="farm-log-card" data-log-category="${category}"><span class="farm-log-date" data-deadline="${escapeHtml(activity.date)}" aria-label="${date.day} ${date.month}">${date.day}<br>${date.month}</span><span class="farm-log-copy"><strong>${escapeHtml(activity.title)}</strong><p>${escapeHtml(activityDescription(activity))}</p><span class="farm-log-category ${category === 'livestock' || category === 'post-harvest' ? category : ''}">${escapeHtml(categoryLabelForType(activity.type))}</span></span><span class="farm-log-chevron">›</span></article>`; }).join('') : '<p class="farm-log-empty">No farm activities in this category yet.</p>';
+        document.querySelectorAll('[data-log-filter]').forEach((button) => { const selected = button.dataset.logFilter === selectedFilter; button.classList.toggle('selected', selected); button.setAttribute('aria-selected', String(selected)); });
+        updateFarmLogDeadlineStatus();
+      };
+      const updateFarmLogDeadlineStatus = () => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        document.querySelectorAll('.farm-log-date[data-deadline]').forEach((dateBlock) => {
+          const deadline = new Date(`${dateBlock.dataset.deadline}T00:00:00`);
+          if (Number.isNaN(deadline.getTime())) return;
+          const daysUntilDeadline = Math.ceil((deadline - today) / 86400000);
+          const status = daysUntilDeadline < 0 ? 'overdue' : daysUntilDeadline <= 3 ? 'due-soon' : '';
+          dateBlock.classList.remove('due-soon', 'overdue');
+          delete dateBlock.dataset.status;
+          dateBlock.setAttribute('aria-label', dateBlock.getAttribute('aria-label').replace(/ - (Overdue|Due soon)$/, ''));
+          if (status) { dateBlock.classList.add(status); dateBlock.dataset.status = status === 'overdue' ? 'Overdue' : 'Due soon'; dateBlock.setAttribute('aria-label', `${dateBlock.getAttribute('aria-label')} - ${dateBlock.dataset.status}`); }
+        });
+      };
+      document.querySelectorAll('[data-log-filter]').forEach((filter) => filter.addEventListener('click', () => renderFarmLogs(filter.dataset.logFilter)));
+      renderFarmLogs();
+      addedNav.querySelectorAll('button[data-route]').forEach((button) => button.addEventListener('click', () => { location.hash = button.dataset.route === 'home' ? '' : button.dataset.route; }));
+      addedNav.querySelector('.add-nav-item').addEventListener('click', () => { const currentRoute = location.hash.slice(1); previousRoute = routes.includes(currentRoute) && currentRoute !== 'add' ? currentRoute : ''; location.hash = 'add'; });
+      document.querySelectorAll('.activity-type').forEach((button) => button.addEventListener('click', () => { document.querySelectorAll('.activity-type').forEach((typeButton) => typeButton.classList.toggle('selected', typeButton === button)); }));
+      activityDate.value = new Date().toISOString().slice(0, 10);
+      document.getElementById('cancel-activity').addEventListener('click', () => { location.hash = previousRoute; });
+      activityForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const formData = new FormData(activityForm);
+        const title = String(formData.get('title') || '').trim();
+        const date = String(formData.get('date') || '').trim();
+        if (!title || !date || !activityForm.reportValidity()) return;
+        const activity = { id: `activity-${Date.now()}`, type: document.querySelector('.activity-type.selected').dataset.activityType, date, title, details: String(formData.get('details') || '').trim(), related: String(formData.get('related') || '').trim(), cost: String(formData.get('cost') || '').trim() };
+        farmActivities = [activity, ...farmActivities];
+        try { localStorage.setItem(FARM_ACTIVITIES_KEY, JSON.stringify(farmActivities)); } catch (error) { console.warn('Unable to save farm activities:', error); }
+        activityForm.reset();
+        document.querySelectorAll('.activity-type').forEach((button) => button.classList.toggle('selected', button.dataset.activityType === 'Crop Care'));
+        activityDate.value = new Date().toISOString().slice(0, 10);
+        farmLogFeedback.textContent = 'Farm activity saved successfully.';
+        farmLogFeedback.classList.add('visible');
+        renderFarmLogs();
+        previousRoute = 'farm-logs';
+        location.hash = 'farm-logs';
+      });
+      document.querySelectorAll('.toggle').forEach((toggle, index) => { const key = `tanod-toggle-${index}`; const saved = localStorage.getItem(key); if (saved !== null) toggle.classList.toggle('on', saved === 'true'); toggle.addEventListener('click', () => { toggle.classList.toggle('on'); localStorage.setItem(key, toggle.classList.contains('on')); }); });
+      const scanUpload = document.getElementById('scan-upload');
+      const cameraPanel = document.getElementById('camera-panel');
+      const cameraLive = document.getElementById('camera-live');
+      const cameraSwitch = document.getElementById('camera-switch');
+      const detectionLabel = document.getElementById('live-detection-label');
+      const detectionStates = ['Healthy crop check', 'Possible leaf stress', 'Disease pattern detected', 'Growth anomaly review'];
+      let cameraStream = null;
+      let cameraDevices = [];
+      let cameraFacingMode = 'environment';
+      let detectionInterval = null;
+
+      const stopCamera = () => {
+        if (cameraStream) {
+          cameraStream.getTracks().forEach((track) => track.stop());
+          cameraStream = null;
+        }
+        if (detectionInterval) {
+          clearInterval(detectionInterval);
+          detectionInterval = null;
+        }
+        if (cameraLive) cameraLive.srcObject = null;
+        if (cameraPanel) cameraPanel.classList.remove('active');
+      };
+
+      const startLiveDetection = () => {
+        if (detectionInterval) clearInterval(detectionInterval);
+        detectionInterval = setInterval(() => {
+          const state = detectionStates[Math.floor(Math.random() * detectionStates.length)];
+          if (detectionLabel) detectionLabel.textContent = state;
+        }, 2000);
+      };
+
+      const showPhotoPreview = (src, altText) => {
+        if (!scanUpload) return;
+        const preview = scanUpload.querySelector('.upload-preview');
+        if (preview) preview.remove();
+        const image = document.createElement('img');
+        image.className = 'upload-preview';
+        image.alt = altText;
+        image.src = src;
+        scanUpload.classList.add('has-image');
+        scanUpload.insertBefore(image, scanUpload.firstChild);
+        const existingAnalyze = document.getElementById('analyze-photo');
+        if (existingAnalyze) existingAnalyze.remove();
+        const analyzeButton = document.createElement('button');
+        analyzeButton.type = 'button';
+        analyzeButton.className = 'analyze';
+        analyzeButton.id = 'analyze-photo';
+        analyzeButton.textContent = 'Send photo';
+        analyzeButton.addEventListener('click', () => {
+          analyzeButton.textContent = 'Analyzing...';
+          analyzeButton.classList.add('loading');
+          setTimeout(() => {
+            analyzeButton.remove();
+            modal('Photo sent to Tanod Bukid AI', '<p>Rice Blast Detected<br><strong>87% confidence</strong><br>Early stage and manageable with timely intervention.</p>');
+          }, 900);
+        });
+        scanUpload.appendChild(analyzeButton);
+      };
+
+      const updateCameraDevices = async () => {
+        if (!navigator.mediaDevices.enumerateDevices) return;
+        cameraDevices = (await navigator.mediaDevices.enumerateDevices()).filter((device) => device.kind === 'videoinput');
+      };
+
+      const startCamera = async (facingMode = cameraFacingMode, deviceId = '', showError = true) => {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+          if (showError) modal('Camera unavailable', '<p>Use a desktop or mobile browser that supports camera access, or upload a photo instead.</p>');
+          return false;
+        }
+
+        try {
+          stopCamera();
+          const videoConstraints = deviceId ? { deviceId: { exact: deviceId } } : { facingMode: { ideal: facingMode } };
+          const stream = await navigator.mediaDevices.getUserMedia({ video: videoConstraints, audio: false });
+          cameraStream = stream;
+          cameraFacingMode = facingMode;
+          if (cameraLive) {
+            cameraLive.srcObject = stream;
+            await cameraLive.play();
+          }
+          if (cameraPanel) cameraPanel.classList.add('active');
+          await updateCameraDevices();
+          startLiveDetection();
+          return true;
+        } catch (error) {
+          if (showError) modal('Camera access blocked', '<p>Camera permission is required for live detection. You can still choose a photo from your device.</p>');
+          return false;
+        }
+      };
+
+      const switchCamera = async () => {
+        if (!cameraStream) return;
+        const currentDeviceId = cameraStream.getVideoTracks()[0]?.getSettings().deviceId || '';
+        const nextFacingMode = cameraFacingMode === 'environment' ? 'user' : 'environment';
+        if (await startCamera(nextFacingMode, '', false)) return;
+        await updateCameraDevices();
+        const preferredPattern = nextFacingMode === 'user' ? /front|facetime|user|selfie/i : /back|rear|environment|world/i;
+        const preferredDevice = cameraDevices.find((device) => device.deviceId !== currentDeviceId && preferredPattern.test(device.label));
+        const fallbackDevice = cameraDevices.find((device) => device.deviceId !== currentDeviceId);
+        if (await startCamera(nextFacingMode, (preferredDevice || fallbackDevice)?.deviceId || '', false)) return;
+        modal('Camera switch unavailable', '<p>This device could not switch cameras. You can continue using the current camera or upload a photo instead.</p>');
+      };
+
+      document.querySelectorAll('.segment button').forEach((button) => button.addEventListener('click', () => { document.querySelectorAll('.segment button').forEach((tab) => tab.classList.toggle('active', tab === button)); const upload = document.querySelector('.upload p'); if (upload) upload.textContent = button.textContent.includes('Livestock') ? 'Take or upload a clear livestock photo for AI analysis' : 'Take or upload a clear photo for AI analysis'; }));
+      document.getElementById('choose-photo').addEventListener('click', () => document.getElementById('photo-input').click());
+      document.getElementById('camera-photo').addEventListener('click', () => startCamera('environment'));
+      document.getElementById('camera-switch').addEventListener('click', switchCamera);
+      document.getElementById('close-camera').addEventListener('click', stopCamera);
+      document.getElementById('capture-photo').addEventListener('click', () => {
+        if (!cameraLive || !cameraLive.videoWidth || !cameraLive.videoHeight) {
+          modal('Camera unavailable', '<p>Please allow camera access before capturing a live photo.</p>');
+          return;
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = cameraLive.videoWidth;
+        canvas.height = cameraLive.videoHeight;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(cameraLive, 0, 0, canvas.width, canvas.height);
+        stopCamera();
+        showPhotoPreview(canvas.toDataURL('image/jpeg', 0.92), 'Captured live scan');
+      });
+      document.getElementById('photo-input').addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+        stopCamera();
+        showPhotoPreview(URL.createObjectURL(file), 'Selected farm image');
+      });
+      document.querySelectorAll('.forecast-card').forEach((card) => card.addEventListener('click', () => { document.querySelectorAll('.forecast-card').forEach((day) => day.classList.remove('selected')); card.classList.add('selected'); const day = card.querySelector('b').textContent; const temp = card.querySelector('strong').textContent; modal(`${day} forecast`, `<p>Expected temperature: <strong>${temp}</strong><br>Rain probability is moderate. Plan field work around the afternoon showers.</p>`); }));
+      document.querySelectorAll('.alert').forEach((alert) => alert.addEventListener('click', (event) => { const title = alert.querySelector('h3').textContent; const details = alert.querySelector('p').textContent; modal(title, `<p>${details}</p><p><strong>${alert.querySelector('.source').textContent.replace('›', '').trim()}</strong></p>`); }));
+      document.querySelectorAll('.source').forEach((source) => source.addEventListener('click', (event) => { event.stopPropagation(); modal('PAGASA bulletin #4', '<p>Official bulletin details: monitor rainfall, secure livestock, and move equipment to higher ground as conditions change.</p>'); }));
+      document.querySelectorAll('.screen-title a').forEach((link) => link.addEventListener('click', (event) => { event.preventDefault(); modal(link.textContent === 'See all' ? 'All active alerts' : 'Complete scan history', '<p>Showing every available item for your farm. New updates will appear here after each scan or advisory.</p>'); }));
+      document.querySelectorAll('.action').forEach((action) => action.addEventListener('click', () => modal(action.textContent.replace('›', '').trim(), '<p>This recommendation has been opened. Follow the steps carefully and monitor the crop over the next few days.</p>')));
+      document.querySelectorAll('.history-card').forEach((item) => item.addEventListener('click', () => modal(item.querySelector('.history-copy').firstChild.textContent, `<p>${item.querySelector('small').textContent}<br>Status: ${item.querySelector('.history-badge').textContent}</p><p>Review the recorded observations and compare them with the current crop condition.</p>`)));
+      document.querySelectorAll('#profile-screen .profile-row').forEach((row) => row.addEventListener('click', () => { const label = row.querySelector('.row-label').textContent; if (label.includes('Crops')) modal('My Crops & Livestock', '<p><strong>Crops</strong><br>Palay · Irrigated<br>Tomato · Field A<br>Munggo · Field B</p><p><strong>Livestock</strong><br>Cattle · 4 heads<br>Chicken · 12 heads</p>'); if (label.includes('Location')) { const dialog = modal('Farm Location & Size', '<label>Farm location<input id="farm-location" value="Sta. Maria, Bulacan"></label><label>Farm size<input id="farm-size" value="3.5" type="number" step="0.1"></label><p class="modal-message" id="form-message"></p>', '<button class="secondary" data-close>Cancel</button><button class="primary" id="save-farm">Save</button>'); dialog.querySelector('#save-farm').addEventListener('click', () => { localStorage.setItem('farm-location', dialog.querySelector('#farm-location').value); localStorage.setItem('farm-size', dialog.querySelector('#farm-size').value); dialog.querySelector('#form-message').style.color = '#397454'; dialog.querySelector('#form-message').textContent = 'Farm information saved.'; }); } if (label.includes('Reports')) modal('Farm Reports & History', '<p>Weekly report: Farm health is stable at 80%.</p><p>Recent activity and scan records are available in your farm history.</p>'); if (label === 'Language') { const dialog = modal('Choose language', '<select id="language"><option>Filipino</option><option>English</option></select>', '<button class="primary" id="save-language">Save</button>'); dialog.querySelector('#language').value = localStorage.getItem('language') || 'Filipino'; dialog.querySelector('#save-language').addEventListener('click', () => { localStorage.setItem('language', dialog.querySelector('#language').value); row.querySelector('.row-value').textContent = dialog.querySelector('#language').value; dialog.remove(); }); } if (label.includes('Password')) { const dialog = modal('Change Password', '<label>Current password<input type="password" id="current-password"></label><label>New password<input type="password" id="new-password"></label><label>Confirm new password<input type="password" id="confirm-password"></label><p class="modal-message" id="password-message"></p>', '<button class="secondary" data-close>Cancel</button><button class="primary" id="save-password">Update</button>'); dialog.querySelector('#save-password').addEventListener('click', () => { const next = dialog.querySelector('#new-password').value; const confirm = dialog.querySelector('#confirm-password').value; const message = dialog.querySelector('#password-message'); if (!next || next.length < 6 || next !== confirm) message.textContent = 'Use at least 6 characters and make both new passwords match.'; else { message.style.color = '#397454'; message.textContent = 'Password updated in this browser only.'; } }); } if (label.includes('Sign Out') && confirm('Sign out of Tanod Bukid?')) location.hash = ''; }));
+      document.querySelectorAll('#profile-screen .profile-row .row-label').forEach((label) => { if (label.textContent === 'Language' && localStorage.getItem('language')) label.parentElement.querySelector('.row-value').textContent = localStorage.getItem('language'); });
+      window.addEventListener('hashchange', showRoute); showRoute();
+    })();
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard - Tanod Bukid</title>
+  <link rel="icon" href="/assets/bukid-DsyEwStS.jpg">
+  <script type="module" crossorigin src="/assets/dashboard-Dvs2nANF.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/responsive-tokens-D3s_mGTX.js">
+  <link rel="modulepreload" crossorigin href="/assets/chat-widget-DkfvU3JZ.js">
+  <link rel="stylesheet" crossorigin href="/assets/responsive-tokens-DvAcVn5e.css">
+  <link rel="stylesheet" crossorigin href="/assets/styles-DBAEWoPk.css">
+  <link rel="stylesheet" crossorigin href="/assets/chat-widget-C_JfJj6j.css">
+</head>
+
+<body class="scanner-page">
+  <main class="dashboard-page app-shell">
+    <section class="monitor-shell" aria-label="Plant and crop scanner">
+      <header class="monitor-header">
+        <div class="monitor-brand"><span class="brand-mark">+</span><span><strong>Plant / Crop Scan</strong><small>Live
+              analysis and monitoring powered by AI</small></span></div><button class="history-button" type="button"
+          id="scan-history-button" aria-haspopup="dialog" aria-controls="scan-history-dialog">History</button>
+      </header>
+      <div class="monitor-tabs" role="tablist" aria-label="Scan views"><button class="active" id="live-camera-tab"
+          type="button" role="tab" aria-selected="true">◉ &nbsp;Live Camera</button><button id="ai-analysis-tab"
+          type="button" role="tab" aria-selected="false">✦ &nbsp;AI Analysis</button></div>
+
+      <div id="live-scan-view">
+        <section class="camera-card"><video id="camera-live" autoplay playsinline muted
+            aria-label="Live plant camera"></video>
+          <div class="camera-shade"></div>
+          <div class="live-pill"><span></span><span id="live-state">Starting...</span></div>
+          <div class="scan-frame" aria-hidden="true"><i></i><i></i><i></i><i></i><span></span></div>
+          <div class="detection-pill">Plant detected <strong><span id="confidence">92</span>% confidence</strong></div>
+          <p id="camera-error" class="camera-error" hidden></p>
+        </section>
+        <div class="camera-capture-controls">
+          <div class="scan-capture-actions">
+            <button id="capture-live-photo" class="live-capture-button" type="button" aria-label="Capture Photo">
+              <span aria-hidden="true">◉</span>Capture Photo
+            </button>
+            <button id="upload-scan-photo" class="camera-upload-button" type="button" aria-label="Upload Photo">
+              <span aria-hidden="true">▧</span>Upload Photo
+            </button>
+          </div>
+          <input id="scan-photo-input" type="file" accept="image/*" hidden>
+          <p id="capture-photo-status" class="capture-photo-status" role="status" aria-live="polite" hidden></p>
+          <div id="captured-photo-preview" class="captured-photo-preview" hidden>
+            <img id="captured-live-photo" alt="Captured plant preview">
+            <div class="captured-photo-actions">
+              <button id="retake-live-photo" class="retake-photo-button" type="button">Retake</button>
+              <button id="use-live-photo" class="use-photo-button" type="button">Use Photo</button>
+            </div>
+          </div>
+        </div>
+        <section class="analysis-card">
+          <div class="section-heading">
+            <h2><span class="leaf-icon">✦</span> AI Health Analysis</h2><span id="monitoring-tag"
+              class="monitoring-tag">Starting...</span>
+          </div>
+          <div class="metric-list">
+            <div><span class="metric-icon">✦</span><span>Plant Health</span><strong
+                class="healthy-text">Healthy</strong><b>›</b></div>
+            <div><span class="metric-icon">◈</span><span>Leaf Condition</span><strong>Normal</strong><b>›</b></div>
+            <div><span class="metric-icon">▰</span><span>Growth Stage</span><strong>Vegetative</strong><b>›</b></div>
+            <div><span class="metric-icon">◒</span><span>Disease Risk</span><strong>Low</strong><b>›</b></div>
+            <div><span class="metric-icon">◌</span><span>Discoloration</span><strong>None detected</strong><b>›</b>
+            </div>
+          </div><button id="monitor-toggle" class="pause-button" type="button"><span>Ⅱ</span>Pause Monitoring</button>
+        </section>
+        <section class="dashboard-section">
+          <div class="section-heading">
+            <h2>⟳ &nbsp;Recent Changes</h2><button type="button">View all</button>
+          </div>
+          <article class="change-row"><span class="row-icon leaf-bg">◒</span><span><strong>Leaf discoloration
+                increased</strong><small>Compared to last scan (2 days ago)</small></span><em>+8%</em></article>
+        </section>
+        <section class="dashboard-section farm-log">
+          <div class="section-heading">
+            <h2>▣ &nbsp;Farm Log</h2><button type="button">View all</button>
+          </div>
+          <p><strong>Jul 17, 2025 · 10:24 AM</strong><br>Plant health: Healthy · Growth: +4.2%<br><span>Notes:
+              Insufficient sunlight.</span></p>
+        </section>
+        <section class="dashboard-section alert-section">
+          <div class="section-heading">
+            <h2>△ &nbsp;Alerts</h2><button type="button">View all</button>
+          </div>
+          <article class="alert-row"><span class="row-icon alert-bg">△</span><span><strong>Possible Rice
+                Blast</strong><small>Detected: Jul 16, 2025 · 2:14 PM<br>Recommended action: Inspect affected
+                leaves</small></span><em>Moderate Risk</em></article>
+        </section>
+        <section class="recommendation"><span>♧</span>
+          <div><strong>AI Recommendation</strong>
+            <p>Keep monitoring for further changes.<br>Ensure proper irrigation and field drainage.</p>
+          </div>
+        </section>
+        <section class="quick-actions">
+          <h2>Quick Actions</h2>
+          <div><button type="button"><span>◉</span>Scan Again</button><button type="button"><span>♧</span>Save
+              Result</button><button id="ask-ai-button" type="button"><span>◌</span>Ask AI</button><button
+              type="button"><span>▣</span>View
+              Logs</button></div>
+        </section>
+      </div>
+
+      <div class="scan-results" id="scan-analysis-view" hidden>
+        <p class="analysis-save-status" id="analysis-save-status" role="status" aria-live="polite" hidden></p>
+        <section class="analysis-unavailable" id="analysis-unavailable" aria-live="polite" hidden>
+          <div class="analysis-unavailable-image"><img id="analysis-unavailable-photo" alt="Submitted crop scan"
+              hidden><span id="analysis-unavailable-placeholder" aria-hidden="true">🌱</span></div>
+          <div><span class="analysis-unavailable-label">AI RESULT</span>
+            <h2 id="analysis-unavailable-title">Result unavailable</h2>
+            <p id="analysis-unavailable-copy"></p>
+          </div>
+        </section>
+        <div class="result-overview">
+          <section class="scan-photo-card">
+            <img id="analysis-photo" src="/assets/plants%20(1)-CaiXt4js.jpg" alt="Scanned crop leaf">
+            <span class="analysis-complete"><span>✓</span> Analysis Complete</span>
+          </section>
+          <section class="result-health-card">
+            <div class="result-crop-heading"><span class="crop-leaf">❧</span>
+              <div>
+                <h2>Rice</h2><em>Oryza sativa</em>
+              </div><span class="confidence-pill"><span id="result-confidence">98</span>% confidence</span>
+            </div>
+            <div class="result-metrics">
+              <div class="result-health-summary"><span class="result-metric-icon">♥</span><span>Plant
+                  Health</span><strong>Healthy</strong></div>
+              <div><span class="result-metric-icon">❧</span><span>Leaf Condition</span><strong>Normal</strong></div>
+              <div><span class="result-metric-icon">♣</span><span>Growth Stage</span><strong>Vegetative</strong></div>
+              <div><span class="result-metric-icon">✿</span><span>Disease Risk</span><strong>Low</strong></div>
+              <div><span class="result-metric-icon">◈</span><span>Discoloration</span><strong>None detected</strong>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <section class="result-section change-detection">
+          <div class="result-section-heading"><span class="result-section-icon">⟳</span>
+            <div>
+              <h2>Change Detection</h2>
+              <p>Compared to your previous scan (2 days ago)</p>
+            </div>
+          </div>
+          <div class="result-change-row"><span class="result-leaf-badge">❧</span>
+            <div><strong>Slight increase in leaf spot areas</strong>
+              <p>Leaf discoloration increased by 8% since last scan.</p>
+              <p class="change-detail-copy" id="change-detail-copy" hidden>Continue checking affected leaves and compare
+                again after your next scan.</p>
+            </div><button id="change-details-button" type="button" aria-expanded="false">View Details
+              <span>›</span></button>
+          </div>
+        </section>
+
+        <section class="result-section result-farm-log">
+          <div class="result-section-heading"><span class="result-section-icon">▤</span>
+            <h2>Farm Log</h2><button type="button">View All</button>
+          </div>
+          <div class="farm-log-entry"><img id="analysis-thumbnail" src="/assets/plants%20(1)-CaiXt4js.jpg"
+              alt="Rice scan thumbnail">
+            <div class="farm-log-content">
+              <p class="farm-log-time">Jul 17, 2025 <span>·</span> 10:24 AM</p>
+              <div class="farm-log-tags"><span>Health: Healthy</span><span>Growth: Vegetative</span><span>Risk:
+                  Low</span></div>
+              <p class="farm-log-note">▤ &nbsp;No issues detected.</p>
+            </div><span class="farm-log-arrow">›</span>
+          </div>
+        </section>
+
+        <section class="result-recommendation"><span class="recommendation-bulb">♧</span>
+          <div>
+            <h2>Recommendation</h2><strong>Continue current care routine.</strong>
+            <p>Monitor the affected areas closely. If discoloration increases or spreads, check for possible fungal
+              infection and improve field drainage.</p>
+          </div><span class="recommendation-arrow">›</span>
+        </section>
+      </div>
+    </section>
+  </main>
+  <nav class="new-bottom-nav" aria-label="Main navigation">
+    <button type="button" data-dashboard-route="home"><span class="nav-icon">⌂</span><span>Home</span></button>
+    <button class="active" type="button" aria-current="page" data-dashboard-route="scan"><span
+        class="nav-icon">⌾</span><span>Scan</span></button>
+    <button class="add-nav-item" type="button" data-dashboard-route="add"><span class="add">+</span><span
+        class="add-label">Add</span></button>
+    <button type="button" data-dashboard-route="climate"><span class="nav-icon">⌁</span><span>Climate</span></button>
+    <button type="button" data-dashboard-route="profile"><span class="nav-icon">♙</span><span>Profile</span></button>
+  </nav>
+</body>
+
+</html>

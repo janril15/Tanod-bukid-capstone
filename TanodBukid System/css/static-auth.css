@@ -1,0 +1,7 @@
+.auth-app[hidden] { display: none; }
+.auth-app { min-height: 100vh; }
+.auth-hero { height: 40dvh; min-height: 180px; max-height: 280px; background-image: url('../bukid.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; position: relative; color: white; display: flex; align-items: center; justify-content: center; }
+.auth-hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(rgba(20,40,20,.15), rgba(20,40,20,.15)); }
+.auth-hero-inner { position: relative; padding: 28px 20px 22px; text-align: center; z-index: 1; }
+.auth-hero h1 { margin: 0; font-size: 22px; letter-spacing: 1px; font-weight: 800; }
+.auth-hero p { margin: 6px 0 0; color: rgba(255,255,255,.95); font-size: 13px; }

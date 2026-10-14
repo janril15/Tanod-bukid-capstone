@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dashboard - Tanod Bukid</title>
+    <link rel="icon" href="bukid.jpg">
+    <link rel="stylesheet" href="src/styles.css">
+  </head>
+  <body>
+    <main class="dashboard-page">
+      <section class="dashboard-content">
+        <p class="dashboard-kicker">TANOD BUKID</p>
+        <h1 id="welcome-title">Welcome.</h1>
+        <p>Your farm profile is ready. Keep your farm information and alerts close at hand.</p>
+        <div class="dashboard-overview">
+          <div><span>Farm type</span><strong id="farm-type">Not set</strong></div>
+          <div><span>Farm area</span><strong id="farm-area">Not set</strong></div>
+        </div>
+      </section>
+    </main>
+    <script>
+      (() => {
+        try {
+          const profile = JSON.parse(localStorage.getItem('tanodbukid_profile_setup') || 'null')
+          if (profile?.barangay) document.querySelector('#welcome-title').textContent = `Welcome, ${profile.barangay}.`
+          if (profile?.farmType) document.querySelector('#farm-type').textContent = profile.farmType
+          if (profile?.farmArea) document.querySelector('#farm-area').textContent = `${profile.farmArea} ha`
+        } catch (error) { console.warn('Unable to read saved profile:', error) }
+      })()
+    </script>
+  </body>
+</html>

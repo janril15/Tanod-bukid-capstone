@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tanod Bukid</title>
+  <meta name="description" content="Tanod Bukid landing page for smart farming and stronger future.">
+  <link rel="icon" href="/assets/LOGO-Drt-3GdR.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Roboto:wght@300;400;500;700&display=swap"
+    rel="stylesheet">
+  <script type="module" crossorigin src="/assets/main-DlK32fZY.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/responsive-tokens-D3s_mGTX.js">
+  <link rel="stylesheet" crossorigin href="/assets/responsive-tokens-DvAcVn5e.css">
+  <link rel="stylesheet" crossorigin href="/assets/main-BOMYooJK.css">
+  <link rel="stylesheet" crossorigin href="/assets/styles-DBAEWoPk.css">
+  <link rel="stylesheet" crossorigin href="/assets/chat-widget-C_JfJj6j.css">
+</head>
+
+<body>
+  <div id="landing-app" class="app-shell">
+    <main class="hero screen active" aria-label="Landing screen">
+      <div class="page-shell">
+        <div class="decor decor-left" aria-hidden="true"></div>
+        <div class="decor decor-right" aria-hidden="true"></div>
+        <header class="brand-wrap">
+          <button class="logo-button" type="button" aria-label="Open introduction">
+            <div class="logo-animator" aria-label="Tanod Bukid logo"><img src="/assets/LOGO-Drt-3GdR.png"
+                alt="Tanod Bukid logo" class="brand-logo"></div>
+          </button>
+        </header>
+      </div>
+    </main>
+    <section class="feature-screen page-two screen" aria-label="Intro screen">
+      <div class="feature-device">
+        <div class="feature-illustration-wrap"><img src="/assets/landingpage2-D2W7b1Lw.jpg" alt="Farm monitoring"
+            class="feature-illustration"></div>
+        <div class="feature-content">
+          <div class="feature-dots" aria-label="Page indicator"><span class="dot active"></span><span
+              class="dot"></span><span class="dot"></span></div>
+          <h2>Monitor your farm in<br>real time</h2>
+          <p>Track crop health, livestock conditions,<br>and receive instant alerts using AI-<br>powered tools built for
+            Filipino farmers.</p><button type="button" class="cta-button"><span>Get Started</span><span
+              class="arrow">→</span></button><button type="button" class="skip-button">Skip introduction</button>
+        </div>
+      </div>
+    </section>
+    <section class="feature-screen page-three screen" aria-label="Climate alerts screen">
+      <div class="feature-device">
+        <div class="feature-illustration-wrap"><img src="/assets/landingpage3-DbXq1Wr-.jpg"
+            alt="Climate alerts for farming" class="feature-illustration"></div>
+        <div class="feature-content">
+          <div class="feature-dots" aria-label="Page indicator"><span class="dot"></span><span
+              class="dot active"></span><span class="dot"></span></div>
+          <h2>Stay ahead of climate<br>risks</h2>
+          <p>Get localized typhoon alerts, flood<br>warnings, and 7-day forecasts powered<br>by PAGASA data - before
+            disaster<br>strikes.</p><button type="button" class="cta-button"><span>Next</span><span
+              class="arrow">→</span></button><button type="button" class="skip-button">Skip introduction</button>
+        </div>
+      </div>
+    </section>
+    <section class="feature-screen page-four screen" aria-label="Farm insights screen">
+      <div class="feature-device">
+        <div class="feature-illustration-wrap"><img src="/assets/landingpage4-yT6r1nLa.jpg"
+            alt="Farm performance insights" class="feature-illustration"></div>
+        <div class="feature-content">
+          <div class="feature-dots" aria-label="Page indicator"><span class="dot"></span><span class="dot"></span><span
+              class="dot active"></span></div>
+          <h2>Make smarter decisions<br>for your farm</h2>
+          <p>Turn farm data into clear insights<br>and improve your daily decisions<br>with confidence.</p><button
+            type="button" class="cta-button final-cta"><span>Get Started</span><span
+              class="arrow">→</span></button><button type="button" class="skip-button">Skip introduction</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <main id="auth-app" class="mobile-mock auth-app" hidden>
+    <section class="auth-hero">
+      <div class="auth-hero-inner">
+        <h1 id="page-title">WELCOME</h1>
+        <p id="page-subtitle">Sign in to your TanodBukid account</p>
+      </div>
+    </section>
+    <section id="page-card" class="card"></section>
+  </main>
+
+  <div id="dashboard-app" hidden aria-label="Tanod Bukid dashboard">
+    <main class="dashboard-page">
+      <section class="monitor-shell" aria-label="Plant and crop scanner">
+        <header class="monitor-header">
+          <div class="monitor-brand"><span class="brand-mark">+</span><span><strong>Plant / Crop
+                Scan</strong><small>Live analysis and monitoring powered by AI</small></span></div>
+          <button class="history-button" type="button">History</button>
+        </header>
+        <div class="monitor-tabs"><button class="active" type="button">Live Camera</button><button type="button">AI
+            Analysis</button></div>
+        <section class="camera-card">
+          <video id="camera-live" autoplay playsinline muted aria-label="Live plant camera"></video>
+          <div class="camera-shade"></div>
+          <div class="live-pill"><span></span><span id="live-state">Live</span></div>
+          <div class="scan-frame" aria-hidden="true"><i></i><i></i><i></i><i></i><span></span></div>
+          <div class="detection-pill">Plant detected <strong><span id="confidence">92</span>% confidence</strong></div>
+          <p id="camera-error" class="camera-error" hidden></p>
+        </section>
+        <section class="analysis-card">
+          <div class="section-heading">
+            <h2><span class="leaf-icon">✦</span> AI Health Analysis</h2><span id="monitoring-tag"
+              class="monitoring-tag">Monitoring...</span>
+          </div>
+          <div class="metric-list">
+            <div><span class="metric-icon">✦</span><span>Plant Health</span><strong
+                class="healthy-text">Healthy</strong><b>›</b></div>
+            <div><span class="metric-icon">◈</span><span>Leaf Condition</span><strong>Normal</strong><b>›</b></div>
+            <div><span class="metric-icon">▰</span><span>Growth Stage</span><strong>Vegetative</strong><b>›</b></div>
+            <div><span class="metric-icon">◒</span><span>Disease Risk</span><strong>Low</strong><b>›</b></div>
+            <div><span class="metric-icon">◌</span><span>Discoloration</span><strong>None detected</strong><b>›</b>
+            </div>
+          </div>
+          <button id="monitor-toggle" class="pause-button" type="button"><span>Ⅱ</span>Pause Monitoring</button>
+        </section>
+        <section class="dashboard-section">
+          <div class="section-heading">
+            <h2>⟳ &nbsp;Recent Changes</h2><button type="button">View all</button>
+          </div>
+          <article class="change-row"><span class="row-icon leaf-bg">◒</span><span><strong>Leaf discoloration
+                increased</strong><small>Compared to last scan (2 days ago)</small></span><em>+8%</em></article>
+        </section>
+        <section class="dashboard-section farm-log">
+          <div class="section-heading">
+            <h2>▣ &nbsp;Farm Log</h2><button type="button">View all</button>
+          </div>
+          <p><strong>Jul 17, 2025 · 10:24 AM</strong><br>Plant health: Healthy · Growth: +4.2%<br><span>Notes:
+              Insufficient sunlight.</span></p>
+        </section>
+        <section class="dashboard-section alert-section">
+          <div class="section-heading">
+            <h2>△ &nbsp;Alerts</h2><button type="button">View all</button>
+          </div>
+          <article class="alert-row"><span class="row-icon alert-bg">△</span><span><strong>Possible Rice
+                Blast</strong><small>Detected: Jul 16, 2025 · 2:14 PM<br>Recommended action: Inspect affected
+                leaves</small></span><em>Moderate Risk</em></article>
+        </section>
+        <section class="recommendation"><span>♧</span>
+          <div><strong>AI Recommendation</strong>
+            <p>Keep monitoring for further changes.<br>Ensure proper irrigation and field drainage.</p>
+          </div>
+        </section>
+        <section class="quick-actions">
+          <h2>Quick Actions</h2>
+          <div><button type="button"><span>◉</span>Scan Again</button><button type="button"><span>♧</span>Save
+              Result</button><button id="ask-ai-button" type="button"><span>◌</span>Ask AI</button><button
+              type="button"><span>▣</span>View Logs</button></div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    window.addEventListener('tanodbukid:dashboard-open', () => {
+      (() => {
+        const video = document.querySelector('#camera-live')
+        const error = document.querySelector('#camera-error')
+        const confidence = document.querySelector('#confidence')
+        const toggle = document.querySelector('#monitor-toggle')
+        const tag = document.querySelector('#monitoring-tag')
+        const state = document.querySelector('#live-state')
+        let stream = null
+        let monitoring = true
+
+        function showCameraError(message) { error.hidden = false; error.textContent = message; monitoring = false; tag.textContent = 'Paused'; tag.className = 'paused-tag'; state.textContent = 'Paused'; toggle.innerHTML = '<span>▶</span>Resume Monitoring' }
+        if (!navigator.mediaDevices?.getUserMedia) showCameraError('Camera access is not supported in this browser.')
+        else navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' } }, audio: false }).then((cameraStream) => { stream = cameraStream; video.srcObject = stream }).catch(() => showCameraError('Camera access is off. Allow permission to scan your plant live.'))
+
+        const interval = window.setInterval(() => { if (monitoring) confidence.textContent = Number(confidence.textContent) >= 97 ? 91 : Number(confidence.textContent) + 1 }, 2200)
+        toggle.addEventListener('click', () => { monitoring = !monitoring; tag.textContent = monitoring ? 'Monitoring...' : 'Paused'; tag.className = monitoring ? 'monitoring-tag' : 'paused-tag'; state.textContent = monitoring ? 'Live' : 'Paused'; toggle.innerHTML = monitoring ? '<span>Ⅱ</span>Pause Monitoring' : '<span>▶</span>Resume Monitoring' })
+        window.addEventListener('beforeunload', () => { window.clearInterval(interval); stream?.getTracks().forEach((track) => track.stop()) })
+      })()
+    }, { once: true })
+  </script>
+
+</body>
+
+</html>
