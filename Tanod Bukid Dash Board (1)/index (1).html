@@ -1507,6 +1507,7 @@
       color: #68836e;
       font-size: 8px;
       cursor: pointer;
+      text-decoration: none;
     }
 
     .badge {
@@ -4103,11 +4104,11 @@
             aria-haspopup="dialog" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
               <path d="M10 21h4"></path>
-            </svg></button><span class="avatar">MJ</span></div>
+            </svg></button><span class="avatar"></span></div>
       </header>
       <section class="welcome">
         <p class="eyebrow">Good morning,</p>
-        <h1>Mang Juan <span class="wave">👋</span></h1>
+        <h1><span class="wave">👋</span></h1>
         <p class="sub">Here’s your farm overview</p>
       </section>
       <section class="home-featured" aria-label="Featured farm guides">
@@ -4225,62 +4226,33 @@
         <div class="topbar"><span class="location">⌖</span>
           <div>
             <h1>Sta. Maria, Bulacan</h1>
-            <p><i class="dot"></i>Updated today, 9:30 AM · PAGASA</p>
+            <p id="climate-status" role="status" aria-live="polite"><i class="dot"></i>Loading weather · Open-Meteo</p>
           </div>
         </div>
-        <div class="climate-hero"><span class="warning">☁</span><b>Moderate Risk</b><span>Elevated typhoon &amp; flood
-            risk this week</span><span class="farm-risk-note">Farm Risk Status · Conditions may affect crops</span>
+        <div class="climate-hero"><span class="warning">☁</span><b id="climate-risk-title">Checking forecast</b><span id="climate-risk-copy">Local farm weather screening · Not an official warning</span><span class="farm-risk-note" id="climate-current-summary">Waiting for live weather measurements</span>
           <div class="riskbar"><i></i><i></i><i></i><i></i></div>
         </div>
         <section class="screen-section">
           <div class="screen-title"><span>7-DAY FORECAST</span></div>
-          <div class="forecast">
-            <div class="forecast-card today"><b>Today</b>
-              <div class="weather">☁</div><strong>30° <small>25°</small></strong>
-              <div class="progress"><i></i></div>
-            </div>
-            <div class="forecast-card"><b>Fri</b>
-              <div class="weather">♧</div><strong>28° <small>24°</small></strong>
-              <div class="progress"><i></i></div>
-            </div>
-            <div class="forecast-card"><b>Sat</b>
-              <div class="weather">♧</div><strong>27° <small>23°</small></strong>
-              <div class="progress"><i></i></div>
-            </div>
-            <div class="forecast-card"><b>Sun</b>
-              <div class="weather">♨</div><strong>29° <small>24°</small></strong>
-              <div class="progress"><i></i></div>
-            </div>
-            <div class="forecast-card"><b>Mon</b>
-              <div class="weather">☁</div><strong>30° <small>25°</small></strong>
+          <div class="forecast" id="climate-forecast" aria-live="polite">
+            <div class="forecast-card today" aria-hidden="true"><b>Loading</b>
+              <div class="weather">…</div><strong>--</strong>
               <div class="progress"><i></i></div>
             </div>
           </div>
         </section>
         <section class="screen-section">
-          <div class="screen-title"><span>ACTIVE ALERTS</span><a href="#">See all</a></div>
-          <div class="alerts">
-            <article class="alert"><span class="alert-icon">≋</span><span class="badge">SEVERE</span>
-              <h3>Typhoon Carina — Landfall expected Thu–Fri</h3>
-              <p>Secure livestock and crop cover before landfall. Move animals to higher, sheltered ground.</p><span
-                class="source">› &nbsp; PAGASA bulletin #4</span>
-            </article>
-            <article class="alert watch"><span class="alert-icon">⌁</span><span class="badge">WATCH</span>
-              <h3>Flood warning — San Jose creek at caution level</h3>
-              <p>Riverbank farmers should move equipment and livestock to higher ground as a precaution.</p><span
-                class="source">› &nbsp; MDRRMO advisory</span>
-            </article>
-            <article class="alert advisory"><span class="alert-icon">◦</span><span class="badge">ADVISORY</span>
-              <h3>High humidity (84%) after rain</h3>
-              <p>Elevated fungal disease risk post-rain. Monitor crops closely over the next 3 days.</p><span
-                class="source">› &nbsp; Farm advisory</span>
+          <div class="screen-title"><span>ACTIVE ALERTS</span><a href="https://www.pagasa.dost.gov.ph/weather" target="_blank" rel="noopener noreferrer">PAGASA</a></div>
+          <div class="alerts" id="climate-alerts" aria-live="polite">
+            <article class="alert advisory"><span class="alert-icon">◦</span><span class="badge">INFO</span>
+              <h3>Checking validated alerts</h3>
+              <p>Official warnings will only appear when a verified source is connected.</p><span class="source">› &nbsp; PAGASA official warnings</span>
             </article>
           </div>
         </section>
         <section class="farm-advisory" aria-label="Farm advisory">
           <h2>Farm Advisory</h2>
-          <p>Due to current weather conditions, monitor crops for excess moisture and avoid unnecessary field activities
-            during heavy rain.</p>
+          <p id="climate-advisory">Weather-based farm guidance will appear when a forecast is available. This is not an official warning.</p>
         </section>
       </section>
       <section class="new-screen" id="scan-screen">
@@ -4336,8 +4308,8 @@
       </section>
       <section class="new-screen" id="profile-screen">
         <div class="profile-head"><span class="profile-avatar">♙</span>
-          <h1>Jose Dela Cruz</h1>
-          <p>Sta. Maria, Bulacan · Farmer since 1998</p>
+          <h1>Loading profile…</h1>
+          <p>Loading account information…</p>
           <div class="stats-pills"><span>3 crops</span><span>2 livestock</span><span>3.5 ha farm</span></div>
         </div>
         <section class="profile-section">
@@ -4382,13 +4354,13 @@
               type="button" aria-label="Notifications"><svg viewBox="0 0 24 24">
                 <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
                 <path d="M10 21h4"></path>
-              </svg></button><span class="community-avatar">MJ</span></div>
+              </svg></button><span class="community-avatar"></span></div>
         </div>
         <div class="community-heading">
           <h1 id="community-alerts-title">Community Alerts</h1>
           <p>Stay informed from fellow farmers.</p>
         </div>
-        <button class="community-report" id="report-issue-button" type="button"><span
+        <button class="community-report" id="report-issue-button" type="button" data-open-report><span
             class="community-report-icon">+</span><span class="community-report-copy"><strong>Report an
               Issue</strong><span>Share an update, alert, or question with the community.</span></span><span
             class="community-report-button">+</span></button>
@@ -4482,11 +4454,14 @@
       const farmLogList = document.getElementById('farm-log-list');
       const farmLogFeedback = document.getElementById('farm-log-feedback');
       const FARM_ACTIVITIES_KEY = 'tanodbukid_farm_activities';
+      let selectedFarmLogFilter = 'all';
+      let farmActivityRequestPending = false;
+      let farmActivitySaving = false;
+      let farmActivityLoadVersion = 0;
       let previousRoute = '';
       const modal = (title, body, actions = '') => { const backdrop = document.createElement('div'); backdrop.className = 'modal-backdrop'; backdrop.innerHTML = `<div class="modal" role="dialog" aria-modal="true"><h2>${title}</h2>${body}<div class="modal-actions">${actions || '<button class="secondary" data-close>Close</button>'}</div></div>`; document.body.appendChild(backdrop); backdrop.addEventListener('click', (event) => { if (event.target === backdrop || event.target.closest('[data-close]')) backdrop.remove(); }); return backdrop; };
       const notifications = [
         { id: 'scan-result', icon: '✣', title: 'Scan result ready', description: 'Rice blast detected at 87% confidence. Tap for recommendations.', time: 'Just now' },
-        { id: 'typhoon', icon: '≋', title: 'Typhoon Carina — Signal No. 2', description: 'PAGASA raised the signal in Bulacan. Prepare your farm immediately.', time: '30 min ago' },
         { id: 'price-update', icon: '↗', title: 'Price update: palay +2.2%', description: 'Irrigated palay now ₱23.50/kg in Central Luzon.', time: '2h ago' },
         { id: 'community', icon: '♧', title: 'Community post near you', description: 'Armyworm infestation reported 2km from your farm.', time: '2h ago' },
         { id: 'article', icon: '▤', title: 'New article: flood-proofing your farm', description: 'A seasonal advisory on typhoon season prep.', time: '5h ago' },
@@ -4576,58 +4551,372 @@
         if (actionName === 'articles') modal('Latest Articles', '<p>More practical farm guides and seasonal advice will appear here as they become available.</p>');
         if (actionName === 'article') modal(action.closest('.home-article').querySelector('h3').textContent, `<p>${action.closest('.home-article').querySelector('p').textContent}</p><p><strong>${action.closest('.home-article').querySelector('.home-article-meta').textContent}</strong></p>`);
       }));
-      const showRoute = () => { const route = location.hash.slice(1); const active = routes.includes(route) ? route : ''; const isCommunityRoute = active === 'community-alerts'; shell.classList.toggle('new-route', Boolean(active)); shell.classList.toggle('community-route', isCommunityRoute); addedScreens.forEach((screen) => screen.classList.toggle('active', screen.id === `${active}-screen`)); addedNav.style.display = isCommunityRoute ? 'none' : 'grid'; addedNav.querySelectorAll('button[data-route]').forEach((button) => button.classList.toggle('active', button.dataset.route === (active || 'home'))); };
+      const climateScreen = document.getElementById('climate-screen');
+      const climateStatus = document.getElementById('climate-status');
+      const climateForecast = document.getElementById('climate-forecast');
+      const climateAlertsList = document.getElementById('climate-alerts');
+      const climateRiskTitle = document.getElementById('climate-risk-title');
+      const climateRiskCopy = document.getElementById('climate-risk-copy');
+      const climateCurrentSummary = document.getElementById('climate-current-summary');
+      const climateAdvisory = document.getElementById('climate-advisory');
+      const pagasaWarningsUrl = 'https://www.pagasa.dost.gov.ph/weather';
+      let climateData = null;
+      let climateLoading = false;
+      let climateLastRequestAt = 0;
+      let climateRefreshIntervalSeconds = 600;
+      const climateEscape = (value) => String(value ?? '').replace(/[&<>'"]/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[character]);
+      const climateNumber = (value, decimals = 0) => value !== null && value !== undefined && value !== '' && Number.isFinite(Number(value)) ? Number(value).toFixed(decimals) : '—';
+      const climateWindDirection = (degrees) => {
+        const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+        if (degrees === null || degrees === undefined || degrees === '') return '';
+        return Number.isFinite(Number(degrees)) ? directions[Math.round((Number(degrees) % 360) / 45) % 8] : '';
+      };
+      const climateWeather = (code) => {
+        if (code === null || code === undefined || code === '') return ['☁', 'Weather condition unavailable'];
+        const descriptions = {
+          0: ['☀', 'Clear sky'], 1: ['🌤', 'Mainly clear'], 2: ['⛅', 'Partly cloudy'], 3: ['☁', 'Overcast'],
+          45: ['≋', 'Fog'], 48: ['≋', 'Depositing rime fog'], 51: ['☂', 'Light drizzle'], 53: ['☂', 'Drizzle'],
+          55: ['☂', 'Dense drizzle'], 56: ['☂', 'Freezing drizzle'], 57: ['☂', 'Dense freezing drizzle'],
+          61: ['🌧', 'Slight rain'], 63: ['🌧', 'Moderate rain'], 65: ['🌧', 'Heavy rain'],
+          66: ['🌧', 'Freezing rain'], 67: ['🌧', 'Heavy freezing rain'], 71: ['❄', 'Slight snow'],
+          73: ['❄', 'Moderate snow'], 75: ['❄', 'Heavy snow'], 77: ['❄', 'Snow grains'],
+          80: ['🌧', 'Slight rain showers'], 81: ['🌧', 'Rain showers'], 82: ['🌧', 'Violent rain showers'],
+          85: ['❄', 'Snow showers'], 86: ['❄', 'Heavy snow showers'], 95: ['⛈', 'Thunderstorm'],
+          96: ['⛈', 'Thunderstorm with hail'], 99: ['⛈', 'Thunderstorm with heavy hail'],
+        };
+        return descriptions[Number(code)] || ['☁', 'Weather condition unavailable'];
+      };
+      const climateDate = (value, options) => {
+        const date = new Date(String(value).replace(' ', 'T') + (String(value).includes('+') ? '' : '+08:00'));
+        if (Number.isNaN(date.getTime())) return '—';
+        return new Intl.DateTimeFormat('en-PH', { timeZone: 'Asia/Manila', ...options }).format(date);
+      };
+      const renderClimateStatus = (data) => {
+        const freshness = data.freshness || {};
+        const time = climateDate(freshness.observed_at, { weekday: 'short', hour: 'numeric', minute: '2-digit' });
+        const stale = freshness.stale ? ' · Saved snapshot (stale)' : '';
+        const issue = freshness.refresh_error ? ' · Live refresh unavailable' : '';
+        climateStatus.innerHTML = `<i class="dot"></i>${climateEscape(`Weather model update ${time} · Open-Meteo${stale}${issue}`)}`;
+        const locationName = String(data.location?.name || 'Sta. Maria, Bulacan').replace(/, Philippines$/i, '');
+        climateScreen.querySelector('.topbar h1').textContent = locationName;
+      };
+      const renderClimateForecast = (data) => {
+        const daily = data.daily || [];
+        if (!daily.length) {
+          climateForecast.innerHTML = '<div class="forecast-card today"><b>No forecast</b><div class="weather">—</div><strong>Unavailable</strong><div class="progress"><i></i></div></div>';
+          return;
+        }
+        const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Manila', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+        climateForecast.innerHTML = daily.slice(0, 7).map((day) => {
+          const date = String(day.forecast_at || '').slice(0, 10);
+          const label = date === today ? 'Today' : climateDate(day.forecast_at, { weekday: 'short' });
+          const [icon, description] = climateWeather(day.weather_code);
+          const probability = day.precipitation_probability;
+          const probabilityLabel = probability === null ? 'Rain chance unavailable' : `${climateNumber(probability)}% maximum rain probability`;
+          const rainAmount = day.precipitation === null ? 'Precipitation unavailable' : `${climateNumber(day.precipitation, 1)} mm forecast precipitation`;
+          return `<div class="forecast-card ${date === today ? 'today' : ''}" role="button" tabindex="0" data-climate-day="${climateEscape(date)}" aria-label="${climateEscape(`${label}: ${description}, high ${climateNumber(day.temperature_max)} degrees, low ${climateNumber(day.temperature_min)} degrees, ${probabilityLabel}`)}"><b>${climateEscape(label)}</b><div class="weather" aria-hidden="true">${icon}</div><strong>${climateNumber(day.temperature_max)}° <small>${climateNumber(day.temperature_min)}°</small></strong><div class="progress" title="${climateEscape(probabilityLabel)}"><i style="width:${Math.max(0, Math.min(100, Number(probability) || 0))}%"></i></div></div>`;
+        }).join('');
+      };
+      const renderClimateAlerts = (data) => {
+        const alerts = Array.isArray(data.alerts) ? data.alerts : [];
+        const alertCards = alerts.map((alert) => {
+          const severity = ['watch', 'advisory'].includes(alert.severity) ? alert.severity : '';
+          const label = String(alert.severity || 'severe').toUpperCase();
+          return `<article class="alert ${severity}" data-climate-alert><span class="alert-icon">⚠</span><span class="badge">${climateEscape(label)}</span><h3>${climateEscape(alert.title)}</h3><p>${climateEscape(alert.description)}</p><span class="source">› &nbsp; ${climateEscape(alert.source)} · ${climateEscape(alert.location)}</span></article>`;
+        });
+        alertCards.push(`<article class="alert advisory"><span class="alert-icon">◦</span><span class="badge">SOURCE</span><h3>Official weather warnings are not connected</h3><p>No verified PAGASA alert feed is available in this dashboard. Check the official source for current warnings.</p><a class="source" href="${pagasaWarningsUrl}" target="_blank" rel="noopener noreferrer">› &nbsp; PAGASA official warnings</a></article>`);
+        climateAlertsList.innerHTML = alertCards.join('');
+      };
+      const renderClimateRisk = (data) => {
+        const now = Date.now();
+        const nextDay = (data.hourly || []).filter((hour) => {
+          const time = new Date(String(hour.forecast_at).replace(' ', 'T') + '+08:00').getTime();
+          return Number.isFinite(time) && time >= now && time < now + 24 * 60 * 60 * 1000;
+        });
+        const thresholds = data.risk_thresholds || { high_probability_percent: 70, moderate_probability_percent: 40, high_precipitation_mm: 20, moderate_precipitation_mm: 5 };
+        const probabilities = nextDay.map((hour) => hour.precipitation_probability).filter((value) => value !== null && value !== undefined && Number.isFinite(Number(value))).map(Number);
+        const precipitation = nextDay.map((hour) => hour.precipitation).filter((value) => value !== null && value !== undefined && Number.isFinite(Number(value))).map(Number);
+        const rainProbability = probabilities.length ? Math.max(...probabilities) : null;
+        const rainAmount = precipitation.length ? precipitation.reduce((total, value) => total + value, 0) : null;
+        const risk = (rainProbability !== null && rainProbability >= thresholds.high_probability_percent) || (rainAmount !== null && rainAmount >= thresholds.high_precipitation_mm) ? 'High rain probability'
+          : (rainProbability !== null && rainProbability >= thresholds.moderate_probability_percent) || (rainAmount !== null && rainAmount >= thresholds.moderate_precipitation_mm) ? 'Rain is possible'
+            : rainProbability !== null || rainAmount !== null ? 'Low rain probability' : 'Risk unavailable';
+        climateRiskTitle.textContent = risk;
+        climateRiskCopy.textContent = nextDay.length
+          ? `Next 24h · ${rainProbability === null ? 'rain probability unavailable' : `${Math.round(rainProbability)}% max rain probability`} · ${rainAmount === null ? 'precipitation unavailable' : `${rainAmount.toFixed(1)} mm forecast`}`
+          : 'Next 24-hour rainfall forecast unavailable';
+        climateRiskCopy.title = `Internal screening only: high at ${thresholds.high_probability_percent}% or greater maximum rain probability, or ${thresholds.high_precipitation_mm} mm or more forecast rain; moderate at ${thresholds.moderate_probability_percent}% or greater, or ${thresholds.moderate_precipitation_mm} mm or more. Not an official warning.`;
+        const segments = climateScreen.querySelectorAll('.riskbar i');
+        const activeSegments = risk.startsWith('High') ? 4 : risk.startsWith('Rain') ? 3 : risk.startsWith('Low') ? 1 : 0;
+        segments.forEach((segment, index) => { segment.style.opacity = index < activeSegments ? '1' : '.35'; });
+        const current = data.current || {};
+        const summary = [
+          current.temperature === null ? null : `${climateNumber(current.temperature)}°C`,
+          current.apparent_temperature === null ? null : `Feels ${climateNumber(current.apparent_temperature)}°`,
+          current.relative_humidity === null ? null : `RH ${climateNumber(current.relative_humidity)}%`,
+          current.wind_speed === null ? null : `Wind ${climateNumber(current.wind_speed)} km/h ${climateWindDirection(current.wind_direction)}`.trim(),
+          current.precipitation === null ? null : `Rain ${climateNumber(current.precipitation, 1)} mm`,
+          current.rain_probability === null ? null : `${climateNumber(current.rain_probability)}% rain chance`,
+        ].filter(Boolean);
+        const [currentIcon, currentCondition] = climateWeather(current.weather_code);
+        climateScreen.querySelector('.warning').textContent = currentIcon;
+        climateScreen.querySelector('.warning').setAttribute('title', currentCondition);
+        climateCurrentSummary.textContent = summary.length ? `Current · ${summary.join(' · ')} · local forecast screening, not an official warning` : 'Current measurements unavailable';
+        climateAdvisory.textContent = risk.startsWith('High')
+          ? `The next 24-hour forecast indicates a high chance of rain or at least ${thresholds.high_precipitation_mm} mm of forecast rainfall. Check field drainage and local conditions before exposed work. This screening is not an official warning.`
+          : risk.startsWith('Rain')
+            ? 'Rain is possible in the next 24 hours. Check the hourly forecast and local conditions when planning field work. This screening is not an official warning.'
+            : risk.startsWith('Low')
+              ? 'No elevated rain indicator was calculated from the next 24-hour forecast. Weather can change; check local conditions before field work.'
+              : 'Rainfall forecast values are unavailable for the next 24 hours. Check local conditions before field work.';
+      };
+      const renderClimate = (data) => {
+        climateData = data;
+        renderClimateStatus(data);
+        renderClimateForecast(data);
+        renderClimateAlerts(data);
+        renderClimateRisk(data);
+      };
+      const loadClimate = async () => {
+        if (climateLoading || (climateData && Date.now() - climateLastRequestAt < 30000)) return;
+        climateLoading = true;
+        climateLastRequestAt = Date.now();
+        try {
+          const response = await fetch('/api/climate.php', { credentials: 'same-origin', headers: { Accept: 'application/json' }, cache: 'no-store' });
+          const result = await response.json();
+          if (!response.ok || !result.success || !result.current) {
+            throw new Error(result.message || 'Weather data is currently unavailable.');
+          }
+          climateRefreshIntervalSeconds = Number(result.freshness?.refresh_interval_seconds) || 600;
+          renderClimate(result);
+        } catch (error) {
+          console.error('Unable to load climate data:', error);
+          climateStatus.innerHTML = `<i class="dot"></i>${climateEscape(climateData ? 'Showing last saved weather · Live refresh failed' : 'Weather unavailable · ' + (error.message || 'Check the PHP service'))}`;
+          if (!climateData) {
+            climateForecast.innerHTML = '<div class="forecast-card today"><b>No data</b><div class="weather">—</div><strong>Unavailable</strong><div class="progress"><i></i></div></div>';
+            climateAlertsList.innerHTML = `<article class="alert advisory"><span class="alert-icon">◦</span><span class="badge">INFO</span><h3>Weather data unavailable</h3><p>${climateEscape(error.message || 'Try again when the weather service is available.')}</p><a class="source" href="${pagasaWarningsUrl}" target="_blank" rel="noopener noreferrer">› &nbsp; Check PAGASA official warnings</a></article>`;
+            climateRiskTitle.textContent = 'Risk unavailable';
+            climateRiskCopy.textContent = 'No verified forecast is available to calculate local rainfall potential.';
+            climateCurrentSummary.textContent = 'Live weather measurements unavailable';
+            climateAdvisory.textContent = 'No forecast is available for farm planning. Check current local conditions and official warnings.';
+          }
+        } finally {
+          climateLoading = false;
+        }
+      };
+      climateForecast.addEventListener('click', (event) => {
+        const card = event.target.closest('[data-climate-day]');
+        if (!card || !climateData) return;
+        climateForecast.querySelectorAll('.forecast-card').forEach((day) => day.classList.toggle('selected', day === card));
+        const date = card.dataset.climateDay;
+        const forecast = climateData.daily.find((day) => String(day.forecast_at).slice(0, 10) === date);
+        if (!forecast) return;
+        const dayHours = (climateData.hourly || []).filter((hour) => String(hour.forecast_at).slice(0, 10) === date).slice(0, 6);
+        const hourlyDetails = dayHours.length
+          ? `<p><strong>Hourly outlook</strong><br>${dayHours.map((hour) => `${climateEscape(climateDate(hour.forecast_at, { hour: 'numeric' }))}: ${climateNumber(hour.temperature)}°C · ${climateNumber(hour.precipitation_probability)}% rain · RH ${climateNumber(hour.relative_humidity)}% · Wind ${climateNumber(hour.wind_speed)} km/h · ${climateEscape(climateWeather(hour.weather_code)[1])}`).join('<br>')}</p>`
+          : '<p>Hourly forecast is unavailable for this date.</p>';
+        const details = `<p><strong>${climateEscape(climateWeather(forecast.weather_code)[1])}</strong><br>High ${climateNumber(forecast.temperature_max)}°C · Low ${climateNumber(forecast.temperature_min)}°C<br>Maximum rain probability ${climateNumber(forecast.precipitation_probability)}% · Forecast precipitation ${climateNumber(forecast.precipitation, 1)} mm</p>${hourlyDetails}<p>Forecast by Open-Meteo · Philippines local time</p>`;
+        modal(`${climateEscape(climateDate(forecast.forecast_at, { weekday: 'long', month: 'short', day: 'numeric' }))} forecast`, details);
+      });
+      climateForecast.addEventListener('keydown', (event) => {
+        if (!['Enter', ' '].includes(event.key) || !event.target.matches('[data-climate-day]')) return;
+        event.preventDefault();
+        event.target.click();
+      });
+      climateAlertsList.addEventListener('click', (event) => {
+        const alert = event.target.closest('[data-climate-alert]');
+        if (!alert) return;
+        const record = climateData?.alerts?.find((item) => alert.querySelector('h3')?.textContent === item.title);
+        if (record) modal(climateEscape(record.title), `<p>${climateEscape(record.description)}</p><p><strong>${climateEscape(record.severity.toUpperCase())} · ${climateEscape(record.source)}</strong><br>${climateEscape(record.location)}<br>Valid from ${climateEscape(record.valid_from)}${record.valid_until ? ` until ${climateEscape(record.valid_until)}` : ''}</p>`);
+      });
+      window.setInterval(() => {
+        if (location.hash.slice(1) === 'climate' && Date.now() - climateLastRequestAt >= climateRefreshIntervalSeconds * 1000) loadClimate();
+      }, 60000);
+      const showRoute = () => { const route = location.hash.slice(1); const active = routes.includes(route) ? route : ''; const isCommunityRoute = active === 'community-alerts'; shell.classList.toggle('new-route', Boolean(active)); shell.classList.toggle('community-route', isCommunityRoute); addedScreens.forEach((screen) => screen.classList.toggle('active', screen.id === `${active}-screen`)); addedNav.style.display = isCommunityRoute ? 'none' : 'grid'; addedNav.querySelectorAll('button[data-route]').forEach((button) => button.classList.toggle('active', button.dataset.route === (active || 'home'))); if (active === 'farm-logs') loadFarmActivities(); if (active === 'climate') loadClimate(); };
       const farmLogsCard = document.querySelector('.quick button:nth-child(3)');
       farmLogsCard.addEventListener('click', () => { previousRoute = location.hash.slice(1) || ''; location.hash = 'farm-logs'; });
       document.getElementById('community-alerts-card').addEventListener('click', () => { previousRoute = location.hash.slice(1) || ''; location.hash = 'community-alerts'; });
       document.getElementById('community-back').addEventListener('click', () => { location.hash = previousRoute; });
       document.getElementById('community-notifications-button').addEventListener('click', openNotifications);
-      const COMMUNITY_ALERTS_KEY = 'tanodbukid_community_alerts';
-      const communityAlertSamples = [
-        { id: 'community-pest', category: 'pest', user: 'Juan Reyes', initials: 'JR', location: 'Sitio Bagong Bayan, Sta. Maria', time: '2h ago', title: 'Armyworm infestation spotted in corn field at Sitio Bagong Bayan', description: 'Noticed armyworm feeding on young corn leaves. Already reported to our barangay tanod.', likes: 12, comments: 4, visual: 'pest' },
-        { id: 'community-flood', category: 'flood', user: 'Ana Lopez', initials: 'AL', location: 'San Rafael, Bulacan', time: '4h ago', title: 'San Jose creek rising — now at warning level', description: 'Water level is now at 2.6 meters. Please avoid low areas and keep your animals in higher ground.', likes: 18, comments: 6, visual: 'flood' },
-        { id: 'community-tips', category: 'tips', user: 'Marian Reyes', initials: 'MR', location: 'Purok 5, San Rafael', time: '5h ago', title: 'Apply neem oil before rains', description: 'Neem oil can help protect young leaves when applied before the rain begins.', likes: 24, comments: 8, visual: 'tips' },
-        { id: 'community-weather', category: 'weather', user: 'Criselda Santos', initials: 'CS', location: 'Malolos, Bulacan', time: '7h ago', title: 'Possible heavy rain this weekend', description: 'Based on PAGASA update, there may be heavy rainfall in our area from Oct 26–27.', likes: 16, comments: 3, visual: 'weather' }
-      ];
       const communityCategoryLabels = { pest: 'Pest Report', flood: 'Flood Update', weather: 'Weather', tips: 'Tips' };
       const communityEscape = (value) => String(value || '').replace(/[&<>'"]/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[character]);
-      const readCommunityAlerts = () => { try { const saved = JSON.parse(localStorage.getItem(COMMUNITY_ALERTS_KEY) || '[]'); return Array.isArray(saved) ? saved.concat(communityAlertSamples) : communityAlertSamples.slice(); } catch { return communityAlertSamples.slice(); } };
-      let communityAlerts = readCommunityAlerts();
+      const communityImagePattern = /^\/uploads\/reports\/[a-f0-9]{32}\.(?:jpg|png|webp)$/i;
+      const communityAvatarPattern = /^uploads\/profile\/[a-f0-9]{32}\.(?:jpg|png|webp)$/i;
+      let communityAlerts = [];
       let selectedCommunityFilter = 'all';
-      const communityVisualMarkup = (alert) => alert.image ? `<img class="community-thumb uploaded" src="${communityEscape(alert.image)}" alt="Uploaded image for ${communityEscape(alert.title)}">` : `<span class="community-thumb ${communityEscape(alert.visual || alert.category)}" role="img" aria-label="${communityEscape(communityCategoryLabels[alert.category] || 'Community alert visual')}"></span>`;
-      const renderCommunityAlerts = () => {
-        const visibleAlerts = communityAlerts.filter((alert) => selectedCommunityFilter === 'all' || alert.category === selectedCommunityFilter);
-        document.querySelectorAll('[data-community-filter]').forEach((button) => { const selected = button.dataset.communityFilter === selectedCommunityFilter; button.classList.toggle('selected', selected); button.setAttribute('aria-selected', String(selected)); });
-        document.getElementById('community-alert-list').innerHTML = visibleAlerts.length ? visibleAlerts.map((alert) => `<button class="community-card" type="button" data-community-alert-id="${communityEscape(alert.id)}" data-community-category="${communityEscape(alert.category)}"><span class="community-card-copy"><span class="community-meta"><span class="community-user-avatar">${communityEscape(alert.initials)}</span><span class="community-user">${communityEscape(alert.user)}</span><span class="community-location">${communityEscape(alert.location)}</span><span class="community-time">${communityEscape(alert.time)}</span></span><span class="community-badge ${alert.category === 'flood' || alert.category === 'weather' || alert.category === 'tips' ? alert.category : ''}">${communityEscape(communityCategoryLabels[alert.category])}</span><h2>${communityEscape(alert.title)}</h2><p>${communityEscape(alert.description)}</p><span class="community-engagement">♡ ${Number(alert.likes) || 0} &nbsp; ◌ ${Number(alert.comments) || 0}</span></span>${communityVisualMarkup(alert)}<span class="community-chevron">›</span></button>`).join('') : '<p class="farm-log-empty">No community alerts in this category yet.</p>';
+      let communityLoadError = '';
+      let communityLoading = true;
+      let communityRequestVersion = 0;
+      const communityTime = (value) => {
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) return 'Date unavailable';
+        const minutes = Math.floor((Date.now() - date.getTime()) / 60000);
+        if (minutes < 1) return 'Just now';
+        if (minutes < 60) return `${minutes}m ago`;
+        const hours = Math.floor(minutes / 60);
+        if (hours < 24) return `${hours}h ago`;
+        const days = Math.floor(hours / 24);
+        if (days < 7) return `${days}d ago`;
+        return new Intl.DateTimeFormat(undefined, { dateStyle: 'medium' }).format(date);
       };
-      document.querySelectorAll('[data-community-filter]').forEach((filter) => filter.addEventListener('click', () => { selectedCommunityFilter = filter.dataset.communityFilter; renderCommunityAlerts(); }));
-      document.getElementById('community-alert-list').addEventListener('click', (event) => { const card = event.target.closest('[data-community-alert-id]'); if (!card) return; const alert = communityAlerts.find((item) => item.id === card.dataset.communityAlertId); if (alert) modal(alert.title, `<p>${communityEscape(alert.description)}</p><p><strong>${communityEscape(alert.user)}</strong><br>${communityEscape(communityCategoryLabels[alert.category])}<br>${communityEscape(alert.location)}</p>`); });
+      const communityVisualMarkup = (report) => communityImagePattern.test(report.image_url || '')
+        ? `<img class="community-thumb uploaded" src="${communityEscape(report.image_url)}" alt="Uploaded image for ${communityEscape(report.title)}" loading="lazy">`
+        : `<span class="community-thumb ${communityEscape(report.category)}" role="img" aria-label="${communityEscape(communityCategoryLabels[report.category] || 'Community alert visual')}"></span>`;
+      const communityAuthorMarkup = (report) => communityAvatarPattern.test(report.author_avatar_url || '')
+        ? `<img src="${communityEscape(`/${report.author_avatar_url}`)}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`
+        : communityEscape(report.initials);
+      const renderCommunityAlerts = () => {
+        document.querySelectorAll('[data-community-filter]').forEach((button) => { const selected = button.dataset.communityFilter === selectedCommunityFilter; button.classList.toggle('selected', selected); button.setAttribute('aria-selected', String(selected)); });
+        const list = document.getElementById('community-alert-list');
+        if (communityLoading) {
+          list.innerHTML = '<p class="farm-log-empty">Loading community alerts…</p>';
+          return;
+        }
+        if (communityLoadError) {
+          list.innerHTML = `<p class="farm-log-empty">${communityEscape(communityLoadError)}</p>`;
+          return;
+        }
+        list.innerHTML = communityAlerts.length ? communityAlerts.map((report) => `<button class="community-card" type="button" data-community-alert-id="${communityEscape(report.id)}" data-community-category="${communityEscape(report.category)}"><span class="community-card-copy"><span class="community-meta"><span class="community-user-avatar">${communityAuthorMarkup(report)}</span><span class="community-user">${communityEscape(report.author_name)}</span><span class="community-location">${communityEscape(report.location)}</span><span class="community-time">${communityEscape(communityTime(report.created_at))}</span></span><span class="community-badge ${report.category === 'flood' || report.category === 'weather' || report.category === 'tips' ? report.category : ''}">${communityEscape(communityCategoryLabels[report.category] || 'Community Alert')}</span><h2>${communityEscape(report.title)}</h2><p>${communityEscape(report.description)}</p><span class="community-engagement">♡ 0 &nbsp; ◌ 0</span></span>${communityVisualMarkup(report)}<span class="community-chevron">›</span></button>`).join('') : '<p class="farm-log-empty">No community alerts in this category yet.</p>';
+      };
+      const loadCommunityAlerts = async (category = selectedCommunityFilter) => {
+        const requestVersion = ++communityRequestVersion;
+        communityLoading = true;
+        communityLoadError = '';
+        renderCommunityAlerts();
+        try {
+          const url = new URL('/api/reports.php', location.origin);
+          if (category !== 'all') url.searchParams.set('category', category);
+          const response = await fetch(url, { credentials: 'same-origin', headers: { Accept: 'application/json' }, cache: 'no-store' });
+          const result = await response.json();
+          if (response.status === 401) throw new Error('Your session has expired. Sign in again to view community reports.');
+          if (!response.ok || !result.success || !Array.isArray(result.reports)) {
+            throw new Error(result.message || 'Unable to load community reports.');
+          }
+          if (requestVersion !== communityRequestVersion) return;
+          communityAlerts = result.reports.map((report) => {
+            const authorName = String(report.author_name || 'Tanod Bukid user');
+            return {
+              ...report,
+              initials: authorName.split(/\s+/).slice(0, 2).map((part) => part[0] || '').join('').toUpperCase(),
+            };
+          });
+        } catch (error) {
+          if (requestVersion !== communityRequestVersion) return;
+          console.error('Unable to load community reports:', error);
+          communityAlerts = [];
+          communityLoadError = error.message || 'Unable to load community reports. Please try again.';
+        } finally {
+          if (requestVersion === communityRequestVersion) {
+            communityLoading = false;
+            renderCommunityAlerts();
+          }
+        }
+      };
+      document.querySelectorAll('[data-community-filter]').forEach((filter) => filter.addEventListener('click', () => { selectedCommunityFilter = filter.dataset.communityFilter; loadCommunityAlerts(selectedCommunityFilter); }));
+      document.getElementById('community-alert-list').addEventListener('click', (event) => { const card = event.target.closest('[data-community-alert-id]'); if (!card) return; const report = communityAlerts.find((item) => item.id === card.dataset.communityAlertId); if (!report) return; const image = communityImagePattern.test(report.image_url || '') ? `<img src="${communityEscape(report.image_url)}" alt="Report image" style="display:block;width:100%;max-height:240px;object-fit:cover;border-radius:12px;margin-top:12px">` : ''; modal(communityEscape(report.title), `<p>${communityEscape(report.description)}</p><p><strong>${communityEscape(report.author_name)}</strong><br>${communityEscape(communityCategoryLabels[report.category] || 'Community Alert')}<br>${communityEscape(report.location)}<br>${communityEscape(communityTime(report.created_at))}</p>${image}`); });
       const openCommunityReport = () => {
-        const dialog = modal('Report an Issue', '<p>Share an update, alert, or question with the community.</p><label for="community-report-title">Post title</label><input id="community-report-title" placeholder="What’s happening?"><label for="community-report-details">Description</label><textarea id="community-report-details" rows="4" placeholder="Share an update, alert, or question with the community…"></textarea><label for="community-report-category">Category</label><select id="community-report-category"><option value="pest">Pest Report</option><option value="flood">Flood Update</option><option value="weather">Weather</option><option value="tips">Tips</option></select><label for="community-report-location">Location</label><input id="community-report-location" placeholder="Enter location"><div class="community-upload" id="community-upload"><label class="community-upload-label" for="community-report-image"><span class="community-upload-icon">📷</span><strong>Import Picture</strong><span>Add a photo to your alert</span></label><input id="community-report-image" type="file" accept="image/*"><img class="community-upload-preview" id="community-upload-preview" alt="Selected alert preview"><div class="community-upload-actions"><button type="button" id="community-change-image">Change Picture</button><button type="button" id="community-remove-image">Remove</button></div></div><p class="community-report-error" id="community-report-error" role="alert"></p>', '<button class="secondary" data-close>Cancel</button><button class="primary" id="submit-community-report">Post Alert</button>');
+        const dialog = modal('Report an Issue', '<p>Share an update, alert, or question with the community.</p><label for="community-report-title">Post title</label><input id="community-report-title" maxlength="160" placeholder="What’s happening?"><label for="community-report-details">Description</label><textarea id="community-report-details" rows="4" maxlength="5000" placeholder="Share an update, alert, or question with the community…"></textarea><label for="community-report-category">Category</label><select id="community-report-category"><option value="pest">Pest Report</option><option value="flood">Flood Update</option><option value="weather">Weather</option><option value="tips">Tips</option></select><label for="community-report-location">Location</label><input id="community-report-location" maxlength="200" placeholder="Enter location"><div class="community-upload" id="community-upload"><label class="community-upload-label" for="community-report-image"><span class="community-upload-icon">📷</span><strong>Import Picture</strong><span>Add a photo to your alert</span></label><input id="community-report-image" type="file" accept="image/jpeg,image/png,image/webp"><img class="community-upload-preview" id="community-upload-preview" alt="Selected alert preview"><div class="community-upload-actions"><button type="button" id="community-change-image">Change Picture</button><button type="button" id="community-remove-image">Remove</button></div></div><p class="community-report-error" id="community-report-error" role="alert"></p>', '<button class="secondary" data-close>Cancel</button><button class="primary" id="submit-community-report">Post Alert</button>');
         const upload = dialog.querySelector('#community-upload');
         const imageInput = dialog.querySelector('#community-report-image');
         const preview = dialog.querySelector('#community-upload-preview');
-        let imageData = '';
-        imageInput.addEventListener('change', () => { const file = imageInput.files && imageInput.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = () => { imageData = reader.result || ''; preview.src = imageData; upload.classList.add('has-preview'); }; reader.readAsDataURL(file); });
+        const submitButton = dialog.querySelector('#submit-community-report');
+        const error = dialog.querySelector('#community-report-error');
+        let selectedImage = null;
+        let submitting = false;
+        imageInput.addEventListener('change', () => {
+          const file = imageInput.files && imageInput.files[0];
+          if (!file) return;
+          error.textContent = '';
+          if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+            selectedImage = null;
+            imageInput.value = '';
+            preview.removeAttribute('src');
+            upload.classList.remove('has-preview');
+            error.textContent = 'Choose a JPG, PNG, or WebP image.';
+            return;
+          }
+          if (file.size > 5 * 1024 * 1024) {
+            selectedImage = null;
+            imageInput.value = '';
+            preview.removeAttribute('src');
+            upload.classList.remove('has-preview');
+            error.textContent = 'The image must be 5 MB or smaller.';
+            return;
+          }
+          selectedImage = file;
+          const reader = new FileReader();
+          reader.onload = () => {
+            if (!dialog.isConnected || !selectedImage) return;
+            preview.src = reader.result || '';
+            upload.classList.add('has-preview');
+          };
+          reader.readAsDataURL(file);
+        });
         dialog.querySelector('#community-change-image').addEventListener('click', () => imageInput.click());
-        dialog.querySelector('#community-remove-image').addEventListener('click', () => { imageData = ''; imageInput.value = ''; preview.removeAttribute('src'); upload.classList.remove('has-preview'); });
-        dialog.querySelector('#submit-community-report').addEventListener('click', () => {
+        dialog.querySelector('#community-remove-image').addEventListener('click', () => { selectedImage = null; imageInput.value = ''; preview.removeAttribute('src'); upload.classList.remove('has-preview'); error.textContent = ''; });
+        submitButton.addEventListener('click', async () => {
+          if (submitting) return;
           const title = dialog.querySelector('#community-report-title').value.trim();
           const description = dialog.querySelector('#community-report-details').value.trim();
-          const location = dialog.querySelector('#community-report-location').value.trim();
-          const error = dialog.querySelector('#community-report-error');
-          if (!title || !description || !location) { error.textContent = 'Please complete the title, description, and location.'; return; }
+          const reportLocation = dialog.querySelector('#community-report-location').value.trim();
           const category = dialog.querySelector('#community-report-category').value;
-          const newAlert = { id: `community-user-${Date.now()}`, category, user: 'Mang Juan', initials: 'MJ', location, time: 'Just now', title, description, likes: 0, comments: 0, image: imageData, visual: category };
-          communityAlerts = [newAlert, ...communityAlerts];
-          try { localStorage.setItem(COMMUNITY_ALERTS_KEY, JSON.stringify(communityAlerts.filter((alert) => !communityAlertSamples.some((sample) => sample.id === alert.id)))); } catch (storageError) { console.warn('Unable to save community alert:', storageError); }
-          selectedCommunityFilter = 'all';
-          renderCommunityAlerts();
-          dialog.remove();
+          if (!title || !description || !reportLocation) { error.textContent = 'Please complete the title, description, and location.'; return; }
+
+          const formData = new FormData();
+          formData.append('title', title);
+          formData.append('description', description);
+          formData.append('category', category);
+          formData.append('location', reportLocation);
+          if (selectedImage) formData.append('report_image', selectedImage);
+
+          submitting = true;
+          submitButton.disabled = true;
+          submitButton.textContent = 'Posting…';
+          error.textContent = '';
+          error.style.color = '';
+          let published = false;
+          try {
+            const response = await fetch(new URL('/api/reports.php', location.origin), {
+              method: 'POST',
+              credentials: 'same-origin',
+              headers: { Accept: 'application/json' },
+              body: formData,
+            });
+            const result = await response.json();
+            if (response.status === 401) throw new Error('Your session has expired. Sign in again before posting.');
+            if (!response.ok || !result.success || !result.report) {
+              throw new Error(result.message || 'Unable to publish the report.');
+            }
+
+            const report = result.report;
+            const authorName = String(report.author_name || 'Tanod Bukid user');
+            communityAlerts = [{
+              ...report,
+              initials: authorName.split(/\s+/).slice(0, 2).map((part) => part[0] || '').join('').toUpperCase(),
+            }, ...communityAlerts.filter((item) => item.id !== report.id)];
+            selectedCommunityFilter = 'all';
+            renderCommunityAlerts();
+            loadCommunityAlerts();
+            error.style.color = '#20563c';
+            error.textContent = 'Report published successfully.';
+            published = true;
+            window.setTimeout(() => { if (dialog.isConnected) dialog.remove(); }, 1200);
+          } catch (requestError) {
+            console.error('Unable to publish community report:', requestError);
+            error.style.color = '#b75d4d';
+            error.textContent = requestError.message || 'Unable to publish the report. Please try again.';
+          } finally {
+            submitting = false;
+            if (dialog.isConnected && !published) {
+              submitButton.disabled = false;
+              submitButton.textContent = 'Post Alert';
+            }
+          }
         });
       };
-      document.getElementById('report-issue-button').addEventListener('click', openCommunityReport);
+      document.querySelectorAll('[data-open-report]').forEach((button) => button.addEventListener('click', openCommunityReport));
       renderCommunityAlerts();
+      loadCommunityAlerts();
       document.querySelectorAll('[data-community-nav]').forEach((button) => button.addEventListener('click', () => {
         const destination = button.dataset.communityNav;
         if (destination === 'home') location.hash = '';
@@ -4646,18 +4935,81 @@
       const readFarmActivities = () => {
         try {
           const stored = JSON.parse(localStorage.getItem(FARM_ACTIVITIES_KEY) || 'null');
-          if (Array.isArray(stored) && stored.length) return stored;
-          const samples = sampleFarmActivities();
-          localStorage.setItem(FARM_ACTIVITIES_KEY, JSON.stringify(samples));
-          return samples;
+          if (Array.isArray(stored) && stored.length) return stored.map((activity) => ({
+            ...activity,
+            author_name: activity.author_name || '',
+          }));
+          return sampleFarmActivities();
         } catch (error) { console.warn('Unable to read farm activities:', error); return sampleFarmActivities(); }
       };
       let farmActivities = readFarmActivities();
       const escapeHtml = (value) => String(value || '').replace(/[&<>'"]/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[character]);
-      const categoryForType = (type) => type === 'Livestock' ? 'livestock' : type === 'Post-Harvest' ? 'post-harvest' : 'crop-care';
+      const categoryForType = (type) => type === 'Livestock' ? 'livestock' : type === 'Post-Harvest' ? 'post-harvest' : type === 'Expense' ? 'expense' : 'crop-care';
       const categoryLabelForType = (type) => type === 'Post-Harvest' ? 'Post-harvest' : type || 'Crop care';
       const formatDateParts = (dateValue) => { const date = new Date(`${dateValue}T00:00:00`); return { day: date.getDate(), month: date.toLocaleString('en-US', { month: 'short' }).toUpperCase() }; };
-      const activityDescription = (activity) => [activity.details, activity.related ? `Related: ${activity.related}` : '', activity.cost ? `Cost: ${activity.cost}` : ''].filter(Boolean).join(' · ');
+      const activityDescription = (activity) => [activity.details, activity.related ? `Related: ${activity.related}` : '', activity.cost ? `Cost: ₱${activity.cost}` : '', activity.author_name ? `By ${activity.author_name}` : ''].filter(Boolean).join(' · ');
+      const normalizeFarmActivity = (activity) => ({
+        ...activity,
+        type: activity.activity_type || activity.type,
+        date: activity.activity_date || activity.date,
+        related: activity.related_crop_animal || activity.related || '',
+        cost: activity.cost || '',
+      });
+      const setFarmLogFeedback = (message, kind) => {
+        farmLogFeedback.textContent = message;
+        farmLogFeedback.dataset.kind = kind;
+        farmLogFeedback.classList.toggle('visible', Boolean(message));
+      };
+      const loadFarmActivities = async () => {
+        if (farmActivityRequestPending || farmActivitySaving) return;
+        farmActivityRequestPending = true;
+        const requestVersion = ++farmActivityLoadVersion;
+        try {
+          let legacyActivities = [];
+          try {
+            const stored = JSON.parse(localStorage.getItem(FARM_ACTIVITIES_KEY) || 'null');
+            if (Array.isArray(stored)) legacyActivities = stored.filter((activity) => activity && typeof activity === 'object');
+          } catch (error) {
+            console.warn('Unable to read older farm activities for import:', error);
+          }
+          if (legacyActivities.length) {
+            for (let offset = 0; offset < legacyActivities.length; offset += 100) {
+              const importResponse = await fetch('/api/farm-activities.php', {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+                body: JSON.stringify({ action: 'import-legacy', activities: legacyActivities.slice(offset, offset + 100) }),
+              });
+              const importResult = await importResponse.json();
+              if (!importResponse.ok || !importResult.success) {
+                throw new Error(importResult.message || 'Unable to preserve older farm activities.');
+              }
+            }
+            localStorage.removeItem(FARM_ACTIVITIES_KEY);
+          }
+
+          const response = await fetch('/api/farm-activities.php', {
+            credentials: 'same-origin',
+            headers: { Accept: 'application/json' },
+            cache: 'no-store',
+          });
+          const result = await response.json();
+          if (response.status === 401) throw new Error('Your session has expired. Sign in again to view farm activities.');
+          if (!response.ok || !result.success || !Array.isArray(result.activities)) {
+            throw new Error(result.message || 'Unable to load farm activities.');
+          }
+          if (requestVersion !== farmActivityLoadVersion) return;
+          farmActivities = result.activities.map(normalizeFarmActivity);
+          renderFarmLogs(selectedFarmLogFilter);
+          if (farmLogFeedback.dataset.kind === 'error') setFarmLogFeedback('', '');
+        } catch (error) {
+          if (requestVersion !== farmActivityLoadVersion) return;
+          console.error('Unable to load farm activities:', error);
+          setFarmLogFeedback(error.message || 'Unable to load farm activities. Please try again.', 'error');
+        } finally {
+          farmActivityRequestPending = false;
+        }
+      };
       const activityTimeFromDate = (dateValue) => {
         const activityDate = new Date(`${dateValue}T00:00:00`);
         if (Number.isNaN(activityDate.getTime())) return 'Farm log';
@@ -4752,7 +5104,8 @@
         });
       };
       document.querySelector('.activity-view-all').addEventListener('click', openRecentActivity);
-      const renderFarmLogs = (selectedFilter = 'all') => {
+      const renderFarmLogs = (selectedFilter = selectedFarmLogFilter) => {
+        selectedFarmLogFilter = selectedFilter;
         const visibleActivities = farmActivities.filter((activity) => selectedFilter === 'all' || categoryForType(activity.type) === selectedFilter);
         farmLogList.innerHTML = visibleActivities.length ? visibleActivities.map((activity) => { const date = formatDateParts(activity.date); const category = categoryForType(activity.type); return `<article class="farm-log-card" data-log-category="${category}"><span class="farm-log-date" data-deadline="${escapeHtml(activity.date)}" aria-label="${date.day} ${date.month}">${date.day}<br>${date.month}</span><span class="farm-log-copy"><strong>${escapeHtml(activity.title)}</strong><p>${escapeHtml(activityDescription(activity))}</p><span class="farm-log-category ${category === 'livestock' || category === 'post-harvest' ? category : ''}">${escapeHtml(categoryLabelForType(activity.type))}</span></span><span class="farm-log-chevron">›</span></article>`; }).join('') : '<p class="farm-log-empty">No farm activities in this category yet.</p>';
         document.querySelectorAll('[data-log-filter]').forEach((button) => { const selected = button.dataset.logFilter === selectedFilter; button.classList.toggle('selected', selected); button.setAttribute('aria-selected', String(selected)); });
@@ -4783,23 +5136,59 @@
       document.querySelectorAll('.activity-type').forEach((button) => button.addEventListener('click', () => { document.querySelectorAll('.activity-type').forEach((typeButton) => typeButton.classList.toggle('selected', typeButton === button)); }));
       activityDate.value = new Date().toISOString().slice(0, 10);
       document.getElementById('cancel-activity').addEventListener('click', () => { location.hash = previousRoute; });
-      activityForm.addEventListener('submit', (event) => {
+      activityForm.addEventListener('submit', async (event) => {
         event.preventDefault();
+        if (farmActivitySaving) return;
         const formData = new FormData(activityForm);
         const title = String(formData.get('title') || '').trim();
         const date = String(formData.get('date') || '').trim();
         if (!title || !date || !activityForm.reportValidity()) return;
-        const activity = { id: `activity-${Date.now()}`, type: document.querySelector('.activity-type.selected').dataset.activityType, date, title, details: String(formData.get('details') || '').trim(), related: String(formData.get('related') || '').trim(), cost: String(formData.get('cost') || '').trim() };
-        farmActivities = [activity, ...farmActivities];
-        try { localStorage.setItem(FARM_ACTIVITIES_KEY, JSON.stringify(farmActivities)); } catch (error) { console.warn('Unable to save farm activities:', error); }
-        activityForm.reset();
-        document.querySelectorAll('.activity-type').forEach((button) => button.classList.toggle('selected', button.dataset.activityType === 'Crop Care'));
-        activityDate.value = new Date().toISOString().slice(0, 10);
-        farmLogFeedback.textContent = 'Farm activity saved successfully.';
-        farmLogFeedback.classList.add('visible');
-        renderFarmLogs();
-        previousRoute = 'farm-logs';
-        location.hash = 'farm-logs';
+        const saveButton = activityForm.querySelector('.activity-save');
+        const activityType = document.querySelector('.activity-type.selected')?.dataset.activityType;
+        if (!activityType) return;
+        const originalButtonText = saveButton.textContent;
+        farmActivitySaving = true;
+        saveButton.disabled = true;
+        saveButton.textContent = 'Saving…';
+        setFarmLogFeedback('', '');
+        try {
+          const response = await fetch('/api/farm-activities.php', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify({
+              activity_type: activityType,
+              activity_date: date,
+              title,
+              details: String(formData.get('details') || '').trim(),
+              related_crop_animal: String(formData.get('related') || '').trim(),
+              cost: String(formData.get('cost') || '').trim(),
+            }),
+          });
+          const result = await response.json();
+          if (response.status === 401) throw new Error('Your session has expired. Sign in again before saving an activity.');
+          if (!response.ok || !result.success || !result.activity) {
+            const fieldErrors = result.errors && Object.values(result.errors);
+            throw new Error(fieldErrors?.length ? fieldErrors.join(' ') : result.message || 'Unable to save the farm activity.');
+          }
+          farmActivityLoadVersion += 1;
+          farmActivities = [normalizeFarmActivity(result.activity), ...farmActivities.filter((activity) => activity.id !== result.activity.id)]
+            .sort((first, second) => second.date.localeCompare(first.date));
+          activityForm.reset();
+          document.querySelectorAll('.activity-type').forEach((button) => button.classList.toggle('selected', button.dataset.activityType === 'Crop Care'));
+          activityDate.value = new Date().toISOString().slice(0, 10);
+          setFarmLogFeedback(`Farm activity saved successfully. Created by ${result.activity.author_name}.`, 'success');
+          renderFarmLogs();
+          previousRoute = 'farm-logs';
+          location.hash = 'farm-logs';
+        } catch (error) {
+          console.error('Unable to save farm activity:', error);
+          setFarmLogFeedback(error.message || 'Unable to save the farm activity. Please try again.', 'error');
+        } finally {
+          farmActivitySaving = false;
+          saveButton.disabled = false;
+          saveButton.textContent = originalButtonText;
+        }
       });
       document.querySelectorAll('.toggle').forEach((toggle, index) => { const key = `tanod-toggle-${index}`; const saved = localStorage.getItem(key); if (saved !== null) toggle.classList.toggle('on', saved === 'true'); toggle.addEventListener('click', () => { toggle.classList.toggle('on'); localStorage.setItem(key, toggle.classList.contains('on')); }); });
       const scanUpload = document.getElementById('scan-upload');
@@ -4931,10 +5320,7 @@
         stopCamera();
         showPhotoPreview(URL.createObjectURL(file), 'Selected farm image');
       });
-      document.querySelectorAll('.forecast-card').forEach((card) => card.addEventListener('click', () => { document.querySelectorAll('.forecast-card').forEach((day) => day.classList.remove('selected')); card.classList.add('selected'); const day = card.querySelector('b').textContent; const temp = card.querySelector('strong').textContent; modal(`${day} forecast`, `<p>Expected temperature: <strong>${temp}</strong><br>Rain probability is moderate. Plan field work around the afternoon showers.</p>`); }));
-      document.querySelectorAll('.alert').forEach((alert) => alert.addEventListener('click', (event) => { const title = alert.querySelector('h3').textContent; const details = alert.querySelector('p').textContent; modal(title, `<p>${details}</p><p><strong>${alert.querySelector('.source').textContent.replace('›', '').trim()}</strong></p>`); }));
-      document.querySelectorAll('.source').forEach((source) => source.addEventListener('click', (event) => { event.stopPropagation(); modal('PAGASA bulletin #4', '<p>Official bulletin details: monitor rainfall, secure livestock, and move equipment to higher ground as conditions change.</p>'); }));
-      document.querySelectorAll('.screen-title a').forEach((link) => link.addEventListener('click', (event) => { event.preventDefault(); modal(link.textContent === 'See all' ? 'All active alerts' : 'Complete scan history', '<p>Showing every available item for your farm. New updates will appear here after each scan or advisory.</p>'); }));
+      document.querySelectorAll('.screen-title a').forEach((link) => link.addEventListener('click', (event) => { if (link.closest('#climate-screen')) return; event.preventDefault(); modal(link.textContent === 'See all' ? 'All active alerts' : 'Complete scan history', '<p>Showing every available item for your farm. New updates will appear here after each scan or advisory.</p>'); }));
       document.querySelectorAll('.action').forEach((action) => action.addEventListener('click', () => modal(action.textContent.replace('›', '').trim(), '<p>This recommendation has been opened. Follow the steps carefully and monitor the crop over the next few days.</p>')));
       document.querySelectorAll('.history-card').forEach((item) => item.addEventListener('click', () => modal(item.querySelector('.history-copy').firstChild.textContent, `<p>${item.querySelector('small').textContent}<br>Status: ${item.querySelector('.history-badge').textContent}</p><p>Review the recorded observations and compare them with the current crop condition.</p>`)));
       document.querySelectorAll('#profile-screen .profile-row').forEach((row) => row.addEventListener('click', () => { const label = row.querySelector('.row-label').textContent; if (label.includes('Crops')) modal('My Crops & Livestock', '<p><strong>Crops</strong><br>Palay · Irrigated<br>Tomato · Field A<br>Munggo · Field B</p><p><strong>Livestock</strong><br>Cattle · 4 heads<br>Chicken · 12 heads</p>'); if (label.includes('Location')) { const dialog = modal('Farm Location & Size', '<label>Farm location<input id="farm-location" value="Sta. Maria, Bulacan"></label><label>Farm size<input id="farm-size" value="3.5" type="number" step="0.1"></label><p class="modal-message" id="form-message"></p>', '<button class="secondary" data-close>Cancel</button><button class="primary" id="save-farm">Save</button>'); dialog.querySelector('#save-farm').addEventListener('click', () => { localStorage.setItem('farm-location', dialog.querySelector('#farm-location').value); localStorage.setItem('farm-size', dialog.querySelector('#farm-size').value); dialog.querySelector('#form-message').style.color = '#397454'; dialog.querySelector('#form-message').textContent = 'Farm information saved.'; }); } if (label.includes('Reports')) modal('Farm Reports & History', '<p>Weekly report: Farm health is stable at 80%.</p><p>Recent activity and scan records are available in your farm history.</p>'); if (label === 'Language') { const dialog = modal('Choose language', '<select id="language"><option>Filipino</option><option>English</option></select>', '<button class="primary" id="save-language">Save</button>'); dialog.querySelector('#language').value = localStorage.getItem('language') || 'Filipino'; dialog.querySelector('#save-language').addEventListener('click', () => { localStorage.setItem('language', dialog.querySelector('#language').value); row.querySelector('.row-value').textContent = dialog.querySelector('#language').value; dialog.remove(); }); } if (label.includes('Password')) { const dialog = modal('Change Password', '<label>Current password<input type="password" id="current-password"></label><label>New password<input type="password" id="new-password"></label><label>Confirm new password<input type="password" id="confirm-password"></label><p class="modal-message" id="password-message"></p>', '<button class="secondary" data-close>Cancel</button><button class="primary" id="save-password">Update</button>'); dialog.querySelector('#save-password').addEventListener('click', () => { const next = dialog.querySelector('#new-password').value; const confirm = dialog.querySelector('#confirm-password').value; const message = dialog.querySelector('#password-message'); if (!next || next.length < 6 || next !== confirm) message.textContent = 'Use at least 6 characters and make both new passwords match.'; else { message.style.color = '#397454'; message.textContent = 'Password updated in this browser only.'; } }); } if (label.includes('Sign Out') && confirm('Sign out of Tanod Bukid?')) location.hash = ''; }));
@@ -4943,6 +5329,8 @@
     })();
   </script>
   <script type="module" src="../js/chat-widget.js"></script>
+  <script type="module" src="../js/dashboard-profile.js"></script>
+  <script type="module" src="../js/logout.js"></script>
 </body>
 
 </html>

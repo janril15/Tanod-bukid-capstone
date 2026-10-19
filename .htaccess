@@ -1,0 +1,9 @@
+Options -Indexes
+RewriteEngine On
+
+RewriteRule ^profile-setup\.html$ api/protected-page.php?page=profile-setup [END,QSA]
+RewriteRule ^dashboard\.html$ api/protected-page.php?page=scanner [END,QSA]
+RewriteRule ^Tanod\x20Bukid\x20Dash\x20Board\x20\(1\)/index\x20\(1\)\.html$ api/protected-page.php?page=dashboard [END,QSA]
+RewriteRule ^dist/profile-setup\.html$ api/protected-page.php?page=dist-profile-setup [END,QSA]
+RewriteRule ^dist/dashboard\.html$ api/protected-page.php?page=dist-scanner [END,QSA]
+RewriteRule ^dist/Tanod\x20Bukid\x20Dash\x20Board\x20\(1\)/index\x20\(1\)\.html$ api/protected-page.php?page=dist-dashboard [END,QSA]

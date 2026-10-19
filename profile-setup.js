@@ -17,7 +17,7 @@
     step: 1,
     data: {
       barangay: saved.barangay || '', municipality: saved.municipality || '',
-      profilePhoto: saved.profilePhoto || saved.photo || '', farmName: saved.farmName || '',
+      profilePhoto: '', farmName: saved.farmName || '',
       farmArea: saved.farmArea || '', farmType: saved.farmType || 'Plants', waterSource: saved.waterSource || '',
       crops: Array.isArray(saved.crops) && saved.crops.length ? saved.crops : ['Plants', 'Vegetable', 'Rice Crops', 'Onion'],
       farmScale: saved.farmScale || 'Small Farm',
@@ -33,10 +33,14 @@
   const meta = document.querySelector('#step-meta')
   const progress = document.querySelector('#progress-fill')
   const modalRoot = document.querySelector('#other-modal-root')
+  let profilePhotoChanged = false
 
   function readSavedProfile() {
     try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}') } catch { return {} }
   }
+
+  function validProfilePicture(path) { return typeof path === 'string' && /^uploads\/profile\/[a-f0-9]{32}\.(?:jpg|png|webp)$/i.test(path) }
+  function profilePictureUrl(path) { const url = new URL(path, new URL('./', window.location.href)); url.searchParams.set('v', Date.now().toString()); return url.href }
 
   function persist(completed) {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...state.data, profileSetupCompleted: Boolean(completed), currentStep: state.step })) } catch (error) { console.warn('Unable to save profile setup state:', error) }
@@ -51,11 +55,11 @@
   function iconInputField(label, field, placeholder, icon, type = 'text', required = false) { return `<label class="profile-field step-two-field"><span class="field-label">${label}${required ? ' <span class="asterisk">*</span>' : ''}</span><span class="profile-input-wrap"><span class="step-two-field-icon" aria-hidden="true">${icon}</span><input class="${fieldClass(field)}" type="${type}" data-field="${field}" value="${escapeHtml(state.data[field])}" placeholder="${placeholder}" ${type === 'number' ? 'min="0" step="0.1" inputmode="decimal"' : ''}></span>${errorFor(field)}</label>` }
   function waterSourceField() { const options = ['Rainwater', 'Irrigation', 'Well', 'River or stream', 'Other']; return `<label class="profile-field step-two-field"><span class="field-label">Primary Water Source <span class="asterisk">*</span></span><span class="profile-input-wrap"><span class="step-two-field-icon" aria-hidden="true">♧</span><select class="${fieldClass('waterSource')} step-two-select" data-field="waterSource"><option value="">Select water source</option>${options.map(option => `<option value="${option}" ${state.data.waterSource === option ? 'selected' : ''}>${option}</option>`).join('')}</select><span class="profile-select-chevron" aria-hidden="true">⌄</span></span>${errorFor('waterSource')}</label>` }
 
-  function avatar() { return state.data.profilePhoto ? `<img src="${state.data.profilePhoto}" alt="Profile preview" class="profile-avatar-image">` : '<svg viewBox="0 0 120 120" class="profile-avatar-svg" aria-hidden="true"><circle cx="60" cy="60" r="52" fill="rgba(53,86,62,0.12)" stroke="#2a3f2d" stroke-width="2.5"/><circle cx="60" cy="48" r="18" fill="none" stroke="#2a3f2d" stroke-width="2.6"/><path d="M38 86c4-11 18-18 22-18s18 7 22 18" fill="none" stroke="#2a3f2d" stroke-width="2.6" stroke-linecap="round"/></svg>' }
+  function avatar() { return state.data.profilePhoto ? `<img src="${escapeHtml(profilePictureUrl(state.data.profilePhoto))}" alt="Profile preview" class="profile-avatar-image">` : '<svg viewBox="0 0 120 120" class="profile-avatar-svg" aria-hidden="true"><circle cx="60" cy="60" r="52" fill="rgba(53,86,62,0.12)" stroke="#2a3f2d" stroke-width="2.5"/><circle cx="60" cy="48" r="18" fill="none" stroke="#2a3f2d" stroke-width="2.6"/><path d="M38 86c4-11 18-18 22-18s18 7 22 18" fill="none" stroke="#2a3f2d" stroke-width="2.6" stroke-linecap="round"/></svg>' }
   function button(text, action, className = 'profile-continue-button') { return `<button type="button" class="${className}" data-action="${action}">${text}</button>` }
   function choices(field, options) { const fieldValue = state.data[field]; const selectedValues = Array.isArray(fieldValue) ? fieldValue : [fieldValue]; const extraOptions = Array.isArray(fieldValue) ? fieldValue.filter(item => !options.includes(item)) : fieldValue && !options.includes(fieldValue) ? [fieldValue] : []; const action = ['farmType', 'farmScale'].includes(field) ? 'data-select' : 'data-toggle'; return options.concat(extraOptions).map(item => `<button type="button" class="selection-pill ${selectedValues.includes(item) ? 'selected' : ''}" ${action}="${field}" data-value="${escapeHtml(item)}">${escapeHtml(item)}</button>`).join('') }
 
-  function renderStepOne() { return `<div class="profile-photo-wrap"><button type="button" class="profile-avatar-button" data-action="choose-photo" aria-label="Upload profile photo">${avatar()}<span class="profile-camera-badge" aria-hidden="true">▣</span></button><input id="photo-input" type="file" accept="image/*" hidden><div class="profile-upload-text">Tap to upload photo</div><div class="profile-upload-hint">JPG, PNG · Max 5MB</div></div><div class="profile-form">${locationField('Barangay', 'barangay', 'e.g. San Jose', '♦')}${locationField('Municipality', 'municipality', 'e.g. Santa Maria', '▤')}</div>${button('CONTINUE <span class="button-arrow" aria-hidden="true">→</span>', 'continue')}` }
+  function renderStepOne() { return `<div class="profile-photo-wrap"><button type="button" class="profile-avatar-button" data-action="choose-photo" aria-label="Upload profile photo">${avatar()}<span class="profile-camera-badge" aria-hidden="true">▣</span></button><input id="photo-input" type="file" accept="image/jpeg,image/png,image/webp" hidden><div class="profile-upload-text">Tap to upload photo</div><div class="profile-upload-hint">JPG, PNG, WebP · Max 5MB</div></div><div class="profile-form">${locationField('Barangay', 'barangay', 'e.g. San Jose', '♦')}${locationField('Municipality', 'municipality', 'e.g. Santa Maria', '▤')}</div>${button('CONTINUE <span class="button-arrow" aria-hidden="true">→</span>', 'continue')}` }
   function renderStepTwo() { return `<div class="profile-step-content step-two-content">${iconInputField('Farm Name (optional)', 'farmName', 'e.g. Santos Family Farm', '♧')}${iconInputField('Total Farm Area (hectares)', 'farmArea', 'e.g. 3', '⬚', 'number', true)}<div class="profile-field step-two-field"><span class="field-label">Farm Type <span class="asterisk">*</span></span><div class="selection-grid farm-type-grid">${choices('farmType', ['Plants', 'Vegetable', 'Crop Farming'])}</div>${errorFor('farmType')}</div>${waterSourceField()}<div class="step-actions">${button('BACK', 'back', 'back-button')}${button('CONTINUE <span class="button-arrow" aria-hidden="true">→</span>', 'continue')}</div></div>` }
   function selectionGroup(label, field, options) { const gridClass = field === 'crops' ? 'crop-grid' : field === 'farmScale' ? 'farm-scale-grid' : 'livestock-grid'; return `<div class="profile-field selection-section"><span class="field-label">${label} <span class="asterisk">*</span></span><div class="selection-grid ${gridClass}">${choices(field, options)}</div><button type="button" class="add-other-button" data-other="${field}">+ Add other</button>${errorFor(field)}</div>` }
   function renderStepThree() { return `<div class="profile-step-content step-three-content">${selectionGroup('Select all crops you grow', 'crops', cropOptions)}${selectionGroup('Select your farm type', 'farmScale', farmScaleOptions)}<div class="step-actions">${button('BACK', 'back', 'back-button')}${button('CONTINUE <span class="button-arrow" aria-hidden="true">→</span>', 'continue')}</div></div>` }
@@ -97,7 +101,63 @@
     content.querySelectorAll('[data-action="finish"]').forEach(element => element.addEventListener('click', finish))
   }
 
-  function handlePhoto(event) { const file = event.target.files && event.target.files[0]; if (!file || !file.type.startsWith('image/')) return; const reader = new FileReader(); reader.onload = () => { state.data.profilePhoto = reader.result || ''; render() }; reader.readAsDataURL(file) }
+  async function handlePhoto(event) {
+    const input = event.target
+    const file = input.files && input.files[0]
+    input.value = ''
+    if (!file) return
+
+    profilePhotoChanged = true
+    const formData = new FormData()
+    formData.append('profile_picture', file)
+    try {
+      const response = await fetch(new URL('api/profile.php', new URL('./', window.location.href)), {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { Accept: 'application/json' },
+        body: formData,
+      })
+      const result = await response.json()
+      if (response.status === 401) {
+        window.location.replace(new URL('index.html#signin', new URL('./', window.location.href)))
+        return
+      }
+      if (!response.ok || !result.success || !validProfilePicture(result.profile_picture)) {
+        throw new Error(result.message || 'Unable to upload the profile picture.')
+      }
+      state.data.profilePhoto = result.profile_picture
+      render()
+    } catch (error) {
+      console.error('Unable to upload the profile picture:', error)
+      window.alert(error.message || 'Unable to upload the profile picture. Please try again.')
+    }
+  }
+
+  async function loadProfilePicture() {
+    try {
+      const response = await fetch(new URL('api/profile.php', new URL('./', window.location.href)), {
+        method: 'GET',
+        credentials: 'same-origin',
+        headers: { Accept: 'application/json' },
+        cache: 'no-store',
+      })
+      const result = await response.json()
+      if (response.status === 401) {
+        window.location.replace(new URL('index.html#signin', new URL('./', window.location.href)))
+        return
+      }
+      if (!response.ok || !result.success || !result.profile) {
+        throw new Error(result.message || 'Unable to load the saved profile picture.')
+      }
+      if (!profilePhotoChanged && validProfilePicture(result.profile.profile_picture)) {
+        state.data.profilePhoto = result.profile.profile_picture
+        render()
+      }
+    } catch (error) {
+      console.error('Unable to load the saved profile picture:', error)
+    }
+  }
+
   function finish() { persist(true); window.location.href = 'Tanod Bukid Dash Board (1)/index (1).html' }
   function renderModal() { if (!state.otherType) { modalRoot.innerHTML = ''; return }; const noun = state.otherType === 'crops' ? 'crop' : state.otherType === 'farmScale' ? 'farm type' : 'livestock'; modalRoot.innerHTML = `<div class="other-modal-backdrop" data-close-modal><div class="other-modal" role="dialog" aria-modal="true" aria-labelledby="other-title"><h2 id="other-title">Add another ${noun}</h2><input id="other-value" autofocus class="profile-input" placeholder="Enter ${noun} type"><div class="modal-actions">${button('CANCEL', 'cancel-other', 'back-button')}${button('ADD', 'add-other')}</div></div></div>`; const value = modalRoot.querySelector('#other-value'); modalRoot.querySelector('[data-action="cancel-other"]').addEventListener('click', () => { state.otherType = null; renderModal() }); modalRoot.querySelector('[data-action="add-other"]').addEventListener('click', () => addOther(value.value)); value.addEventListener('keydown', event => { if (event.key === 'Enter') addOther(value.value) }); modalRoot.querySelector('[data-close-modal]').addEventListener('mousedown', event => { if (event.target === event.currentTarget) { state.otherType = null; renderModal() } }) }
   function addOther(value) { const cleanValue = value.trim(); if (!cleanValue || !state.otherType) return; if (Array.isArray(state.data[state.otherType])) { if (!state.data[state.otherType].includes(cleanValue)) state.data[state.otherType].push(cleanValue) } else state.data[state.otherType] = cleanValue; state.otherType = null; render() }
@@ -110,5 +170,5 @@
   })
 
   if (window.location.hash === '#dashboard') renderDashboard()
-  else render()
+  else { render(); loadProfilePicture() }
 })()
